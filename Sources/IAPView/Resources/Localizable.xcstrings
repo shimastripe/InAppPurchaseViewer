@@ -1,0 +1,363 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "-----BEGIN PRIVATE KEY-----XXXXXX-----END PRIVATE KEY-----" : {
+
+    },
+    "(%lld notifications x %lld columns)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "(%1$lld notifications x %2$lld columns)"
+          }
+        }
+      }
+    },
+    "(%lld subscription groups x %lld columns)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "(%1$lld subscription groups x %2$lld columns)"
+          }
+        }
+      }
+    },
+    "(%lld transactions x %lld columns)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "(%1$lld transactions x %2$lld columns)"
+          }
+        }
+      }
+    },
+    "%@" : {
+
+    },
+    "1. Download Apple Root Certificate." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. Appleルート証明書をダウンロードする"
+          }
+        }
+      }
+    },
+    "2. Configure App Store Server API" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2. App Store Server API を設定する"
+          }
+        }
+      }
+    },
+    "2000000123456789" : {
+
+    },
+    "Account" : {
+
+    },
+    "Add full transaction columns" : {
+
+    },
+    "Add renewal information columns" : {
+
+    },
+    "App Apple ID" : {
+
+    },
+    "App Store Server Notifications history" : {
+
+    },
+    "appAccountToken" : {
+
+    },
+    "Authenticate" : {
+
+    },
+    "Authenticated ✅" : {
+
+    },
+    "autoRenewProductId" : {
+
+    },
+    "autoRenewStatus" : {
+
+    },
+    "Bundle ID" : {
+
+    },
+    "bundleId" : {
+
+    },
+    "Choose" : {
+
+    },
+    "Close" : {
+
+    },
+    "com.shimastripe.XXXXXX" : {
+
+    },
+    "currency" : {
+
+    },
+    "Done✨" : {
+
+    },
+    "Download AppleRootCA-G3.cer" : {
+
+    },
+    "EndDate" : {
+
+    },
+    "Enter TransactionID ⤴" : {
+
+    },
+    "environment" : {
+
+    },
+    "Environment" : {
+
+    },
+    "expirationIntent" : {
+
+    },
+    "expiresDate" : {
+
+    },
+    "Fetch App Store API..." : {
+
+    },
+    "Generate an in-app purchase key via browser" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アプリ内課金キー生成ページへ(ブラウザ経由)"
+          }
+        }
+      }
+    },
+    "Get a customer's in-app purchase transaction history for your app. [Link](https://developer.apple.com/documentation/appstoreserverapi/get_transaction_history)" : {
+
+    },
+    "Get a list of notifications that the App Store server attempted to send to your server. [Link](https://developer.apple.com/documentation/appstoreserverapi/get_notification_history)" : {
+
+    },
+    "Get All Subscription Statuses" : {
+
+    },
+    "Get Notification History" : {
+
+    },
+    "Get the statuses for all of a customer’s auto-renewable subscriptions in your app. [Link](https://developer.apple.com/documentation/appstoreserverapi/get_all_subscription_statuses)" : {
+
+    },
+    "Get Transaction History" : {
+
+    },
+    "gracePeriodExpiresDate" : {
+
+    },
+    "In-app purchase history" : {
+
+    },
+    "inAppOwnershipType" : {
+
+    },
+    "isInBillingRetryPeriod" : {
+
+    },
+    "Issuer ID" : {
+
+    },
+    "isUpgraded" : {
+
+    },
+    "Key ID" : {
+
+    },
+    "Let's set up App Store Server API and use a convenient Viewer!" : {
+
+    },
+    "License" : {
+
+    },
+    "Licenses" : {
+
+    },
+    "More notifications" : {
+
+    },
+    "No License Found" : {
+
+    },
+    "NOTE: Credentials are stored in Keychain. 2 steps are required." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NOTE: 認証情報はKeychainに保存されます。2つのステップを行ってください。"
+          }
+        }
+      }
+    },
+    "notificationType" : {
+
+    },
+    "notificationUUID" : {
+
+    },
+    "offerDiscountType" : {
+
+    },
+    "offerIdentifier" : {
+
+    },
+    "offerType" : {
+
+    },
+    "originalPurchaseDate" : {
+
+    },
+    "originalTransactionId" : {
+
+    },
+    "originalTransactionID" : {
+
+    },
+    "price" : {
+
+    },
+    "priceIncreaseStatus" : {
+
+    },
+    "productId" : {
+
+    },
+    "purchaseDate" : {
+
+    },
+    "quantity" : {
+
+    },
+    "recentSubscriptionStartDate" : {
+
+    },
+    "Remove all settings" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設定を全て消去する"
+          }
+        }
+      }
+    },
+    "renewalDate" : {
+
+    },
+    "renewalInfo signedDate" : {
+
+    },
+    "Retrieve all..." : {
+
+    },
+    "Retrieves all History for a given period of time" : {
+
+    },
+    "Retry" : {
+
+    },
+    "revocationDate" : {
+
+    },
+    "revocationReason" : {
+
+    },
+    "Root Certificate" : {
+
+    },
+    "Save AppleRootCA-G3.cer ✅" : {
+
+    },
+    "Set up please🙏" : {
+
+    },
+    "Setup API Credential!" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "認証情報をセットアップしましょう！"
+          }
+        }
+      }
+    },
+    "Setup..." : {
+
+    },
+    "signedDate" : {
+
+    },
+    "StartDate" : {
+
+    },
+    "status" : {
+
+    },
+    "storefront" : {
+
+    },
+    "storefrontId" : {
+
+    },
+    "Subscription status" : {
+
+    },
+    "subscriptionGroupIdentifier" : {
+
+    },
+    "SubscriptionKey.p8" : {
+
+    },
+    "subType" : {
+
+    },
+    "transaction signedDate" : {
+
+    },
+    "transactionID" : {
+
+    },
+    "TransactionID" : {
+
+    },
+    "transactionReason" : {
+
+    },
+    "type" : {
+
+    },
+    "webOrderLineItemId" : {
+
+    },
+    "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" : {
+
+    },
+    "YYYYYYYYYY" : {
+
+    }
+  },
+  "version" : "1.0"
+}
