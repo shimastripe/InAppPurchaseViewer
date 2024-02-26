@@ -1,0 +1,46 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '25 0 * * 0'
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: macos-13
+    env:
+      DEVELOPER_DIR: "/Applications/Xcode_15.2.0.app/Contents/Developer"
+    timeout-minutes: 40
+    permissions:
+      security-events: write
+
+    steps:
+    - name: Set up build options
+      run: |
+        defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
+        defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
+
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Configure SPM cache
+      uses: actions/cache@v4
+      with:
+        path: ~/Library/Caches/org.swift.swiftpm
+        key: spm-${{ hashFiles('Package.swift') }}
+        restore-keys: |
+          spm-
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: swift
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v3
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:swift"
