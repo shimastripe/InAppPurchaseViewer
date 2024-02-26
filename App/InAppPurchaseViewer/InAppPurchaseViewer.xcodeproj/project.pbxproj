@@ -3,14 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		457736392B8C6061007A66A3 /* IAPClient in Frameworks */ = {isa = PBXBuildFile; productRef = 457736382B8C6061007A66A3 /* IAPClient */; };
+		4577363B2B8C6061007A66A3 /* IAPView in Frameworks */ = {isa = PBXBuildFile; productRef = 4577363A2B8C6061007A66A3 /* IAPView */; };
 		458FE15A2B6E239600798686 /* InAppPurchaseViewerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458FE1592B6E239600798686 /* InAppPurchaseViewerApp.swift */; };
 		458FE15E2B6E239700798686 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 458FE15D2B6E239700798686 /* Assets.xcassets */; };
-		458FE16B2B6E243800798686 /* IAPView in Frameworks */ = {isa = PBXBuildFile; productRef = 458FE16A2B6E243800798686 /* IAPView */; };
-		458FE16D2B6FC60500798686 /* IAPClient in Frameworks */ = {isa = PBXBuildFile; productRef = 458FE16C2B6FC60500798686 /* IAPClient */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,8 +26,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				458FE16D2B6FC60500798686 /* IAPClient in Frameworks */,
-				458FE16B2B6E243800798686 /* IAPView in Frameworks */,
+				4577363B2B8C6061007A66A3 /* IAPView in Frameworks */,
+				457736392B8C6061007A66A3 /* IAPClient in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,8 +86,8 @@
 			);
 			name = InAppPurchaseViewer;
 			packageProductDependencies = (
-				458FE16A2B6E243800798686 /* IAPView */,
-				458FE16C2B6FC60500798686 /* IAPClient */,
+				457736382B8C6061007A66A3 /* IAPClient */,
+				4577363A2B8C6061007A66A3 /* IAPView */,
 			);
 			productName = InAppPurchaseViewer;
 			productReference = 458FE1562B6E239600798686 /* InAppPurchaseViewer.app */;
@@ -117,6 +117,9 @@
 				Base,
 			);
 			mainGroup = 458FE14D2B6E239600798686;
+			packageReferences = (
+				4577362D2B8C6024007A66A3 /* XCLocalSwiftPackageReference "../.." */,
+			);
 			productRefGroup = 458FE1572B6E239600798686 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -362,14 +365,21 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCSwiftPackageProductDependency section */
-		458FE16A2B6E243800798686 /* IAPView */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = IAPView;
+/* Begin XCLocalSwiftPackageReference section */
+		4577362D2B8C6024007A66A3 /* XCLocalSwiftPackageReference "../.." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../..;
 		};
-		458FE16C2B6FC60500798686 /* IAPClient */ = {
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		457736382B8C6061007A66A3 /* IAPClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = IAPClient;
+		};
+		4577363A2B8C6061007A66A3 /* IAPView */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = IAPView;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
