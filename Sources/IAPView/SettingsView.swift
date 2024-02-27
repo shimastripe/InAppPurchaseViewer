@@ -77,7 +77,7 @@ public struct SettingsView: View {
                     openURL(URL(string: "https://appstoreconnect.apple.com/access/api/subs")!)
                 } label: {
                     Label(
-                        "Generate an in-app purchase key via browser",
+                        "Generate an in-app purchase key via App Store Connect",
                         systemImage: "link.badge.plus")
                 }
                 .buttonStyle(.borderedProminent)
