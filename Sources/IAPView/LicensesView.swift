@@ -11,14 +11,22 @@ struct LicensesView: View {
     @State private var selectedLicense: LicensesPlugin.License?
 
     var body: some View {
-        List(LicensesPlugin.licenses) { license in
-            LabeledContent(license.name) {
-                Button {
-                    selectedLicense = license
-                } label: {
-                    Image(systemName: "info.circle").padding(4)
+        List {
+            ForEach(LicensesPlugin.licenses) { license in
+                LabeledContent(license.name) {
+                    Button {
+                        selectedLicense = license
+                    } label: {
+                        Image(systemName: "info.circle").padding(4)
+                    }
+                    .buttonStyle(.plain)
                 }
-                .buttonStyle(.plain)
+            }
+
+            Section("Assets") {
+                Link(
+                    "Space icons created by Freepik - Flaticon",
+                    destination: .init(string: "https://www.flaticon.com/free-icons/space")!)
             }
         }
         .sheet(item: $selectedLicense) { license in
