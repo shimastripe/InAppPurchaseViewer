@@ -4,23 +4,29 @@
 <dict>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
+		<dict>
+			<key>UTTypeIdentifier</key>
+			<string>p8</string>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>p8 file</string>
+			<key>UTTypeTagSpecification</key>
 			<dict>
-					<key>UTTypeIdentifier</key>
+				<key>public.filename-extension</key>
+				<array>
 					<string>p8</string>
-					<key>UTTypeConformsTo</key>
-					<array>
-							<string>public.data</string>
-					</array>
-					<key>UTTypeDescription</key>
-					<string>p8 file</string>
-					<key>UTTypeTagSpecification</key>
-					<dict>
-							<key>public.filename-extension</key>
-							<array>
-									<string>p8</string>
-							</array>
-					</dict>
+				</array>
 			</dict>
+		</dict>
 	</array>
+	<key>SUEnableInstallerLauncherService</key>
+	<true/>
+	<key>SUFeedURL</key>
+	<string>https://shimastripe.com/InAppPurchaseViewer/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>4KUgk6qr0lDGOxo4BtILoQjsXiZtX/9QhMNGUD4txS4=</string>
 </dict>
 </plist>
