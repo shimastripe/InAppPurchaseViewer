@@ -269,7 +269,7 @@
 		458FE1662B6E239700798686 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_dev;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = InAppPurchaseViewer/InAppPurchaseViewer.entitlements;
 				CODE_SIGN_STYLE = Automatic;

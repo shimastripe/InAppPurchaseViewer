@@ -81,6 +81,9 @@
     "appAccountToken" : {
 
     },
+    "Assets" : {
+
+    },
     "Authenticate" : {
 
     },
@@ -138,12 +141,12 @@
     "Fetch App Store API..." : {
 
     },
-    "Generate an in-app purchase key via browser" : {
+    "Generate an in-app purchase key via App Store Connect" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "アプリ内課金キー生成ページへ(ブラウザ経由)"
+            "value" : "アプリ内課金キー生成ページへ(App Store Connect)"
           }
         }
       }
@@ -308,6 +311,9 @@
 
     },
     "signedDate" : {
+
+    },
+    "Space icons created by Freepik - Flaticon" : {
 
     },
     "StartDate" : {
