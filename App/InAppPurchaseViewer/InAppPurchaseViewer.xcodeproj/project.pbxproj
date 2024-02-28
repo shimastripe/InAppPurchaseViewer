@@ -18,9 +18,10 @@
 		458FE1562B6E239600798686 /* InAppPurchaseViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InAppPurchaseViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		458FE1592B6E239600798686 /* InAppPurchaseViewerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchaseViewerApp.swift; sourceTree = "<group>"; };
 		458FE15D2B6E239700798686 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		458FE15F2B6E239700798686 /* InAppPurchaseViewer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = InAppPurchaseViewer.entitlements; sourceTree = "<group>"; };
+		458FE15F2B6E239700798686 /* InAppPurchaseViewer.production.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = InAppPurchaseViewer.production.entitlements; sourceTree = "<group>"; };
 		45B4BD3E2B8F8AAD003FAE10 /* Config.develop.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.develop.xcconfig; sourceTree = "<group>"; };
 		45B4BD3F2B8F989B003FAE10 /* Config.production.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.production.xcconfig; sourceTree = "<group>"; };
+		45B4BD402B8FA653003FAE10 /* InAppPurchaseViewer.develop.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = InAppPurchaseViewer.develop.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,7 +60,8 @@
 				4552AC552B7170C400391E2E /* Info.plist */,
 				458FE1592B6E239600798686 /* InAppPurchaseViewerApp.swift */,
 				458FE15D2B6E239700798686 /* Assets.xcassets */,
-				458FE15F2B6E239700798686 /* InAppPurchaseViewer.entitlements */,
+				45B4BD402B8FA653003FAE10 /* InAppPurchaseViewer.develop.entitlements */,
+				458FE15F2B6E239700798686 /* InAppPurchaseViewer.production.entitlements */,
 				45B4BD3E2B8F8AAD003FAE10 /* Config.develop.xcconfig */,
 				45B4BD3F2B8F989B003FAE10 /* Config.production.xcconfig */,
 			);
@@ -275,7 +277,6 @@
 			baseConfigurationReference = 45B4BD3E2B8F8AAD003FAE10 /* Config.develop.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = InAppPurchaseViewer/InAppPurchaseViewer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
@@ -301,7 +302,6 @@
 			baseConfigurationReference = 45B4BD3F2B8F989B003FAE10 /* Config.production.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = InAppPurchaseViewer/InAppPurchaseViewer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";

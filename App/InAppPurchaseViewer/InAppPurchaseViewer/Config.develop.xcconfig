@@ -9,4 +9,5 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 
 ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_dev
+CODE_SIGN_ENTITLEMENTS = InAppPurchaseViewer/InAppPurchaseViewer.develop.entitlements
 PRODUCT_BUNDLE_IDENTIFIER = com.shimastripe.InAppPurchaseViewer.development
