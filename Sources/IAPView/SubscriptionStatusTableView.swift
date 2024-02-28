@@ -47,7 +47,7 @@ struct SubscriptionStatusTableView: View {
         }
         .width(ideal: 160)
         TableColumn("price") {
-            CellText($0.transaction?.price.map { $0 / 1000 }?.description)
+            CellText($0.transaction?.price?.description)
         }
         .width(ideal: 60)
         TableColumn("currency") {

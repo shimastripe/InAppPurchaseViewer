@@ -50,7 +50,7 @@ struct NotificationHistoryTableView: View {
         }
         .width(ideal: 160)
         TableColumn("price") {
-            CellText($0.transactionInfo?.price.map { $0 / 1000 }?.description)
+            CellText($0.transactionInfo?.price?.description)
         }
         .width(ideal: 60)
         TableColumn("currency") {
