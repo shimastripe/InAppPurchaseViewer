@@ -78,8 +78,8 @@ struct NotificationHistoryView: View {
                                                         .notificationHistoryTransactionID))
                                         }
                                     } label: {
-                                        Label("More notifications", systemImage: "arrowshape.down")
-                                            .font(.title2)
+                                        Label("20", systemImage: "plus.app")
+                                            .font(.title)
                                             .padding(8)
                                     }
                                     Button {
@@ -92,16 +92,13 @@ struct NotificationHistoryView: View {
                                                         .notificationHistoryTransactionID))
                                         }
                                     } label: {
-                                        Label(
-                                            "Retrieve all...",
-                                            systemImage: "square.and.arrow.down.on.square.fill"
-                                        ).font(.title2)
+                                        Label("200", systemImage: "plus.rectangle.on.rectangle")
+                                            .font(.title)
                                             .padding(8)
                                     }
-                                    .help("Retrieves all History for a given period of time")
+                                    .help("Retrieves 200 items for a given period of time")
                                 }
-                                .opacity(
-                                    state.isAppendLoading ? 0 : 1)
+                                .opacity(state.isAppendLoading ? 0 : 1)
                             }
                         }
                         .padding()
