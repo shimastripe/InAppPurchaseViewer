@@ -1,0 +1,13 @@
+//
+//  Config.production.xcconfig
+//  InAppPurchaseViewer
+//
+//  Created by Go TAKAGI on 2024/02/29.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon
+CODE_SIGN_ENTITLEMENTS = InAppPurchaseViewer/InAppPurchaseViewer.production.entitlements
+PRODUCT_BUNDLE_IDENTIFIER = com.shimastripe.InAppPurchaseViewer

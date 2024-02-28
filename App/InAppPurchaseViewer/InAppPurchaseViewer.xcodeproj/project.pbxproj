@@ -18,7 +18,10 @@
 		458FE1562B6E239600798686 /* InAppPurchaseViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InAppPurchaseViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		458FE1592B6E239600798686 /* InAppPurchaseViewerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchaseViewerApp.swift; sourceTree = "<group>"; };
 		458FE15D2B6E239700798686 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		458FE15F2B6E239700798686 /* InAppPurchaseViewer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = InAppPurchaseViewer.entitlements; sourceTree = "<group>"; };
+		458FE15F2B6E239700798686 /* InAppPurchaseViewer.production.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = InAppPurchaseViewer.production.entitlements; sourceTree = "<group>"; };
+		45B4BD3E2B8F8AAD003FAE10 /* Config.develop.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.develop.xcconfig; sourceTree = "<group>"; };
+		45B4BD3F2B8F989B003FAE10 /* Config.production.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.production.xcconfig; sourceTree = "<group>"; };
+		45B4BD402B8FA653003FAE10 /* InAppPurchaseViewer.develop.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = InAppPurchaseViewer.develop.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +60,10 @@
 				4552AC552B7170C400391E2E /* Info.plist */,
 				458FE1592B6E239600798686 /* InAppPurchaseViewerApp.swift */,
 				458FE15D2B6E239700798686 /* Assets.xcassets */,
-				458FE15F2B6E239700798686 /* InAppPurchaseViewer.entitlements */,
+				45B4BD402B8FA653003FAE10 /* InAppPurchaseViewer.develop.entitlements */,
+				458FE15F2B6E239700798686 /* InAppPurchaseViewer.production.entitlements */,
+				45B4BD3E2B8F8AAD003FAE10 /* Config.develop.xcconfig */,
+				45B4BD3F2B8F989B003FAE10 /* Config.production.xcconfig */,
 			);
 			path = InAppPurchaseViewer;
 			sourceTree = "<group>";
@@ -268,10 +274,9 @@
 		};
 		458FE1662B6E239700798686 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 45B4BD3E2B8F8AAD003FAE10 /* Config.develop.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_dev;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = InAppPurchaseViewer/InAppPurchaseViewer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
@@ -279,22 +284,10 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = InAppPurchaseViewer/Info.plist;
-				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
-				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.shimastripe.InAppPurchaseViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = macosx;
@@ -306,10 +299,9 @@
 		};
 		458FE1672B6E239700798686 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 45B4BD3F2B8F989B003FAE10 /* Config.production.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = InAppPurchaseViewer/InAppPurchaseViewer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
@@ -317,22 +309,10 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = InAppPurchaseViewer/Info.plist;
-				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
-				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.shimastripe.InAppPurchaseViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = macosx;
