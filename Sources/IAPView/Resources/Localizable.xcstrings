@@ -60,6 +60,12 @@
         }
       }
     },
+    "20" : {
+
+    },
+    "200" : {
+
+    },
     "2000000123456789" : {
 
     },
@@ -199,9 +205,6 @@
     "Licenses" : {
 
     },
-    "More notifications" : {
-
-    },
     "No License Found" : {
 
     },
@@ -273,10 +276,7 @@
     "renewalInfo signedDate" : {
 
     },
-    "Retrieve all..." : {
-
-    },
-    "Retrieves all History for a given period of time" : {
+    "Retrieves 200 items for a given period of time" : {
 
     },
     "Retry" : {

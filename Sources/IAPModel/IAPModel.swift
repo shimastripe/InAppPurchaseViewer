@@ -231,7 +231,9 @@ extension IAPModel {
 
                 var merged = notificationHistory
 
-                while true {
+                let loopCounts = 10
+
+                for _ in 0 ..< loopCounts {
                     guard let hasMore = merged.hasMore, hasMore,
                         let paginationToken = merged.paginationToken
                     else {
@@ -315,7 +317,9 @@ extension IAPModel {
 
                 var merged = transactionHistory
 
-                while true {
+                let loopCounts = 10
+
+                for _ in 0 ..< loopCounts {
                     guard let hasMore = merged.hasMore, hasMore,
                         let revision = merged.revision
                     else {
