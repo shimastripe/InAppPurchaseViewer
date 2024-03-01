@@ -90,5 +90,5 @@ public struct ContentView: View {
 
 #Preview {
     ContentView().environment(IAPModel())
-        .frame(minWidth: 400, minHeight: 250)
+        .frame(minWidth: 1600, minHeight: 800)
 }

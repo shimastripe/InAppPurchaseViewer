@@ -28,4 +28,14 @@ public struct RootCertificateClient {
 
 extension RootCertificateClient: TestDependencyKey {
     public static var testValue = Self()
+    public static var previewValue: RootCertificateClient = .init(
+        fetch: {
+            unimplemented()
+        },
+        get: {
+            Data()
+        },
+        remove: {
+            unimplemented()
+        })
 }
