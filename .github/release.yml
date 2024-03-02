@@ -1,0 +1,11 @@
+changelog:
+  categories:
+    - title: Main ✨
+      labels:
+        - "*"
+      exclude:
+        labels:
+          - "dependencies"
+    - title: Dependencies 📦
+      labels:
+        - "dependencies"
