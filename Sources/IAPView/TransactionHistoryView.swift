@@ -156,16 +156,34 @@ struct TransactionHistoryView: View {
             ToolbarItem {
                 Button {
                     Task {
+                        model.isStaledParameters = false
                         await model.execute(action: .clearTransactionHistoryError)
                     }
                 } label: {
-                    Image(systemName: "arrow.clockwise")
+                    Image(systemName: "arrow.counterclockwise")
+                        .bold()
+                        .foregroundStyle(model.isStaledParameters ? .orange : .gray.opacity(0.7))
                 }
                 .help("Retry")
             }
         }
         .onChange(of: model.environment) { _, _ in
             Task {
+                await model.execute(action: .clearTransactionHistoryError)
+            }
+        }
+        .onChange(of: model.transactionID) { (oldValue, newValue) in
+            guard oldValue != newValue, !oldValue.isEmpty else { return }
+            model.isStaledParameters = true
+        }
+        .onChange(of: [model.transactionStartDate, model.transactionEndDate]) {
+            (oldValue, newValue) in
+            guard oldValue != newValue else { return }
+            model.isStaledParameters = true
+        }
+        .onSubmit {
+            Task {
+                model.isStaledParameters = false
                 await model.execute(action: .clearTransactionHistoryError)
             }
         }

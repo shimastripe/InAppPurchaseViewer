@@ -153,16 +153,34 @@ struct NotificationHistoryView: View {
             ToolbarItem {
                 Button {
                     Task {
+                        model.isNotificationHistoryStaledParameters = false
                         await model.execute(action: .clearNotificationHistoryError)
                     }
                 } label: {
-                    Image(systemName: "arrow.clockwise")
+                    Image(systemName: "arrow.counterclockwise")
+                        .bold()
+                        .foregroundStyle(
+                            model.isNotificationHistoryStaledParameters
+                                ? .orange : .gray.opacity(0.7))
                 }
                 .help("Retry")
             }
         }
         .onChange(of: model.environment) { _, _ in
             Task {
+                await model.execute(action: .clearNotificationHistoryError)
+            }
+        }
+        .onChange(of: [
+            model.notificationHistoryTransactionID, model.notificationStartDate.formatted(),
+            model.notificationEndDate.formatted(),
+        ]) { (oldValue, newValue) in
+            guard oldValue != newValue else { return }
+            model.isNotificationHistoryStaledParameters = true
+        }
+        .onSubmit {
+            Task {
+                model.isNotificationHistoryStaledParameters = false
                 await model.execute(action: .clearNotificationHistoryError)
             }
         }
