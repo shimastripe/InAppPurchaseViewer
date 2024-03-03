@@ -31,10 +31,14 @@ public final class IAPModel {
         LoadingViewState<SubscriptionStatus> = .waiting
 
     // MARK: - Shared State parameters
+    /// whether highlighted retry button
+    public var isStaledParameters = false
     public var transactionID = ""
     public var environment: ServerEnvironment = .sandbox
 
     // MARK: - Notification History parameters
+    /// whether highlighted notification history retry button
+    public var isNotificationHistoryStaledParameters = false
     public var notificationHistoryTransactionID = ""
     public var notificationStartDate = Calendar.current.date(
         byAdding: .weekOfMonth, value: -2, to: .now)!

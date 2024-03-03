@@ -89,16 +89,29 @@ struct SubscriptionStatusView: View {
             ToolbarItem {
                 Button {
                     Task {
+                        model.isStaledParameters = false
                         await model.execute(action: .clearAllSubscriptionStatusesError)
                     }
                 } label: {
-                    Image(systemName: "arrow.clockwise")
+                    Image(systemName: "arrow.counterclockwise")
+                        .bold()
+                        .foregroundStyle(model.isStaledParameters ? .orange : .gray.opacity(0.7))
                 }
                 .help("Retry")
             }
         }
         .onChange(of: model.environment) { _, _ in
             Task {
+                await model.execute(action: .clearAllSubscriptionStatusesError)
+            }
+        }
+        .onChange(of: model.transactionID) { (oldValue, newValue) in
+            guard oldValue != newValue, !oldValue.isEmpty else { return }
+            model.isStaledParameters = true
+        }
+        .onSubmit {
+            Task {
+                model.isStaledParameters = false
                 await model.execute(action: .clearAllSubscriptionStatusesError)
             }
         }
