@@ -1,0 +1,42 @@
+{
+  "configurations" : [
+    {
+      "id" : "DCB71E1C-B55B-4214-885A-475DA1A902B1",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:InAppPurchaseViewer.xcodeproj",
+      "identifier" : "458FE1552B6E239600798686",
+      "name" : "InAppPurchaseViewer"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:..\/..",
+        "identifier" : "IAPClientTests",
+        "name" : "IAPClientTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/..",
+        "identifier" : "IAPModelTests",
+        "name" : "IAPModelTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/..",
+        "identifier" : "IAPViewTests",
+        "name" : "IAPViewTests"
+      }
+    }
+  ],
+  "version" : 1
+}

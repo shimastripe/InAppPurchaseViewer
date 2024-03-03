@@ -34,6 +34,10 @@ let package = Package(
                 .product(name: "KeychainAccess", package: "KeychainAccess"),
             ]
         ),
+        .testTarget(
+            name: "IAPClientTests",
+            dependencies: ["IAPClient"]
+        ),
         .target(
             name: "IAPCore",
             dependencies: [
@@ -55,6 +59,10 @@ let package = Package(
                 "IAPInterface",
             ]
         ),
+        .testTarget(
+            name: "IAPModelTests",
+            dependencies: ["IAPModel"]
+        ),
         .target(
             name: "IAPView",
             dependencies: [
@@ -64,6 +72,10 @@ let package = Package(
             plugins: [
                 .plugin(name: "LicensesPlugin", package: "LicensesPlugin"),
             ]
+        ),
+        .testTarget(
+            name: "IAPViewTests",
+            dependencies: ["IAPView"]
         ),
     ]
 )
