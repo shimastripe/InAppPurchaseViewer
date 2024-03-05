@@ -19,7 +19,7 @@ let package = Package(
         .package(url: "https://github.com/kishikawakatsumi/KeychainAccess", from: "4.2.2"),
         .package(url: "https://github.com/maiyama18/LicensesPlugin", from: "0.1.6"),
         .package(url: "https://github.com/sparkle-project/Sparkle", from: "2.5.2"),
-        .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.2.1"),
+        .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.2.2"),
         .package(url: "https://github.com/apple/swift-http-types", from: "1.0.3"),
         .package(url: "https://github.com/apple/swift-format", from: "509.0.0"),
     ],
