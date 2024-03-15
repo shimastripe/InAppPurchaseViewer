@@ -1,6 +1,7 @@
 name: "CodeQL"
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "main" ]
   schedule:
@@ -11,7 +12,7 @@ jobs:
     name: Analyze
     runs-on: macos-13
     env:
-      DEVELOPER_DIR: "/Applications/Xcode_15.2.0.app/Contents/Developer"
+      DEVELOPER_DIR: "/Applications/Xcode_15.3.0.app/Contents/Developer"
     timeout-minutes: 80
     permissions:
       security-events: write
