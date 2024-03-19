@@ -21,7 +21,7 @@ let package = Package(
         .package(url: "https://github.com/sparkle-project/Sparkle", from: "2.6.0"),
         .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.2.2"),
         .package(url: "https://github.com/apple/swift-http-types", from: "1.0.3"),
-        .package(url: "https://github.com/apple/swift-format", from: "510.0.1"),
+        .package(url: "https://github.com/apple/swift-format", from: "510.1.0"),
     ],
     targets: [
         .target(
