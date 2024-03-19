@@ -29,7 +29,7 @@ struct LicensesView: View {
                     destination: .init(string: "https://www.flaticon.com/free-icons/space")!)
             }
         }
-        .sheet(item: $selectedLicense) { license in
+        .sheet(item: $selectedLicense, content: { license in
             NavigationStack {
                 Group {
                     if let licenseText = license.licenseText {
@@ -53,7 +53,7 @@ struct LicensesView: View {
                 }
             }
             .frame(idealWidth: 600)
-        }
+        })
         .navigationTitle("Licenses")
         .scrollContentBackground(.hidden)
     }

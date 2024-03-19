@@ -14,7 +14,7 @@ public struct AppStoreServerClient {
 
     public enum AppStoreServerClientError: LocalizedError {
         case requestError(
-            statusCode: Int?, rawApiError: Int64?, errorMessage: String?, causedBy: Error?)
+            statusCode: Int?, rawApiError: Int64?, errorMessage: String?, causedBy: (any Error)?)
         case unknownAPIError(message: String?)
 
         public var errorDescription: String? {
