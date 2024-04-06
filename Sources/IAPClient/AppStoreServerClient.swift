@@ -127,6 +127,8 @@ extension AppStoreServerClient: DependencyKey {
                                 signedTransaction))
                     }
 
+                    items = items.sorted(by: { ($0.purchaseDate ?? .distantPast) < ($1.purchaseDate ?? .distantPast) })
+
                     return .init(
                         revision: response.revision, hasMore: response.hasMore,
                         bundleId: response.bundleId, appAppleId: response.appAppleId,
