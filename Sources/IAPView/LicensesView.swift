@@ -29,31 +29,34 @@ struct LicensesView: View {
                     destination: .init(string: "https://www.flaticon.com/free-icons/space")!)
             }
         }
-        .sheet(item: $selectedLicense, content: { license in
-            NavigationStack {
-                Group {
-                    if let licenseText = license.licenseText {
-                        ScrollView {
-                            Text(licenseText)
-                                .padding()
-                        }
-                    } else {
-                        Text("No License Found")
-                    }
-                }
-                .navigationTitle(license.name)
-                .toolbar {
-                    ToolbarItem(placement: .automatic) {
-                        Button {
-                            selectedLicense = nil
-                        } label: {
-                            Label("Close", systemImage: "xmark")
+        .sheet(
+            item: $selectedLicense,
+            content: { license in
+                NavigationStack {
+                    Group {
+                        if let licenseText = license.licenseText {
+                            ScrollView {
+                                Text(licenseText)
+                                    .padding()
+                            }
+                        } else {
+                            Text("No License Found")
                         }
                     }
+                    .navigationTitle(license.name)
+                    .toolbar {
+                        ToolbarItem(placement: .automatic) {
+                            Button {
+                                selectedLicense = nil
+                            } label: {
+                                Label("Close", systemImage: "xmark")
+                            }
+                        }
+                    }
                 }
+                .frame(idealWidth: 600)
             }
-            .frame(idealWidth: 600)
-        })
+        )
         .navigationTitle("Licenses")
         .scrollContentBackground(.hidden)
     }

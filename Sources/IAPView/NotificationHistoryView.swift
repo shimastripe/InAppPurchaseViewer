@@ -18,13 +18,6 @@ struct NotificationHistoryView: View {
         model.fetchNotificationHistoryState
     }
 
-    static let formatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .short
-        dateFormatter.timeStyle = .none
-        return dateFormatter
-    }()
-
     var body: some View {
         @Bindable var model = model
 
@@ -119,7 +112,7 @@ struct NotificationHistoryView: View {
         }
         .toolbar {
             ToolbarItem {
-                HStack {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
                     Text("Environment")
                     Picker("", selection: $model.environment) {
                         ForEach(ServerEnvironment.allCases) {
@@ -127,28 +120,37 @@ struct NotificationHistoryView: View {
                         }
                     }
                 }
-                .padding(8)
             }
             ToolbarItem {
-                HStack {
-                    Text("TransactionID").layoutPriority(1)
-                    TextField("2000000123456789", text: $model.notificationHistoryTransactionID)
+                // Hack to align height with other Items
+                ZStack(alignment: .centerFirstTextBaseline) {
+                    HStack(alignment: .firstTextBaseline, spacing: 8) {
+                        Text("TransactionID").layoutPriority(1)
+                        TextField("2000000123456789", text: $model.notificationHistoryTransactionID)
+                            .frame(idealWidth: 136)
+                    }
+                    // shadow item
+                    DatePicker(
+                        "", selection: .constant(.distantPast),
+                        displayedComponents: [.date, .hourAndMinute]
+                    ).opacity(0)
                 }
-                .padding(8)
             }
             ToolbarItem {
-                HStack {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
                     Text("StartDate")
-                    TextField("", value: $model.notificationStartDate, formatter: Self.formatter)
+                    DatePicker(
+                        "", selection: $model.notificationStartDate,
+                        displayedComponents: [.date, .hourAndMinute])
                 }
-                .padding(8)
             }
             ToolbarItem {
-                HStack {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
                     Text("EndDate")
-                    TextField("", value: $model.notificationEndDate, formatter: Self.formatter)
+                    DatePicker(
+                        "", selection: $model.notificationEndDate,
+                        displayedComponents: [.date, .hourAndMinute])
                 }
-                .padding(8)
             }
             ToolbarItem {
                 Button {

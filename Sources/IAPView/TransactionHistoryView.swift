@@ -18,13 +18,6 @@ struct TransactionHistoryView: View {
         model.fetchTransactionHistoryState
     }
 
-    static let formatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .short
-        dateFormatter.timeStyle = .none
-        return dateFormatter
-    }()
-
     var body: some View {
         @Bindable var model = model
 
@@ -122,7 +115,7 @@ struct TransactionHistoryView: View {
         }
         .toolbar {
             ToolbarItem {
-                HStack {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
                     Text("Environment")
                     Picker("", selection: $model.environment) {
                         ForEach(ServerEnvironment.allCases) {
@@ -130,28 +123,37 @@ struct TransactionHistoryView: View {
                         }
                     }
                 }
-                .padding(8)
             }
             ToolbarItem {
-                HStack {
-                    Text("TransactionID").layoutPriority(1)
-                    TextField("2000000123456789", text: $model.transactionID)
+                // Hack to align height with other Items
+                ZStack(alignment: .centerFirstTextBaseline) {
+                    HStack(alignment: .firstTextBaseline, spacing: 8) {
+                        Text("TransactionID").layoutPriority(1)
+                        TextField("2000000123456789", text: $model.transactionID).frame(
+                            idealWidth: 136)
+                    }
+                    // shadow item
+                    DatePicker(
+                        "", selection: .constant(.distantPast),
+                        displayedComponents: [.date, .hourAndMinute]
+                    ).opacity(0)
                 }
-                .padding(8)
             }
             ToolbarItem {
-                HStack {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
                     Text("StartDate")
-                    TextField("", value: $model.transactionStartDate, formatter: Self.formatter)
+                    DatePicker(
+                        "", selection: $model.transactionStartDate,
+                        displayedComponents: [.date, .hourAndMinute])
                 }
-                .padding(8)
             }
             ToolbarItem {
-                HStack {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
                     Text("EndDate")
-                    TextField("", value: $model.transactionEndDate, formatter: Self.formatter)
+                    DatePicker(
+                        "", selection: $model.transactionEndDate,
+                        displayedComponents: [.date, .hourAndMinute])
                 }
-                .padding(8)
             }
             ToolbarItem {
                 Button {
