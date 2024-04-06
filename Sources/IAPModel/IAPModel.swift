@@ -13,6 +13,11 @@ import Observation
 @Observable
 public final class IAPModel {
 
+    // MARK: - Dependency
+
+    @ObservationIgnored
+    @Dependency(\.calendar) var calendar
+
     // MARK: - State model
 
     public private(set) var rootCertificateState: LoadingViewState<Data> = .waiting
@@ -180,6 +185,8 @@ extension IAPModel {
 
         case .fetchNotificationHistory(let startDate, let endDate, let transactionID):
             guard !fetchNotificationHistoryState.isLoading,
+                let startDate = truncateSeconds(of: startDate),
+                let endDate = roundUpSeconds(of: endDate),
                 let credential = credentialState.value,
                 let rootCertificate = rootCertificateState.value
             else { return }
@@ -201,6 +208,8 @@ extension IAPModel {
 
         case .appendFetchNotificationHistory(let startDate, let endDate, let transactionID):
             guard !fetchNotificationHistoryState.isAppendLoading,
+                let startDate = truncateSeconds(of: startDate),
+                let endDate = roundUpSeconds(of: endDate),
                 let credential = credentialState.value,
                 let rootCertificate = rootCertificateState.value,
                 let notificationHistory = fetchNotificationHistoryState.value
@@ -226,6 +235,8 @@ extension IAPModel {
 
         case .bulkAppendFetchNotificationHistory(let startDate, let endDate, let transactionID):
             guard !fetchNotificationHistoryState.isAppendLoading,
+                let startDate = truncateSeconds(of: startDate),
+                let endDate = roundUpSeconds(of: endDate),
                 let credential = credentialState.value,
                 let rootCertificate = rootCertificateState.value,
                 let notificationHistory = fetchNotificationHistoryState.value
@@ -268,6 +279,8 @@ extension IAPModel {
 
         case .fetchTransactionHistory(let startDate, let endDate, let transactionID):
             guard !fetchTransactionHistoryState.isLoading,
+                let startDate = truncateSeconds(of: startDate),
+                let endDate = roundUpSeconds(of: endDate),
                 let credential = credentialState.value,
                 let rootCertificate = rootCertificateState.value
             else { return }
@@ -288,6 +301,8 @@ extension IAPModel {
 
         case .appendFetchTransactionHistory(let startDate, let endDate, let transactionID):
             guard !fetchTransactionHistoryState.isAppendLoading,
+                let startDate = truncateSeconds(of: startDate),
+                let endDate = roundUpSeconds(of: endDate),
                 let credential = credentialState.value,
                 let rootCertificate = rootCertificateState.value,
                 let transactionHistory = fetchTransactionHistoryState.value
@@ -312,6 +327,8 @@ extension IAPModel {
 
         case .bulkAppendFetchTransactionHistory(let startDate, let endDate, let transactionID):
             guard !fetchTransactionHistoryState.isAppendLoading,
+                let startDate = truncateSeconds(of: startDate),
+                let endDate = roundUpSeconds(of: endDate),
                 let credential = credentialState.value,
                 let rootCertificate = rootCertificateState.value,
                 let transactionHistory = fetchTransactionHistoryState.value
@@ -371,5 +388,23 @@ extension IAPModel {
         case .clearAllSubscriptionStatusesError:
             fetchAllSubscriptionStatusesState.clear()
         }
+    }
+}
+
+// MARK: - Helper
+
+extension IAPModel {
+
+    func truncateSeconds(of date: Date) -> Date? {
+        calendar.date(
+            from: calendar.dateComponents([.year, .month, .day, .hour, .minute], from: date))
+    }
+
+    func roundUpSeconds(of date: Date) -> Date? {
+        var components = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: date)
+        if let minutes = components.minute {
+            components.minute = minutes + 1
+        }
+        return calendar.date(from: components)
     }
 }

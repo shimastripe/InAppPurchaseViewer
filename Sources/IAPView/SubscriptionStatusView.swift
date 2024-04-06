@@ -69,7 +69,7 @@ struct SubscriptionStatusView: View {
         }
         .toolbar {
             ToolbarItem {
-                HStack {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
                     Text("Environment")
                     Picker("", selection: $model.environment) {
                         ForEach(ServerEnvironment.allCases) {
@@ -77,14 +77,21 @@ struct SubscriptionStatusView: View {
                         }
                     }
                 }
-                .padding(8)
             }
             ToolbarItem {
-                HStack {
-                    Text("TransactionID").layoutPriority(1)
-                    TextField("2000000123456789", text: $model.transactionID)
+                // Hack to align height with other Items
+                ZStack(alignment: .centerFirstTextBaseline) {
+                    HStack(alignment: .firstTextBaseline, spacing: 8) {
+                        Text("TransactionID").layoutPriority(1)
+                        TextField("2000000123456789", text: $model.transactionID).frame(
+                            idealWidth: 136)
+                    }
+                    // shadow item
+                    DatePicker(
+                        "", selection: .constant(.distantPast),
+                        displayedComponents: [.date, .hourAndMinute]
+                    ).opacity(0)
                 }
-                .padding(8)
             }
             ToolbarItem {
                 Button {

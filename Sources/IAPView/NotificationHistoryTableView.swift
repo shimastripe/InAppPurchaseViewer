@@ -85,7 +85,10 @@ struct NotificationHistoryTableView: View {
         }
         .width(ideal: 120)
         TableColumn("tokenCreationDate") { item in
-            CellText(item.externalPurchaseToken?.tokenCreationDate.map({ Date(timeIntervalSince1970: TimeInterval($0))})?.formatted())
+            CellText(
+                item.externalPurchaseToken?.tokenCreationDate.map({
+                    Date(timeIntervalSince1970: TimeInterval($0))
+                })?.formatted())
         }
         .width(ideal: 120)
     }
