@@ -144,6 +144,9 @@
     "expiresDate" : {
 
     },
+    "externalPurchaseId" : {
+
+    },
     "Fetch App Store API..." : {
 
     },
@@ -338,6 +341,9 @@
 
     },
     "subType" : {
+
+    },
+    "tokenCreationDate" : {
 
     },
     "transaction signedDate" : {

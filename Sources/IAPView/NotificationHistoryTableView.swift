@@ -78,7 +78,17 @@ struct NotificationHistoryTableView: View {
         }
         .width(ideal: 120)
     }
-
+    @TableColumnBuilder<NotificationHistoryItem, Never>
+    var externalColumns: some TableColumnContent<NotificationHistoryItem, Never> {
+        TableColumn("externalPurchaseId") {
+            CellText($0.externalPurchaseToken?.externalPurchaseId)
+        }
+        .width(ideal: 120)
+        TableColumn("tokenCreationDate") { item in
+            CellText(item.externalPurchaseToken?.tokenCreationDate.map({ Date(timeIntervalSince1970: TimeInterval($0))})?.formatted())
+        }
+        .width(ideal: 120)
+    }
     @TableColumnBuilder<NotificationHistoryItem, Never>
     var transactionColumns: some TableColumnContent<NotificationHistoryItem, Never> {
         TableColumn("notificationUUID") {
@@ -253,6 +263,7 @@ struct NotificationHistoryTableView: View {
         case (true, true):
             Table(of: NotificationHistoryItem.self) {
                 mainColumns
+                externalColumns
                 transactionColumns
                 transactionColumns2
                 renewalInfoColumns
@@ -264,6 +275,7 @@ struct NotificationHistoryTableView: View {
         case (true, false):
             Table(of: NotificationHistoryItem.self) {
                 mainColumns
+                externalColumns
                 transactionColumns
                 transactionColumns2
             } rows: {
@@ -273,6 +285,7 @@ struct NotificationHistoryTableView: View {
         case (false, true):
             Table(of: NotificationHistoryItem.self) {
                 mainColumns
+                externalColumns
                 renewalInfoColumns
                 renewalInfoColumns2
             } rows: {
@@ -282,6 +295,7 @@ struct NotificationHistoryTableView: View {
         case (false, false):
             Table(of: NotificationHistoryItem.self) {
                 mainColumns
+                externalColumns
             } rows: {
                 ForEach(model.items, content: TableRow.init)
             }

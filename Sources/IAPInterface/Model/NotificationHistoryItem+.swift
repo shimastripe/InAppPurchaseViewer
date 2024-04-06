@@ -34,6 +34,8 @@ extension NotificationHistoryItem {
         case (.revoke, _), (.expired, .voluntary), (.expired, .priceIncrease),
             (.expired, .billingRetry):
             return "slash.circle"
+        case (.externalPurchaseToken, .unreported):
+            return "creditcard.fill"
         case (.test, _):
             return "hammer"
         default:
@@ -59,6 +61,8 @@ extension NotificationHistoryItem {
             return .purple
         case (.consumptionRequest, _), (.refund, _), (.refundDeclined, _), (.refundReversed, _):
             return .mint
+        case (.externalPurchaseToken, .unreported):
+            return .indigo
         case (.test, _):
             return .cyan
         default:

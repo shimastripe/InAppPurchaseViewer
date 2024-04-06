@@ -47,6 +47,8 @@ public struct NotificationHistoryItem: Identifiable, Codable, Hashable {
     public let transactionInfo: JWSTransactionDecodedPayload?
     // MARK: - RenewalInfo
     public let renewalInfo: JWSRenewalInfoDecodedPayload?
+    // MARK: - ExternalPurchaseToken
+    public let externalPurchaseToken: ExternalPurchaseToken?
 
     public init?(
         _ payload: ResponseBodyV2DecodedPayload,
@@ -60,5 +62,6 @@ public struct NotificationHistoryItem: Identifiable, Codable, Hashable {
         self.signedDate = payload.signedDate
         self.transactionInfo = transactionInfo
         self.renewalInfo = renewalInfo
+        self.externalPurchaseToken = payload.externalPurchaseToken
     }
 }
