@@ -55,5 +55,5 @@ Get the statuses for all of a customer’s auto-renewable subscriptions in your 
 
 - macOS 14 Sonoma
 - Xcode 15.3
-- Swift 5.9
+- Swift 5.10
 - Sandbox enabled
