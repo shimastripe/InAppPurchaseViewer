@@ -3,6 +3,19 @@
 
 import PackageDescription
 
+let swiftSettings: [SwiftSetting] = [
+    .enableUpcomingFeature("BareSlashRegexLiterals"),
+    .enableUpcomingFeature("ConciseMagicFile"),
+    .enableUpcomingFeature("DeprecateApplicationMain"),
+    .enableUpcomingFeature("DisableOutwardActorInference"),
+    .enableUpcomingFeature("ExistentialAny"),
+    .enableUpcomingFeature("ForwardTrailingClosures"),
+    .enableUpcomingFeature("GlobalConcurrency"),
+    .enableUpcomingFeature("ImplicitOpenExistentials"),
+    .enableUpcomingFeature("ImportObjcForwardDeclarations"),
+    .enableUpcomingFeature("IsolatedDefaultValues"),
+]
+
 let package = Package(
     name: "InAppPurchaseViewer",
     defaultLocalization: "ja",
@@ -43,7 +56,8 @@ let package = Package(
             dependencies: [
                 .product(name: "Dependencies", package: "swift-dependencies"),
                 .product(name: "DependenciesMacros", package: "swift-dependencies"),
-            ]
+            ],
+            swiftSettings: swiftSettings
         ),
         .target(
             name: "IAPInterface",
@@ -51,13 +65,15 @@ let package = Package(
                 "IAPCore",
                 // Use Model...
                 .product(name: "AppStoreServerLibrary", package: "app-store-server-library-swift"),
-            ]
+            ],
+            swiftSettings: swiftSettings
         ),
         .target(
             name: "IAPModel",
             dependencies: [
                 "IAPInterface",
-            ]
+            ],
+            swiftSettings: swiftSettings
         ),
         .testTarget(
             name: "IAPModelTests",
@@ -69,6 +85,7 @@ let package = Package(
                 "IAPModel",
                 .product(name: "Sparkle", package: "Sparkle"),
             ],
+            swiftSettings: swiftSettings,
             plugins: [
                 .plugin(name: "LicensesPlugin", package: "LicensesPlugin"),
             ]
