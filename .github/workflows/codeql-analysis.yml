@@ -24,9 +24,9 @@ jobs:
         defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
 
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
     - name: Configure SPM cache
-      uses: actions/cache@v4
+      uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4
       with:
         path: ~/Library/Caches/org.swift.swiftpm
         key: spm-${{ hashFiles('Package.swift') }}
@@ -34,12 +34,12 @@ jobs:
           spm-
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
+      uses: github/codeql-action/init@d39d31e687223d841ef683f52467bd88e9b21c14 # v3
       with:
         languages: swift
     - name: Autobuild
-      uses: github/codeql-action/autobuild@v3
+      uses: github/codeql-action/autobuild@d39d31e687223d841ef683f52467bd88e9b21c14 # v3
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
+      uses: github/codeql-action/analyze@d39d31e687223d841ef683f52467bd88e9b21c14 # v3
       with:
         category: "/language:swift"
