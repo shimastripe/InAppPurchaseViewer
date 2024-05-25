@@ -80,6 +80,10 @@ struct NotificationHistoryTableView: View {
     }
     @TableColumnBuilder<NotificationHistoryItem, Never>
     var externalColumns: some TableColumnContent<NotificationHistoryItem, Never> {
+        TableColumn("consumptionRequestReason") {
+            CellText($0.consumptionRequestReason?.rawValue)
+        }
+        .width(ideal: 160)
         TableColumn("externalPurchaseId") {
             CellText($0.externalPurchaseToken?.externalPurchaseId)
         }
