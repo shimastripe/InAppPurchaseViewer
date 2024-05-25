@@ -34,6 +34,8 @@ extension NotificationHistoryItem {
         case (.revoke, _), (.expired, .voluntary), (.expired, .priceIncrease),
             (.expired, .billingRetry):
             return "slash.circle"
+        case (.consumptionRequest, _):
+            return "questionmark.circle.fill"
         case (.externalPurchaseToken, .unreported):
             return "creditcard.fill"
         case (.test, _):
