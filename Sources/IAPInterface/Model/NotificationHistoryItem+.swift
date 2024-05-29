@@ -16,7 +16,7 @@ extension NotificationHistoryItem {
             return "play.fill"
         case (.subscribed, .resubscribe), (.offerRedeemed, .resubscribe):
             return "memories"
-        case (.didRenew, nil), (.didChangeRenewalPref, .upgrade), (.renewalExtended, _),
+        case (.didRenew, nil), (.didChangeRenewalPref, .upgrade), (.renewalExtended, _), (.renewalExtension, _),
             (.priceIncrease, .accepted):
             return "arrow.triangle.2.circlepath"
         case (.didChangeRenewalPref, .downgrade), (.didChangeRenewalPref, nil),
@@ -35,7 +35,13 @@ extension NotificationHistoryItem {
             (.expired, .billingRetry):
             return "slash.circle"
         case (.consumptionRequest, _):
-            return "questionmark.circle.fill"
+            return "person.fill.questionmark"
+        case (.refund, _):
+            return "dollarsign.arrow.circlepath"
+        case (.refundDeclined, _):
+            return "exclamationmark.arrow.circlepath"
+        case (.refundReversed, _):
+            return "exclamationmark.arrow.triangle.2.circlepath"
         case (.externalPurchaseToken, .unreported):
             return "creditcard.fill"
         case (.test, _):
@@ -49,7 +55,7 @@ extension NotificationHistoryItem {
     public var eventColor: Color {
         switch (notificationType, subType) {
         case (.subscribed, _), (.offerRedeemed, _), (.didRenew, _), (.renewalExtended, _),
-            (.renewalExtension, _), (.didChangeRenewalPref, .upgrade):
+            (.renewalExtension, .summary), (.didChangeRenewalPref, .upgrade), (.refundReversed, _):
             return .green
         case (.didFailToRenew, .gracePeriod):
             return .blue
@@ -57,11 +63,11 @@ extension NotificationHistoryItem {
             (.didChangeRenewalStatus, _), (.didFailToRenew, _),
             (.gracePeriodExpired, _):
             return .yellow
-        case (.expired, _), (.revoke, _):
+        case (.expired, _), (.revoke, _), (.renewalExtension, .failure), (.refundDeclined, _):
             return .red
         case (.priceIncrease, _):
             return .purple
-        case (.consumptionRequest, _), (.refund, _), (.refundDeclined, _), (.refundReversed, _):
+        case (.consumptionRequest, _), (.refund, _):
             return .mint
         case (.externalPurchaseToken, .unreported):
             return .indigo
