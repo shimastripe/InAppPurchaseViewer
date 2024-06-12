@@ -32,7 +32,7 @@ let package = Package(
         .package(url: "https://github.com/kishikawakatsumi/KeychainAccess", from: "4.2.2"),
         .package(url: "https://github.com/maiyama18/LicensesPlugin", from: "0.1.6"),
         .package(url: "https://github.com/sparkle-project/Sparkle", from: "2.6.3"),
-        .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.3.0"),
+        .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.3.1"),
         .package(url: "https://github.com/apple/swift-http-types", from: "1.1.0"),
         .package(url: "https://github.com/apple/swift-format", from: "510.1.0"),
     ],
