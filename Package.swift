@@ -30,7 +30,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/apple/app-store-server-library-swift", from: "2.1.0"),
         .package(url: "https://github.com/kishikawakatsumi/KeychainAccess", from: "4.2.2"),
-        .package(url: "https://github.com/maiyama18/LicensesPlugin", from: "0.1.6"),
+        .package(url: "https://github.com/maiyama18/LicensesPlugin", from: "0.2.0"),
         .package(url: "https://github.com/sparkle-project/Sparkle", from: "2.6.3"),
         .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.3.1"),
         .package(url: "https://github.com/apple/swift-http-types", from: "1.2.0"),
