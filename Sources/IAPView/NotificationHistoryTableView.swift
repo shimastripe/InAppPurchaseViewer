@@ -246,7 +246,7 @@ struct NotificationHistoryTableView: View {
         }
         .width(ideal: 120)
         TableColumn("renewalPrice") {
-            CellText($0.renewalInfo?.renewalPrice?.formatted())
+            CellText($0.renewalInfo?.renewalPrice?.description)
         }
         .width(ideal: 120)
         TableColumn("currency") {
