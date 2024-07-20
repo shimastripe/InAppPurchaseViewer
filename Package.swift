@@ -33,7 +33,7 @@ let package = Package(
         .package(url: "https://github.com/maiyama18/LicensesPlugin", exact: "0.2.0"),
         .package(url: "https://github.com/sparkle-project/Sparkle", exact: "2.6.4"),
         .package(url: "https://github.com/pointfreeco/swift-dependencies", exact: "1.3.3"),
-        .package(url: "https://github.com/apple/swift-http-types", exact: "1.2.0"),
+        .package(url: "https://github.com/apple/swift-http-types", exact: "1.3.0"),
         .package(url: "https://github.com/apple/swift-format", exact: "510.1.0"),
     ],
     targets: [
