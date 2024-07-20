@@ -13,11 +13,12 @@ import IAPInterface
 import KeychainAccess
 
 extension RootCertificateClient: DependencyKey {
-    public static var liveValue: RootCertificateClient {
+    public static let liveValue: RootCertificateClient = {
 
         let keychain = Keychain()
         let modelKey = "appleRootCertificate"
 
+        @Sendable
         func fetch() async throws -> Data {
             let request = HTTPRequest(
                 method: .get, scheme: "https", authority: "www.apple.com",
@@ -29,14 +30,17 @@ extension RootCertificateClient: DependencyKey {
             return responseBody
         }
 
+        @Sendable
         func get() throws -> Model? {
             try keychain.getData(modelKey)
         }
 
+        @Sendable
         func set(model: Model) throws {
             try keychain.set(model, key: modelKey)
         }
 
+        @Sendable
         func remove() throws {
             try keychain.remove(modelKey)
         }
@@ -53,5 +57,5 @@ extension RootCertificateClient: DependencyKey {
             remove: {
                 try remove()
             })
-    }
+    }()
 }

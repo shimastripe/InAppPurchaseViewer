@@ -10,7 +10,7 @@ import DependenciesMacros
 import Foundation
 
 @DependencyClient
-public struct RootCertificateClient {
+public struct RootCertificateClient: Sendable {
 
     public typealias Model = Data
 
@@ -18,17 +18,17 @@ public struct RootCertificateClient {
         case notAcceptableStatus(Int)
     }
 
-    public var fetch: () async throws -> Model
+    public var fetch: @Sendable () async throws -> Model
 
-    public var get: () async throws -> Model?
-    public var remove: () async throws -> Void
+    public var get: @Sendable () async throws -> Model?
+    public var remove: @Sendable () async throws -> Void
 }
 
 // MARK: Implementation
 
 extension RootCertificateClient: TestDependencyKey {
-    public static var testValue = Self()
-    public static var previewValue: RootCertificateClient = .init(
+    public static let testValue = Self()
+    public static let previewValue: RootCertificateClient = .init(
         fetch: {
             unimplemented()
         },

@@ -16,7 +16,8 @@ extension NotificationHistoryItem {
             return "play.fill"
         case (.subscribed, .resubscribe), (.offerRedeemed, .resubscribe):
             return "memories"
-        case (.didRenew, nil), (.didChangeRenewalPref, .upgrade), (.renewalExtended, _), (.renewalExtension, _),
+        case (.didRenew, nil), (.didChangeRenewalPref, .upgrade), (.renewalExtended, _),
+            (.renewalExtension, _),
             (.priceIncrease, .accepted):
             return "arrow.triangle.2.circlepath"
         case (.didChangeRenewalPref, .downgrade), (.didChangeRenewalPref, nil),
@@ -57,7 +58,8 @@ extension NotificationHistoryItem {
     public var eventColor: Color {
         switch (notificationType, subType) {
         case (.subscribed, _), (.offerRedeemed, _), (.didRenew, _), (.renewalExtended, _),
-            (.renewalExtension, .summary), (.didChangeRenewalPref, .upgrade), (.refundReversed, _), (.oneTimeCharge, _):
+            (.renewalExtension, .summary), (.didChangeRenewalPref, .upgrade), (.refundReversed, _),
+            (.oneTimeCharge, _):
             return .green
         case (.didFailToRenew, .gracePeriod):
             return .blue

@@ -11,7 +11,7 @@ import Foundation
 import IAPInterface
 
 extension AppStoreServerClient: DependencyKey {
-    public static var liveValue: AppStoreServerClient {
+    public static let liveValue: AppStoreServerClient = {
         .init(
             fetchNotificationHistory: {
                 startDate, endDate, transactionID, paginationToken, credential, rootCertificate,
@@ -129,7 +129,9 @@ extension AppStoreServerClient: DependencyKey {
                                 signedTransaction))
                     }
 
-                    items = items.sorted(by: { ($0.purchaseDate ?? .distantPast) < ($1.purchaseDate ?? .distantPast) })
+                    items = items.sorted(by: {
+                        ($0.purchaseDate ?? .distantPast) < ($1.purchaseDate ?? .distantPast)
+                    })
 
                     return .init(
                         revision: response.revision, hasMore: response.hasMore,
@@ -210,5 +212,5 @@ extension AppStoreServerClient: DependencyKey {
                         causedBy: causedBy)
                 }
             })
-    }
+    }()
 }
