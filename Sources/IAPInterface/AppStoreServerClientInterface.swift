@@ -10,7 +10,7 @@ import DependenciesMacros
 import Foundation
 
 @DependencyClient
-public struct AppStoreServerClient {
+public struct AppStoreServerClient: Sendable {
 
     public enum AppStoreServerClientError: LocalizedError {
         case requestError(
@@ -28,6 +28,7 @@ public struct AppStoreServerClient {
     }
 
     public var fetchNotificationHistory:
+        @Sendable
         (
             _ startDate: Date, _ endDate: Date, _ transactionID: String?,
             _ paginationToken: String?,
@@ -36,6 +37,7 @@ public struct AppStoreServerClient {
             async throws -> NotificationHistoryModel
 
     public var fetchTransactionHistory:
+        @Sendable
         (
             _ startDate: Date, _ endDate: Date, _ transactionID: String,
             _ revision: String?, _ credential: IAPEnvironment, _ rootCertificate: Data,
@@ -43,6 +45,7 @@ public struct AppStoreServerClient {
         ) async throws -> TransactionHistory
 
     public var fetchAllSubscriptionStatuses:
+        @Sendable
         (
             _ transactionID: String, _ credential: IAPEnvironment, _ rootCertificate: Data,
             _ environment: ServerEnvironment
@@ -51,9 +54,9 @@ public struct AppStoreServerClient {
 
 // MARK: Implementation
 extension AppStoreServerClient: TestDependencyKey {
-    public static var testValue = Self()
-    public static var previewValue: AppStoreServerClient = {
-        var makeDate: (_ year: Int, _ month: Int, _ day: Int, _ hour: Int, _ minute: Int) -> Date? =
+    public static let testValue = Self()
+    public static let previewValue: AppStoreServerClient = {
+        let makeDate: (_ year: Int, _ month: Int, _ day: Int, _ hour: Int, _ minute: Int) -> Date? =
             {
                 (year, month, day, hour, minute) in
                 Calendar.current.date(

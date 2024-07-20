@@ -12,10 +12,11 @@ import KeychainAccess
 
 extension CredentialClient: DependencyKey {
 
-    public static var liveValue: IAPInterface.CredentialClient {
+    public static let liveValue: IAPInterface.CredentialClient = {
         let keychain = Keychain()
         let modelKey = "appleServerAPICredential"
 
+        @Sendable
         func get() throws -> Model? {
             guard let data = try keychain.getData(modelKey) else { return nil }
             let decoder = JSONDecoder()
@@ -23,6 +24,7 @@ extension CredentialClient: DependencyKey {
             return try decoder.decode(Model.self, from: data)
         }
 
+        @Sendable
         func set(
             bundleID: String, issuerID: String, keyID: String, appAppleID: Int,
             privateKeyFileURL: URL
@@ -49,6 +51,7 @@ extension CredentialClient: DependencyKey {
             try keychain.set(data, key: modelKey)
         }
 
+        @Sendable
         func remove() throws {
             try keychain.remove(modelKey)
         }
@@ -65,5 +68,5 @@ extension CredentialClient: DependencyKey {
             remove: {
                 try remove()
             })
-    }
+    }()
 }

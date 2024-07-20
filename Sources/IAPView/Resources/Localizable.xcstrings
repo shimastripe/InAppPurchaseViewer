@@ -129,6 +129,9 @@
     "Download AppleRootCA-G3.cer" : {
 
     },
+    "eligibleWinBackOfferIds" : {
+
+    },
     "EndDate" : {
 
     },
@@ -280,6 +283,9 @@
 
     },
     "renewalInfo signedDate" : {
+
+    },
+    "renewalPrice" : {
 
     },
     "Retrieves 200 items for a given period of time" : {
