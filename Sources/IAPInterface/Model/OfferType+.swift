@@ -18,6 +18,8 @@ extension OfferType: CustomStringConvertible {
             "promotionalOffer"
         case .subscriptionOfferCode:
             "subscriptionOfferCode"
+        case .winBackOffer:
+            "winBackOffer"
         }
     }
 }

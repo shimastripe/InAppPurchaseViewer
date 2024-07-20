@@ -218,6 +218,22 @@ struct SubscriptionStatusTableView: View {
             CellText($0.renewalInfo?.renewalDate?.formatted())
         }
         .width(ideal: 120)
+        TableColumn("renewalPrice") {
+            CellText($0.renewalInfo?.renewalPrice?.formatted())
+        }
+        .width(ideal: 120)
+        TableColumn("currency") {
+            CellText($0.renewalInfo?.currency)
+        }
+        .width(ideal: 120)
+        TableColumn("offerDiscountType") {
+            CellText($0.renewalInfo?.offerDiscountType?.rawValue)
+        }
+        .width(ideal: 120)
+        TableColumn("eligibleWinBackOfferIds") {
+            CellText($0.renewalInfo?.eligibleWinBackOfferIds?.joined(separator: ", "))
+        }
+        .width(ideal: 120)
     }
 
     var body: some View {

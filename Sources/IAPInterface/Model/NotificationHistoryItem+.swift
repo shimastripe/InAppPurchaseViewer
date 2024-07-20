@@ -44,6 +44,8 @@ extension NotificationHistoryItem {
             return "exclamationmark.arrow.triangle.2.circlepath"
         case (.externalPurchaseToken, .unreported):
             return "creditcard.fill"
+        case (.oneTimeCharge, _):
+            return "cart.circle.fill"
         case (.test, _):
             return "hammer"
         default:
@@ -55,7 +57,7 @@ extension NotificationHistoryItem {
     public var eventColor: Color {
         switch (notificationType, subType) {
         case (.subscribed, _), (.offerRedeemed, _), (.didRenew, _), (.renewalExtended, _),
-            (.renewalExtension, .summary), (.didChangeRenewalPref, .upgrade), (.refundReversed, _):
+            (.renewalExtension, .summary), (.didChangeRenewalPref, .upgrade), (.refundReversed, _), (.oneTimeCharge, _):
             return .green
         case (.didFailToRenew, .gracePeriod):
             return .blue

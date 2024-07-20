@@ -107,7 +107,9 @@ extension AppStoreServerClient: DependencyKey {
 
                 let response = await client.getTransactionHistory(
                     transactionId: transactionID, revision: revision,
-                    transactionHistoryRequest: .init(startDate: startDate, endDate: endDate))
+                    transactionHistoryRequest: .init(startDate: startDate, endDate: endDate),
+                    version: .v2
+                )
 
                 switch response {
                 case .success(let response):
