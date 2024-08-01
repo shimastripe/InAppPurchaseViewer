@@ -12,7 +12,7 @@ jobs:
     runs-on: macos-14
     env:
       DEVELOPER_DIR: "/Applications/Xcode_15.4.0.app/Contents/Developer"
-    timeout-minutes: 360
+    timeout-minutes: 120
     permissions:
       security-events: write
 
