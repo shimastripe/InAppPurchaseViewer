@@ -30,12 +30,12 @@ extension RootCertificateClient: TestDependencyKey {
     public static let testValue = Self()
     public static let previewValue: RootCertificateClient = .init(
         fetch: {
-            unimplemented()
+            unimplemented(placeholder: Data())
         },
         get: {
             Data()
         },
         remove: {
-            unimplemented()
+            unimplemented(placeholder: ())
         })
 }

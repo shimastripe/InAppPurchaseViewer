@@ -7,7 +7,7 @@
 
 import AppStoreServerLibrary
 
-extension RevocationReason: CustomStringConvertible {
+extension RevocationReason: @retroactive CustomStringConvertible {
 
     public var description: String {
         switch self {

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum ServerEnvironment: Identifiable, Hashable, CustomStringConvertible, CaseIterable {
+public enum ServerEnvironment: Identifiable, Hashable, CustomStringConvertible, CaseIterable, Sendable {
     case sandbox
     case production
 

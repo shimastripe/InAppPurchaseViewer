@@ -5,10 +5,10 @@
 //  Created by shimastripe on 2024/02/10.
 //
 
-import AppStoreServerLibrary  // For Model
+@preconcurrency import AppStoreServerLibrary  // For Model
 import Foundation
 
-public struct NotificationHistoryModel: Codable, Hashable {
+public struct NotificationHistoryModel: Codable, Hashable, Sendable {
 
     public var paginationToken: String?
 
@@ -25,7 +25,7 @@ public struct NotificationHistoryModel: Codable, Hashable {
     }
 }
 
-public struct NotificationHistoryItem: Identifiable, Codable, Hashable {
+public struct NotificationHistoryItem: Identifiable, Codable, Hashable, Sendable {
 
     public struct ID: RawRepresentable, Hashable, Sendable, Codable, ExpressibleByStringLiteral {
         public let rawValue: String

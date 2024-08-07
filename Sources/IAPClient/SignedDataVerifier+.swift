@@ -8,7 +8,7 @@
 import AppStoreServerLibrary
 import Foundation
 
-extension VerificationError: Error {}
+extension VerificationError: @retroactive Error {}
 
 extension SignedDataVerifier {
 
