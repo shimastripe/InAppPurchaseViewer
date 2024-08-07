@@ -5,10 +5,10 @@
 //  Created by shimastripe on 2024/02/22.
 //
 
-import AppStoreServerLibrary  // For Model
+@preconcurrency import AppStoreServerLibrary  // For Model
 import Foundation
 
-public struct SubscriptionStatus: Codable, Hashable {
+public struct SubscriptionStatus: Codable, Hashable, Sendable {
 
     public let environment: Environment?
 
@@ -28,7 +28,7 @@ public struct SubscriptionStatus: Codable, Hashable {
     }
 }
 
-public struct SubscriptionGroup: Codable, Hashable, Identifiable {
+public struct SubscriptionGroup: Codable, Hashable, Identifiable, Sendable {
 
     public let subscriptionGroupIdentifier: String?
 
@@ -47,7 +47,7 @@ public struct SubscriptionGroup: Codable, Hashable, Identifiable {
     }
 }
 
-public struct LastTransaction: Codable, Hashable, Identifiable {
+public struct LastTransaction: Codable, Hashable, Identifiable, Sendable {
 
     public let status: Status?
 

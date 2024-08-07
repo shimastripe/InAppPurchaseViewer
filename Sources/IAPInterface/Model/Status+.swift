@@ -8,7 +8,7 @@
 import AppStoreServerLibrary
 import SwiftUI
 
-extension Status: CustomStringConvertible {
+extension Status: @retroactive CustomStringConvertible {
     public var description: String {
         switch self {
         case .active:

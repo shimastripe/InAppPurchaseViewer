@@ -10,9 +10,9 @@ import Foundation
 import HTTPTypes
 import HTTPTypesFoundation
 import IAPInterface
-import KeychainAccess
+@preconcurrency import KeychainAccess
 
-extension RootCertificateClient: DependencyKey {
+extension RootCertificateClient: @retroactive DependencyKey {
     public static let liveValue: RootCertificateClient = {
 
         let keychain = Keychain()

@@ -8,7 +8,7 @@
 import AppStoreServerLibrary
 import Foundation
 
-extension OfferType: CustomStringConvertible {
+extension OfferType: @retroactive CustomStringConvertible {
 
     public var description: String {
         switch self {

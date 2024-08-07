@@ -10,7 +10,7 @@ import Dependencies
 import Foundation
 import IAPInterface
 
-extension AppStoreServerClient: DependencyKey {
+extension AppStoreServerClient: @retroactive DependencyKey {
     public static let liveValue: AppStoreServerClient = {
         .init(
             fetchNotificationHistory: {
