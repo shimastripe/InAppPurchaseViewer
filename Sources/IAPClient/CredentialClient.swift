@@ -8,9 +8,9 @@
 import Dependencies
 import Foundation
 import IAPInterface
-import KeychainAccess
+@preconcurrency import KeychainAccess
 
-extension CredentialClient: DependencyKey {
+extension CredentialClient: @retroactive DependencyKey {
 
     public static let liveValue: IAPInterface.CredentialClient = {
         let keychain = Keychain()

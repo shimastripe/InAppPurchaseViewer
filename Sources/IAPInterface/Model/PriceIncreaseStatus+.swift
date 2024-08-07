@@ -8,7 +8,7 @@
 import AppStoreServerLibrary
 import Foundation
 
-extension PriceIncreaseStatus: CustomStringConvertible {
+extension PriceIncreaseStatus: @retroactive CustomStringConvertible {
 
     public var description: String {
         switch self {
