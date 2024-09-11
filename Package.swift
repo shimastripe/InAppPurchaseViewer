@@ -56,7 +56,7 @@ let package = Package(
         .target(
             name: "IAPModel",
             dependencies: [
-                "IAPInterface",
+                "IAPInterface"
             ]
         ),
         .testTarget(
@@ -70,7 +70,7 @@ let package = Package(
                 .product(name: "Sparkle", package: "Sparkle"),
             ],
             plugins: [
-                .plugin(name: "LicensesPlugin", package: "LicensesPlugin"),
+                .plugin(name: "LicensesPlugin", package: "LicensesPlugin")
             ]
         ),
         .testTarget(

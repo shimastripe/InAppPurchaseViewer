@@ -25,8 +25,9 @@ struct InAppPurchaseViewerApp: App {
         }
         .commands {
             CommandGroup(after: .appInfo) {
-                Button("Check for Updates...",
-                       action: updaterController.updater.checkForUpdates)
+                Button(
+                    "Check for Updates...",
+                    action: updaterController.updater.checkForUpdates)
             }
         }
         Settings {
