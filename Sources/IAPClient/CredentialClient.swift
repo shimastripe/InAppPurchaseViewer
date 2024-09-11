@@ -8,7 +8,7 @@
 import Dependencies
 import Foundation
 import IAPInterface
-import KeychainAccess
+@preconcurrency import KeychainAccess
 
 extension CredentialClient: DependencyKey {
 

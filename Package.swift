@@ -1,20 +1,7 @@
-// swift-tools-version: 5.10
+// swift-tools-version: 6.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
-
-let swiftSettings: [SwiftSetting] = [
-    .enableUpcomingFeature("BareSlashRegexLiterals"),
-    .enableUpcomingFeature("ConciseMagicFile"),
-    .enableUpcomingFeature("DeprecateApplicationMain"),
-    .enableUpcomingFeature("DisableOutwardActorInference"),
-    .enableUpcomingFeature("ExistentialAny"),
-    .enableUpcomingFeature("ForwardTrailingClosures"),
-    .enableUpcomingFeature("GlobalConcurrency"),
-    .enableUpcomingFeature("ImplicitOpenExistentials"),
-    .enableUpcomingFeature("ImportObjcForwardDeclarations"),
-    .enableUpcomingFeature("IsolatedDefaultValues"),
-]
 
 let package = Package(
     name: "InAppPurchaseViewer",
@@ -34,7 +21,6 @@ let package = Package(
         .package(url: "https://github.com/sparkle-project/Sparkle", exact: "2.6.4"),
         .package(url: "https://github.com/pointfreeco/swift-dependencies", exact: "1.3.9"),
         .package(url: "https://github.com/apple/swift-http-types", exact: "1.3.0"),
-        .package(url: "https://github.com/apple/swift-format", exact: "510.1.0"),
     ],
     targets: [
         .target(
@@ -56,8 +42,7 @@ let package = Package(
             dependencies: [
                 .product(name: "Dependencies", package: "swift-dependencies"),
                 .product(name: "DependenciesMacros", package: "swift-dependencies"),
-            ],
-            swiftSettings: swiftSettings
+            ]
         ),
         .target(
             name: "IAPInterface",
@@ -65,15 +50,13 @@ let package = Package(
                 "IAPCore",
                 // Use Model...
                 .product(name: "AppStoreServerLibrary", package: "app-store-server-library-swift"),
-            ],
-            swiftSettings: swiftSettings
+            ]
         ),
         .target(
             name: "IAPModel",
             dependencies: [
-                "IAPInterface",
-            ],
-            swiftSettings: swiftSettings
+                "IAPInterface"
+            ]
         ),
         .testTarget(
             name: "IAPModelTests",
@@ -85,14 +68,14 @@ let package = Package(
                 "IAPModel",
                 .product(name: "Sparkle", package: "Sparkle"),
             ],
-            swiftSettings: swiftSettings,
             plugins: [
-                .plugin(name: "LicensesPlugin", package: "LicensesPlugin"),
+                .plugin(name: "LicensesPlugin", package: "LicensesPlugin")
             ]
         ),
         .testTarget(
             name: "IAPViewTests",
             dependencies: ["IAPView"]
         ),
-    ]
+    ],
+    swiftLanguageVersions: [.v6]
 )

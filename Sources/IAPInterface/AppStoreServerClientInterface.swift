@@ -56,13 +56,14 @@ public struct AppStoreServerClient: Sendable {
 extension AppStoreServerClient: TestDependencyKey {
     public static let testValue = Self()
     public static let previewValue: AppStoreServerClient = {
-        let makeDate: (_ year: Int, _ month: Int, _ day: Int, _ hour: Int, _ minute: Int) -> Date? =
-            {
-                (year, month, day, hour, minute) in
-                Calendar.current.date(
-                    from: .init(
-                        year: year, month: month, day: day, hour: hour, minute: minute))
-            }
+        let makeDate:
+            @Sendable (_ year: Int, _ month: Int, _ day: Int, _ hour: Int, _ minute: Int) -> Date? =
+                {
+                    (year, month, day, hour, minute) in
+                    Calendar.current.date(
+                        from: .init(
+                            year: year, month: month, day: day, hour: hour, minute: minute))
+                }
 
         return .init(
             fetchNotificationHistory: { _, _, _, _, _, _, _ in

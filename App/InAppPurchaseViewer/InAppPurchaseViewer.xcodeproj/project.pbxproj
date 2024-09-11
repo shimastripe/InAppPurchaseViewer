@@ -82,6 +82,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 458FE1652B6E239700798686 /* Build configuration list for PBXNativeTarget "InAppPurchaseViewer" */;
 			buildPhases = (
+				45A8B3AC2C920C25004E6CF6 /* Run swift-format */,
 				458FE1522B6E239600798686 /* Sources */,
 				458FE1532B6E239600798686 /* Frameworks */,
 				458FE1542B6E239600798686 /* Resources */,
@@ -145,6 +146,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		45A8B3AC2C920C25004E6CF6 /* Run swift-format */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run swift-format";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd ../../\nmake format\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		458FE1522B6E239600798686 /* Sources */ = {
@@ -216,6 +239,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
@@ -269,6 +293,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
 		};
@@ -293,7 +318,6 @@
 				SUPPORTED_PLATFORMS = macosx;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -318,7 +342,6 @@
 				SUPPORTED_PLATFORMS = macosx;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

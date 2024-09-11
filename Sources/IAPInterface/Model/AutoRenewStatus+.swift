@@ -8,7 +8,7 @@
 import AppStoreServerLibrary
 import Foundation
 
-extension AutoRenewStatus: CustomStringConvertible {
+extension AutoRenewStatus: @retroactive CustomStringConvertible {
 
     public var description: String {
         switch self {

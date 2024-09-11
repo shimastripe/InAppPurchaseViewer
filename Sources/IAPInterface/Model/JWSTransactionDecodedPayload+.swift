@@ -7,7 +7,7 @@
 
 import AppStoreServerLibrary
 
-extension JWSTransactionDecodedPayload: Identifiable {
+extension JWSTransactionDecodedPayload: @retroactive Identifiable {
     public var id: String? {
         transactionId
     }
