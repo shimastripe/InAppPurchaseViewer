@@ -1,0 +1,45 @@
+name: Deploy DocC
+
+on:
+  push:
+    branches: ["main"]
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "docc"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: macos-14
+    env:
+      DEVELOPER_DIR: "/Applications/Xcode_16.0.app/Contents/Developer"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build DocC
+        run: |
+          make build_docc
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+  deploy:
+    runs-on: macos-14
+    env:
+      DEVELOPER_DIR: "/Applications/Xcode_16.0.app/Contents/Developer"
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
