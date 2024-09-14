@@ -33,9 +33,8 @@ jobs:
         with:
           path: docs
   deploy:
-    runs-on: macos-14
-    env:
-      DEVELOPER_DIR: "/Applications/Xcode_16.0.app/Contents/Developer"
+    needs: build
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
