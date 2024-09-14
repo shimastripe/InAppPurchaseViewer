@@ -30,6 +30,12 @@ jobs:
           key: spm-${{ hashFiles('Package.swift') }}
           restore-keys: |
             spm-
+      - name: Install development Swift
+        uses: SwiftyLab/setup-swift@latest
+        with:
+          development: true
+          check-latest: true
+          cache-snapshot: false
       - name: Build DocC
         run: |
           make build_docc
