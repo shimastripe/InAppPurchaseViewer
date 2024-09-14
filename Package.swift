@@ -77,5 +77,5 @@ let package = Package(
             dependencies: ["IAPView"]
         ),
     ],
-    swiftLanguageVersions: [.v6]
+    swiftLanguageModes: [.v6]
 )
