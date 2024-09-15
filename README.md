@@ -51,6 +51,16 @@ Get the statuses for all of a customer’s auto-renewable subscriptions in your 
   <img alt="example_get_all_subscription_status" src="https://github.com/shimastripe/InAppPurchaseViewer/assets/15936908/fdbdc08f-e14c-4671-9191-dd8ffdee036a">
 </div>
 
+## How to contribute
+
+- [Docs](https://shimastripe.com/InAppPurchaseViewer/documentation)
+
+### Build Development scheme
+
+```sh
+$ open InAppPurchaseViewer.xcworkspace
+```
+
 ### Development Environment
 
 - macOS 15 Sequoia
