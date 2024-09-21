@@ -38,7 +38,6 @@ jobs:
           cache-snapshot: false
       - name: Build DocC
         run: |
-          sed -i ".bak" -e "s|pointfreeco/swift-dependencies|shimastripe/swift-dependencies|g" Package.swift
           make build_docc
       - name: Setup Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
