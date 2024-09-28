@@ -32,7 +32,8 @@ let package = Package(
                 .product(name: "HTTPTypes", package: "swift-http-types"),
                 .product(name: "HTTPTypesFoundation", package: "swift-http-types"),
                 .product(name: "KeychainAccess", package: "KeychainAccess"),
-            ]
+            ],
+            swiftSettings: [.swiftLanguageMode(.v6)]
         ),
         .testTarget(
             name: "IAPClientTests",
@@ -43,7 +44,8 @@ let package = Package(
             dependencies: [
                 .product(name: "Dependencies", package: "swift-dependencies"),
                 .product(name: "DependenciesMacros", package: "swift-dependencies"),
-            ]
+            ],
+            swiftSettings: [.swiftLanguageMode(.v6)]
         ),
         .target(
             name: "IAPInterface",
@@ -51,13 +53,15 @@ let package = Package(
                 "IAPCore",
                 // Use Model...
                 .product(name: "AppStoreServerLibrary", package: "app-store-server-library-swift"),
-            ]
+            ],
+            swiftSettings: [.swiftLanguageMode(.v6)]
         ),
         .target(
             name: "IAPModel",
             dependencies: [
                 "IAPInterface"
-            ]
+            ],
+            swiftSettings: [.swiftLanguageMode(.v6)]
         ),
         .testTarget(
             name: "IAPModelTests",
@@ -69,6 +73,7 @@ let package = Package(
                 "IAPModel",
                 .product(name: "Sparkle", package: "Sparkle"),
             ],
+            swiftSettings: [.swiftLanguageMode(.v6)],
             plugins: [
                 .plugin(name: "LicensesPlugin", package: "LicensesPlugin")
             ]
