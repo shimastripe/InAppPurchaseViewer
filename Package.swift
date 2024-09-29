@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "InAppPurchaseViewer",
     defaultLocalization: "ja",
-    platforms: [.macOS(.v14)],
+    platforms: [.macOS("14.4")],
     products: [
         .library(name: "IAPClient", targets: ["IAPClient"]),
         .library(name: "IAPCore", targets: ["IAPCore"]),
