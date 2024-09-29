@@ -132,6 +132,16 @@
     "Download AppleRootCA-G3.cer" : {
 
     },
+    "Edit" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "編集"
+          }
+        }
+      }
+    },
     "eligibleWinBackOfferIds" : {
 
     },
@@ -367,10 +377,16 @@
     "TransactionID..." : {
 
     },
+    "transactionInfo" : {
+
+    },
     "transactionReason" : {
 
     },
     "type" : {
+
+    },
+    "Unsupported Format" : {
 
     },
     "webOrderLineItemId" : {

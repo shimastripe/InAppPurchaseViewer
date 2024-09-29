@@ -16,140 +16,131 @@ struct TransactionHistoryTableView: View {
 
     let model: TransactionHistory
 
+    @Binding var currentColumns: [IAPCellDataSource.TransactionDecodedPayload]
+
     @TableColumnBuilder<JWSTransactionDecodedPayload, Never>
-    var mainColumns: some TableColumnContent<JWSTransactionDecodedPayload, Never> {
-        TableColumn("purchaseDate") {
-            CellText($0.purchaseDate?.formatted())
-        }
-        .width(ideal: 120)
-        TableColumn("transactionReason") { item in
-            Label {
-                CellText(item.transactionReason?.rawValue)
-            } icon: {
-                let eventIcon = item.transactionReason?.eventIcon ?? "questionmark"
-                let eventColor = item.transactionReason?.eventColor ?? .black
-                Image(systemName: eventIcon).foregroundStyle(eventColor).frame(width: iconSize)
+    func column(dataSource: IAPCellDataSource.TransactionDecodedPayload) -> some TableColumnContent<
+        JWSTransactionDecodedPayload, Never
+    > {
+        TableColumn(dataSource.name) { item in
+            let stringKeyPaths = [
+                \JWSTransactionDecodedPayload.originalTransactionId,
+                \JWSTransactionDecodedPayload.transactionId,
+                \JWSTransactionDecodedPayload.webOrderLineItemId,
+                \JWSTransactionDecodedPayload.bundleId,
+                \JWSTransactionDecodedPayload.productId,
+                \JWSTransactionDecodedPayload.subscriptionGroupIdentifier,
+                \JWSTransactionDecodedPayload.offerIdentifier,
+                \JWSTransactionDecodedPayload.storefront,
+                \JWSTransactionDecodedPayload.storefrontId,
+                \JWSTransactionDecodedPayload.currency,
+            ]
+            let dateKeyPaths = [
+                \JWSTransactionDecodedPayload.purchaseDate,
+                \JWSTransactionDecodedPayload.originalPurchaseDate,
+                \JWSTransactionDecodedPayload.expiresDate,
+                \JWSTransactionDecodedPayload.signedDate,
+                \JWSTransactionDecodedPayload.revocationDate,
+            ]
+            let int64KeyPaths = [
+                \JWSTransactionDecodedPayload.quantity
+            ]
+            let int32KeyPaths = [
+                \JWSTransactionDecodedPayload.price
+            ]
+            let boolKeyPaths = [
+                \JWSTransactionDecodedPayload.isUpgraded
+            ]
+            let productTypeKeyPaths = [
+                \JWSTransactionDecodedPayload.type
+            ]
+            let uuidKeyPaths = [
+                \JWSTransactionDecodedPayload.appAccountToken
+            ]
+            let inAppOwnershipTypeKeyPaths = [
+                \JWSTransactionDecodedPayload.inAppOwnershipType
+            ]
+            let revocationReasonKeyPaths = [
+                \JWSTransactionDecodedPayload.revocationReason
+            ]
+            let offerTypeKeyPaths = [
+                \JWSTransactionDecodedPayload.offerType
+            ]
+            let environmentKeyPaths = [
+                \JWSTransactionDecodedPayload.environment
+            ]
+            let transactionReasonKeyPaths = [
+                \JWSTransactionDecodedPayload.transactionReason
+            ]
+            let offerDiscountTypeKeyPaths = [
+                \JWSTransactionDecodedPayload.offerDiscountType
+            ]
+
+            if let keyPath = stringKeyPaths.first(where: { $0 == dataSource.keyPath }) {
+                CellText(item[keyPath: keyPath])
+            } else if let keyPath = dateKeyPaths.first(where: { $0 == dataSource.keyPath }) {
+                CellText(item[keyPath: keyPath]?.formatted())
+            } else if let keyPath = int64KeyPaths.first(where: { $0 == dataSource.keyPath }) {
+                CellText(item[keyPath: keyPath]?.description)
+            } else if let keyPath = int32KeyPaths.first(where: { $0 == dataSource.keyPath }) {
+                CellText(item[keyPath: keyPath]?.description)
+            } else if let keyPath = boolKeyPaths.first(where: { $0 == dataSource.keyPath }) {
+                CellText(item[keyPath: keyPath]?.description)
+            } else if let keyPath = productTypeKeyPaths.first(where: { $0 == dataSource.keyPath }) {
+                CellText(item[keyPath: keyPath]?.rawValue)
+            } else if let keyPath = uuidKeyPaths.first(where: { $0 == dataSource.keyPath }) {
+                CellText(item[keyPath: keyPath]?.uuidString)
+            } else if let keyPath = inAppOwnershipTypeKeyPaths.first(where: {
+                $0 == dataSource.keyPath
+            }) {
+                CellText(item[keyPath: keyPath]?.rawValue)
+            } else if let keyPath = revocationReasonKeyPaths.first(where: {
+                $0 == dataSource.keyPath
+            }) {
+                CellText(item[keyPath: keyPath]?.description)
+            } else if let keyPath = offerTypeKeyPaths.first(where: { $0 == dataSource.keyPath }) {
+                CellText(item[keyPath: keyPath]?.description)
+            } else if let keyPath = environmentKeyPaths.first(where: { $0 == dataSource.keyPath }) {
+                CellText(item[keyPath: keyPath]?.rawValue)
+            } else if let keyPath = transactionReasonKeyPaths.first(where: {
+                $0 == dataSource.keyPath
+            }) {
+                Label {
+                    CellText(item[keyPath: keyPath]?.rawValue)
+                } icon: {
+                    let eventIcon = item[keyPath: keyPath]?.eventIcon ?? "questionmark"
+                    let eventColor = item[keyPath: keyPath]?.eventColor ?? .black
+                    Image(systemName: eventIcon).foregroundStyle(eventColor).frame(width: iconSize)
+                }
+            } else if let keyPath = offerDiscountTypeKeyPaths.first(where: {
+                $0 == dataSource.keyPath
+            }) {
+                CellText(item[keyPath: keyPath]?.rawValue)
+            } else {
+                Text("Unsupported Format")
             }
         }
-        .width(ideal: 160)
-        TableColumn("price") {
-            CellText($0.price?.description)
-        }
-        .width(ideal: 60)
-        TableColumn("currency") {
-            CellText($0.currency)
-        }
-        .width(ideal: 60)
-        TableColumn("originalTransactionID") {
-            CellText($0.originalTransactionId)
-        }
-        .width(ideal: 140)
-        TableColumn("transactionID") {
-            CellText($0.transactionId)
-        }
-        .width(ideal: 140)
-        TableColumn("originalPurchaseDate") {
-            CellText($0.originalPurchaseDate?.formatted())
-        }
-        .width(ideal: 120)
-        TableColumn("expiresDate") {
-            CellText($0.expiresDate?.formatted())
-        }
-        .width(ideal: 120)
-    }
-
-    @TableColumnBuilder<JWSTransactionDecodedPayload, Never>
-    var transactionColumns: some TableColumnContent<JWSTransactionDecodedPayload, Never> {
-        TableColumn("offerIdentifier") {
-            CellText($0.offerIdentifier)
-        }
-        .width(ideal: 120)
-        TableColumn("offerType") {
-            CellText($0.offerType?.description)
-        }
-        .width(ideal: 120)
-        TableColumn("offerDiscountType") {
-            CellText($0.offerDiscountType?.rawValue)
-        }
-        .width(ideal: 120)
-        TableColumn("appAccountToken") {
-            CellText($0.appAccountToken?.uuidString)
-        }
-        .width(ideal: 120)
-        TableColumn("bundleId") {
-            CellText($0.bundleId)
-        }
-        .width(ideal: 140)
-        TableColumn("productId") {
-            CellText($0.productId)
-        }
-        .width(ideal: 140)
-        TableColumn("subscriptionGroupIdentifier") {
-            CellText($0.subscriptionGroupIdentifier)
-        }
-        .width(ideal: 160)
-        TableColumn("quantity") {
-            CellText($0.quantity?.description)
-        }
-        .width(ideal: 60)
-    }
-
-    @TableColumnBuilder<JWSTransactionDecodedPayload, Never>
-    var transactionColumns2: some TableColumnContent<JWSTransactionDecodedPayload, Never> {
-        TableColumn("type") {
-            CellText($0.type?.rawValue)
-        }
-        .width(ideal: 180)
-        TableColumn("inAppOwnershipType") {
-            CellText($0.inAppOwnershipType?.rawValue)
-        }
-        .width(ideal: 160)
-        TableColumn("environment") {
-            CellText($0.environment?.rawValue)
-        }
-        .width(ideal: 80)
-        TableColumn("storefront") {
-            CellText($0.storefront)
-        }
-        .width(ideal: 60)
-        TableColumn("storefrontId") {
-            CellText($0.storefrontId)
-        }
-        .width(ideal: 80)
-        TableColumn("webOrderLineItemId") {
-            CellText($0.webOrderLineItemId)
-        }
-        .width(ideal: 140)
-        TableColumn("revocationReason") {
-            CellText($0.revocationReason?.description)
-        }
-        .width(ideal: 120)
-        TableColumn("revocationDate") {
-            CellText($0.revocationDate?.formatted())
-        }
-        .width(ideal: 120)
-        TableColumn("isUpgraded") {
-            CellText($0.isUpgraded?.description)
-        }
-        .width(ideal: 120)
-        TableColumn("transaction signedDate") {
-            CellText($0.signedDate?.formatted())
-        }
-        .width(ideal: 120)
+        .width(ideal: dataSource.idealWidth)
     }
 
     var body: some View {
-        Text("(\(model.items.count) transactions x \(columnCounts) columns)").frame(
+        Text(
+            "(\(model.items.count) transactions x \(currentColumns.count) columns)"
+        )
+        .frame(
             maxWidth: .infinity, alignment: .leading
         ).padding(.horizontal)
 
         Table(of: JWSTransactionDecodedPayload.self) {
-            mainColumns
-            transactionColumns
-            transactionColumns2
+            TableColumnForEach(currentColumns) { currentColumn in
+                column(dataSource: currentColumn)
+            }
         } rows: {
             ForEach(model.items, content: TableRow.init)
         }
         .monospacedDigit()
+        // This is workaround.
+        // If you do not set the ID when deleting the first column, it will crash. Instead the animation dies...
+        .id(UUID())
     }
 }
