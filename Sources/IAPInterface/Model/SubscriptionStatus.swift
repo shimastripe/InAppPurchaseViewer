@@ -5,7 +5,7 @@
 //  Created by shimastripe on 2024/02/22.
 //
 
-@preconcurrency import AppStoreServerLibrary  // For Model
+import AppStoreServerLibrary  // For Model
 import Foundation
 
 public struct SubscriptionStatus: Codable, Hashable, Sendable {
