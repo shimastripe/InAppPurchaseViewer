@@ -18,5 +18,5 @@ build_docc:
 		--target IAPModel \
 		--target IAPView \
 		--transform-for-static-hosting \
-		--hosting-base-path IAPViewer
+		--hosting-base-path InAppPurchaseViewer/IAPViewer
 
