@@ -39,6 +39,9 @@ jobs:
       - name: Build DocC
         run: |
           make build_docc
+      - name: Copy latest appcast.xml
+        run: |
+          cp sparkle/appcast.xml docs/appcast.xml
       - name: Setup Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
       - name: Upload artifact
