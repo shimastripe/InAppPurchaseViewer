@@ -53,7 +53,7 @@ Get the statuses for all of a customer’s auto-renewable subscriptions in your 
 
 ## How to contribute
 
-- [Docs](https://shimastripe.com/InAppPurchaseViewer/IAPViewer/documentation)
+- [Docs](https://shimastripe.com/InAppPurchaseViewer/documentation)
 
 ### Build Development scheme
 
