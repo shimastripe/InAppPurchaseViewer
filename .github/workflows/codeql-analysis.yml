@@ -29,7 +29,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
     - name: Configure SPM cache
-      uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4
+      uses: actions/cache@2cdf405574d6ef1f33a1d12acccd3ae82f47b3f2 # v4
       with:
         path: ~/Library/Caches/org.swift.swiftpm
         key: spm-${{ hashFiles('Package.swift') }}
