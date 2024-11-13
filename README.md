@@ -64,6 +64,6 @@ $ open InAppPurchaseViewer.xcworkspace
 ### Development Environment
 
 - macOS 15 Sequoia
-- Xcode 16.0
-- Swift 6.0
+- Xcode 16.1
+- Swift 6
 - Sandbox enabled
