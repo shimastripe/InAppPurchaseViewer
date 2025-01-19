@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "InAppPurchaseViewer",
     defaultLocalization: "ja",
-    platforms: [.macOS(.v14)],
+    platforms: [.macOS("14.4")],
     products: [
         .library(name: "IAPClient", targets: ["IAPClient"]),
         .library(name: "IAPCore", targets: ["IAPCore"]),
@@ -15,7 +15,8 @@ let package = Package(
         .library(name: "IAPView", targets: ["IAPView"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/shimastripe/app-store-server-library-swift", exact: "2.3.0"),
+        .package(
+            url: "https://github.com/shimastripe/app-store-server-library-swift", exact: "2.3.0"),
         .package(url: "https://github.com/kishikawakatsumi/KeychainAccess", exact: "4.2.2"),
         .package(url: "https://github.com/maiyama18/LicensesPlugin", exact: "0.2.0"),
         .package(url: "https://github.com/sparkle-project/Sparkle", exact: "2.6.4"),

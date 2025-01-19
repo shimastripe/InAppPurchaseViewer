@@ -46,7 +46,7 @@ public final class IAPModel {
     public var isNotificationHistoryStaledParameters = false
     public var notificationHistoryTransactionID = ""
     public var notificationStartDate = Calendar.current.date(
-        byAdding: .weekOfMonth, value: -2, to: .now)!
+        byAdding: .day, value: -1, to: .now)!
     public var notificationEndDate = Date.now
 
     // MARK: - Transaction History parameters
