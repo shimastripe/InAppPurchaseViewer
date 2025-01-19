@@ -72,7 +72,7 @@ public final class IAPModel {
 
     public func resetNotificationDates() {
         notificationStartDate = Calendar.current.date(
-            byAdding: .weekOfMonth, value: -2, to: .now)!
+            byAdding: .day, value: -1, to: .now)!
         notificationEndDate = Date.now
     }
 
