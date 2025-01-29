@@ -37,12 +37,12 @@ jobs:
           spm-
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@17a820bf2e43b47be2c72b39cc905417bc1ab6d0 # v3
+      uses: github/codeql-action/init@6e5455904168f98c75d8e5ad848b4dc4ab3ae77e # v3
       with:
         languages: swift
     - name: Autobuild
-      uses: github/codeql-action/autobuild@17a820bf2e43b47be2c72b39cc905417bc1ab6d0 # v3
+      uses: github/codeql-action/autobuild@6e5455904168f98c75d8e5ad848b4dc4ab3ae77e # v3
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@17a820bf2e43b47be2c72b39cc905417bc1ab6d0 # v3
+      uses: github/codeql-action/analyze@6e5455904168f98c75d8e5ad848b4dc4ab3ae77e # v3
       with:
         category: "/language:swift"
