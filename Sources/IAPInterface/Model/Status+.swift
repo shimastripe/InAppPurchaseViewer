@@ -8,6 +8,8 @@
 import AppStoreServerLibrary  // For Model
 import SwiftUI
 
+public typealias Status = AppStoreServerLibrary.Status
+
 extension Status: @retroactive CustomStringConvertible {
     public var description: String {
         switch self {

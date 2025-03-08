@@ -8,6 +8,8 @@
 import AppStoreServerLibrary  // For Model
 import Foundation
 
+public typealias OfferType = AppStoreServerLibrary.OfferType
+
 extension OfferType: @retroactive CustomStringConvertible {
 
     public var description: String {

@@ -9,6 +9,8 @@ import AppStoreServerLibrary  // For Model
 import Foundation
 import SwiftUI
 
+public typealias TransactionReason = AppStoreServerLibrary.TransactionReason
+
 extension TransactionReason {
 
     public var eventIcon: String {

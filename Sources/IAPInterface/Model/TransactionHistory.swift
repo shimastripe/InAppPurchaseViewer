@@ -5,7 +5,6 @@
 //  Created by shimastripe on 2024/02/24.
 //
 
-import AppStoreServerLibrary  // For Model
 import Foundation
 
 public struct TransactionHistory: Codable, Hashable, Sendable {

@@ -5,7 +5,6 @@
 //  Created by shimastripe on 2024/02/10.
 //
 
-import AppStoreServerLibrary  // For Model
 import Foundation
 
 public struct NotificationHistoryModel: Codable, Hashable, Sendable {

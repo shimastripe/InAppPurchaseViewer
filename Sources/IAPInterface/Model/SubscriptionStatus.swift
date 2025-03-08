@@ -5,7 +5,6 @@
 //  Created by shimastripe on 2024/02/22.
 //
 
-import AppStoreServerLibrary  // For Model
 import Foundation
 
 public struct SubscriptionStatus: Codable, Hashable, Sendable {

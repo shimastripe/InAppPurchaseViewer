@@ -7,6 +7,8 @@
 
 import AppStoreServerLibrary  // For Model
 
+public typealias RevocationReason = AppStoreServerLibrary.RevocationReason
+
 extension RevocationReason: @retroactive CustomStringConvertible {
 
     public var description: String {

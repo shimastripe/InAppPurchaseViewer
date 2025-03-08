@@ -8,6 +8,8 @@
 import AppStoreServerLibrary  // For Model
 import Foundation
 
+public typealias PriceIncreaseStatus = AppStoreServerLibrary.PriceIncreaseStatus
+
 extension PriceIncreaseStatus: @retroactive CustomStringConvertible {
 
     public var description: String {

@@ -8,6 +8,8 @@
 import AppStoreServerLibrary  // For Model
 import Foundation
 
+public typealias AutoRenewStatus = AppStoreServerLibrary.AutoRenewStatus
+
 extension AutoRenewStatus: @retroactive CustomStringConvertible {
 
     public var description: String {

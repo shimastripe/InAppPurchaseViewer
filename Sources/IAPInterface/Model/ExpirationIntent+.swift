@@ -8,6 +8,8 @@
 import AppStoreServerLibrary  // For Model
 import Foundation
 
+public typealias ExpirationIntent = AppStoreServerLibrary.ExpirationIntent
+
 extension ExpirationIntent: @retroactive CustomStringConvertible {
 
     public var description: String {
