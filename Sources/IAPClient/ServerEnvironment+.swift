@@ -10,7 +10,7 @@ import Foundation
 import IAPInterface
 
 extension ServerEnvironment {
-    public var toModel: Environment {
+    public var toModel: AppStoreEnvironment {
         switch self {
         case .sandbox:
             .sandbox

@@ -18,14 +18,14 @@ public struct TransactionHistory: Codable, Hashable, Sendable {
 
     public var appAppleId: Int64?
 
-    public var environment: Environment?
+    public var environment: AppStoreEnvironment?
 
     // MARK: - Transaction
     public var items: [JWSTransactionDecodedPayload]
 
     public init(
         revision: String?, hasMore: Bool?, bundleId: String?, appAppleId: Int64?,
-        environment: Environment?, items: [JWSTransactionDecodedPayload]
+        environment: AppStoreEnvironment?, items: [JWSTransactionDecodedPayload]
     ) {
         self.revision = revision
         self.hasMore = hasMore

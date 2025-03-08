@@ -10,7 +10,7 @@ import Foundation
 
 public struct SubscriptionStatus: Codable, Hashable, Sendable {
 
-    public let environment: Environment?
+    public let environment: AppStoreEnvironment?
 
     public let bundleID: String?
 
@@ -19,7 +19,8 @@ public struct SubscriptionStatus: Codable, Hashable, Sendable {
     public let items: [SubscriptionGroup]
 
     public init(
-        environment: Environment?, bundleID: String?, appAppleID: Int64?, items: [SubscriptionGroup]
+        environment: AppStoreEnvironment?, bundleID: String?, appAppleID: Int64?,
+        items: [SubscriptionGroup]
     ) {
         self.environment = environment
         self.bundleID = bundleID
