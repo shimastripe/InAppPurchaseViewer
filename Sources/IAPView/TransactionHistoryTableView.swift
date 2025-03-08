@@ -8,8 +8,6 @@
 import IAPInterface
 import SwiftUI
 
-import struct AppStoreServerLibrary.JWSTransactionDecodedPayload
-
 struct TransactionHistoryTableView: View {
 
     private let columnCounts = 26

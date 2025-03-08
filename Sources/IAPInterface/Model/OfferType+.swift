@@ -5,8 +5,10 @@
 //  Created by shimastripe on 2024/02/19.
 //
 
-import AppStoreServerLibrary
+import AppStoreServerLibrary  // For Model
 import Foundation
+
+public typealias OfferType = AppStoreServerLibrary.OfferType
 
 extension OfferType: @retroactive CustomStringConvertible {
 

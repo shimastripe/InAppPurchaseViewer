@@ -87,6 +87,9 @@
     "appAccountToken" : {
 
     },
+    "appTransactionId" : {
+
+    },
     "Assets" : {
 
     },
@@ -239,6 +242,9 @@
     "offerIdentifier" : {
 
     },
+    "offerPeriod" : {
+
+    },
     "offerType" : {
 
     },
@@ -353,6 +359,12 @@
 
     },
     "tokenCreationDate" : {
+
+    },
+    "transaction appTransactionId" : {
+
+    },
+    "transaction offerPeriod" : {
 
     },
     "transaction signedDate" : {

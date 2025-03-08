@@ -5,9 +5,11 @@
 //  Created by shimastripe on 2024/02/24.
 //
 
-import AppStoreServerLibrary
+import AppStoreServerLibrary  // For Model
 import Foundation
 import SwiftUI
+
+public typealias TransactionReason = AppStoreServerLibrary.TransactionReason
 
 extension TransactionReason {
 

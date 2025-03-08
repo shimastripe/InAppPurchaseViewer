@@ -234,6 +234,22 @@ struct SubscriptionStatusTableView: View {
             CellText($0.renewalInfo?.eligibleWinBackOfferIds?.joined(separator: ", "))
         }
         .width(ideal: 120)
+        TableColumn("appTransactionId") {
+            CellText($0.renewalInfo?.appTransactionId)
+        }
+        .width(ideal: 120)
+        TableColumn("offerPeriod") {
+            CellText($0.renewalInfo?.offerPeriod)
+        }
+        .width(ideal: 120)
+    }
+
+    @TableColumnBuilder<LastTransaction, Never>
+    var renewalInfoColumns3: some TableColumnContent<LastTransaction, Never> {
+        TableColumn("appAccountToken") {
+            CellText($0.renewalInfo?.appAccountToken?.uuidString)
+        }
+        .width(ideal: 120)
     }
 
     var body: some View {
@@ -265,6 +281,7 @@ struct SubscriptionStatusTableView: View {
                 transactionColumns2
                 renewalInfoColumns
                 renewalInfoColumns2
+                renewalInfoColumns3
             } rows: {
                 ForEach(items, content: TableRow.init)
             }
@@ -283,6 +300,7 @@ struct SubscriptionStatusTableView: View {
                 mainColumns
                 renewalInfoColumns
                 renewalInfoColumns2
+                renewalInfoColumns3
             } rows: {
                 ForEach(items, content: TableRow.init)
             }

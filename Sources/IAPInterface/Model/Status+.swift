@@ -5,8 +5,10 @@
 //  Created by shimastripe on 2024/02/13.
 //
 
-import AppStoreServerLibrary
+import AppStoreServerLibrary  // For Model
 import SwiftUI
+
+public typealias Status = AppStoreServerLibrary.Status
 
 extension Status: @retroactive CustomStringConvertible {
     public var description: String {

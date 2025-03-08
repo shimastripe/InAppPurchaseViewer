@@ -15,7 +15,7 @@ let package = Package(
         .library(name: "IAPView", targets: ["IAPView"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/shimastripe/app-store-server-library-swift", exact: "2.3.0"),
+        .package(url: "https://github.com/apple/app-store-server-library-swift", exact: "3.0.0"),
         .package(url: "https://github.com/kishikawakatsumi/KeychainAccess", exact: "4.2.2"),
         .package(url: "https://github.com/maiyama18/LicensesPlugin", exact: "0.2.0"),
         .package(url: "https://github.com/sparkle-project/Sparkle", exact: "2.7.0"),

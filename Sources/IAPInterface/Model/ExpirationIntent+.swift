@@ -5,8 +5,10 @@
 //  Created by shimastripe on 2024/02/20.
 //
 
-import AppStoreServerLibrary
+import AppStoreServerLibrary  // For Model
 import Foundation
+
+public typealias ExpirationIntent = AppStoreServerLibrary.ExpirationIntent
 
 extension ExpirationIntent: @retroactive CustomStringConvertible {
 

@@ -184,6 +184,18 @@ struct NotificationHistoryTableView: View {
     }
 
     @TableColumnBuilder<NotificationHistoryItem, Never>
+    var transactionColumns3: some TableColumnContent<NotificationHistoryItem, Never> {
+        TableColumn("transaction appTransactionId") {
+            CellText($0.transactionInfo?.appTransactionId)
+        }
+        .width(ideal: 120)
+        TableColumn("transaction offerPeriod") {
+            CellText($0.transactionInfo?.offerPeriod)
+        }
+        .width(ideal: 120)
+    }
+
+    @TableColumnBuilder<NotificationHistoryItem, Never>
     var renewalInfoColumns: some TableColumnContent<NotificationHistoryItem, Never> {
         TableColumn("expirationIntent") {
             CellText($0.renewalInfo?.expirationIntent?.description)
@@ -261,6 +273,22 @@ struct NotificationHistoryTableView: View {
             CellText($0.renewalInfo?.eligibleWinBackOfferIds?.joined(separator: ", "))
         }
         .width(ideal: 120)
+        TableColumn("appTransactionId") {
+            CellText($0.renewalInfo?.appTransactionId)
+        }
+        .width(ideal: 120)
+        TableColumn("offerPeriod") {
+            CellText($0.renewalInfo?.offerPeriod)
+        }
+        .width(ideal: 120)
+    }
+
+    @TableColumnBuilder<NotificationHistoryItem, Never>
+    var renewalInfoColumns3: some TableColumnContent<NotificationHistoryItem, Never> {
+        TableColumn("appAccountToken") {
+            CellText($0.renewalInfo?.appAccountToken?.uuidString)
+        }
+        .width(ideal: 120)
     }
 
     var body: some View {
@@ -289,8 +317,10 @@ struct NotificationHistoryTableView: View {
                 externalColumns
                 transactionColumns
                 transactionColumns2
+                transactionColumns3
                 renewalInfoColumns
                 renewalInfoColumns2
+                renewalInfoColumns3
             } rows: {
                 ForEach(model.items, content: TableRow.init)
             }
@@ -301,6 +331,7 @@ struct NotificationHistoryTableView: View {
                 externalColumns
                 transactionColumns
                 transactionColumns2
+                transactionColumns3
             } rows: {
                 ForEach(model.items, content: TableRow.init)
             }
@@ -311,6 +342,7 @@ struct NotificationHistoryTableView: View {
                 externalColumns
                 renewalInfoColumns
                 renewalInfoColumns2
+                renewalInfoColumns3
             } rows: {
                 ForEach(model.items, content: TableRow.init)
             }
