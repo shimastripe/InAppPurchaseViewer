@@ -6,5 +6,15 @@
   "timezone": "Asia/Tokyo",
   "labels": [
     "dependencies"
+  ],
+  "packageRules": [
+    {
+      "matchPackagePatterns": [
+        "*"
+      ],
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true
+    }
   ]
 }
