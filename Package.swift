@@ -20,7 +20,7 @@ let package = Package(
         .package(url: "https://github.com/maiyama18/LicensesPlugin", exact: "0.2.0"),
         .package(url: "https://github.com/sparkle-project/Sparkle", exact: "2.8.0"),
         .package(url: "https://github.com/pointfreeco/swift-dependencies", exact: "1.10.0"),
-        .package(url: "https://github.com/apple/swift-http-types", exact: "1.4.0"),
+        .package(url: "https://github.com/apple/swift-http-types", exact: "1.5.0"),
         .package(url: "https://github.com/swiftlang/swift-docc-plugin", exact: "1.4.5"),
     ],
     targets: [
