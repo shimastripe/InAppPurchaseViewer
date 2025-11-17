@@ -28,5 +28,7 @@
 	<string>https://shimastripe.com/InAppPurchaseViewer/appcast.xml</string>
 	<key>SUPublicEDKey</key>
 	<string>4KUgk6qr0lDGOxo4BtILoQjsXiZtX/9QhMNGUD4txS4=</string>
+	<key>UIDesignRequiresCompatibility</key>
+	<true/>
 </dict>
 </plist>

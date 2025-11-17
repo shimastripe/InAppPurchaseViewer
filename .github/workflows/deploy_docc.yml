@@ -17,9 +17,9 @@ concurrency:
 
 jobs:
   build:
-    runs-on: macos-15
+    runs-on: macos-26
     env:
-      DEVELOPER_DIR: "/Applications/Xcode_16.1.app/Contents/Developer"
+      DEVELOPER_DIR: "/Applications/Xcode_26.1.app/Contents/Developer"
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
@@ -30,12 +30,6 @@ jobs:
           key: spm-${{ hashFiles('Package.swift') }}
           restore-keys: |
             spm-
-      - name: Install development Swift
-        uses: SwiftyLab/setup-swift@latest
-        with:
-          development: true
-          check-latest: true
-          cache-snapshot: false
       - name: Build DocC
         run: |
           make build_docc
