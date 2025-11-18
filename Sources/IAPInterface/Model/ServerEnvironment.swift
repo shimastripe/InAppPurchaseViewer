@@ -25,4 +25,13 @@ public enum ServerEnvironment: Identifiable, Hashable, CustomStringConvertible, 
             "Production"
         }
     }
+
+    public var symbol: String {
+        switch self {
+        case .sandbox:
+            "hare"
+        case .production:
+            "tortoise"
+        }
+    }
 }

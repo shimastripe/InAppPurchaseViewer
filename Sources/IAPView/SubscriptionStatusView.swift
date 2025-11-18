@@ -69,12 +69,10 @@ struct SubscriptionStatusView: View {
         }
         .toolbar {
             ToolbarItem {
-                HStack(alignment: .firstTextBaseline, spacing: 8) {
-                    Text("Environment")
-                    Picker("", selection: $model.environment) {
-                        ForEach(ServerEnvironment.allCases) {
-                            Text($0.description).tag($0)
-                        }
+                Picker("", selection: $model.environment) {
+                    ForEach(ServerEnvironment.allCases) {
+                        Label("\($0.description)", systemImage: $0.symbol).tag($0).labelStyle(
+                            .titleAndIcon)
                     }
                 }
             }
