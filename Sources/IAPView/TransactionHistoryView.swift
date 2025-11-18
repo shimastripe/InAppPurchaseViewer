@@ -117,42 +117,29 @@ struct TransactionHistoryView: View {
             ToolbarItem {
                 Picker("", selection: $model.environment) {
                     ForEach(ServerEnvironment.allCases) {
-                        Label("\($0.description)", systemImage: $0.symbol).tag($0).labelStyle(
-                            .titleAndIcon)
+                        Label("\($0.description)", systemImage: $0.symbol)
+                            .labelStyle(
+                                .titleAndIcon
+                            )
+                            .tint($0.symbolColor)
+                            .tag($0)
                     }
                 }
             }
+            toolbarSpacer()
             ToolbarItem {
-                // Hack to align height with other Items
-                ZStack(alignment: .centerFirstTextBaseline) {
-                    HStack(alignment: .firstTextBaseline, spacing: 8) {
-                        Text("TransactionID").layoutPriority(1)
-                        TextField("2000000123456789", text: $model.transactionID).frame(
-                            idealWidth: 136)
-                    }
-                    // shadow item
-                    DatePicker(
-                        "", selection: .constant(.distantPast),
-                        displayedComponents: [.date, .hourAndMinute]
-                    ).opacity(0)
-                }
+                TextField("TransactionID...", text: $model.notificationHistoryTransactionID)
+                    .frame(idealWidth: 136)
             }
+            toolbarSpacer()
             ToolbarItem {
                 HStack(alignment: .firstTextBaseline, spacing: 8) {
-                    Text("StartDate")
-                    DatePicker(
-                        "", selection: $model.transactionStartDate,
-                        displayedComponents: [.date, .hourAndMinute])
+                    TextField("", value: $model.transactionStartDate, format: .dateTime)
+                    Text("〜")
+                    TextField("", value: $model.transactionEndDate, format: .dateTime)
                 }
             }
-            ToolbarItem {
-                HStack(alignment: .firstTextBaseline, spacing: 8) {
-                    Text("EndDate")
-                    DatePicker(
-                        "", selection: $model.transactionEndDate,
-                        displayedComponents: [.date, .hourAndMinute])
-                }
-            }
+            toolbarSpacer()
             ToolbarItem {
                 Button {
                     model.resetTransactionDates()
@@ -160,6 +147,7 @@ struct TransactionHistoryView: View {
                     Image(systemName: "eraser").bold()
                 }
             }
+            toolbarSpacer()
             ToolbarItem {
                 Button {
                     Task {
@@ -169,7 +157,7 @@ struct TransactionHistoryView: View {
                 } label: {
                     Image(systemName: "arrow.counterclockwise")
                         .bold()
-                        .foregroundStyle(model.isStaledParameters ? .orange : .gray.opacity(0.7))
+                        .foregroundStyle(model.isStaledParameters ? .orange : .primary)
                 }
                 .help("Retry")
             }

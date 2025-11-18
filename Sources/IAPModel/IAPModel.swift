@@ -76,7 +76,7 @@ public final class IAPModel {
 
     public func resetTransactionDates() {
         transactionStartDate = Calendar.current.date(
-            byAdding: .year, value: -2, to: .now)!
+            byAdding: .year, value: -5, to: .now)!
         transactionEndDate = Date.now
     }
 }

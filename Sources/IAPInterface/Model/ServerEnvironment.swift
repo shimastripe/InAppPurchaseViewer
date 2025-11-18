@@ -7,6 +7,8 @@
 
 import Foundation
 
+import struct SwiftUI.Color
+
 public enum ServerEnvironment: Identifiable, Hashable, CustomStringConvertible, CaseIterable,
     Sendable
 {
@@ -32,6 +34,15 @@ public enum ServerEnvironment: Identifiable, Hashable, CustomStringConvertible, 
             "hare"
         case .production:
             "tortoise"
+        }
+    }
+
+    public var symbolColor: Color {
+        switch self {
+        case .sandbox:
+            Color.red
+        case .production:
+            Color.green
         }
     }
 }
