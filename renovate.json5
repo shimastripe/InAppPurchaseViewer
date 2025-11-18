@@ -1,19 +1,19 @@
 {
-  "extends": [
-    "config:best-practices"
+  extends: [
+    'config:best-practices',
   ],
-  "timezone": "Asia/Tokyo",
-  "labels": [
-    "dependencies"
+  timezone: 'Asia/Tokyo',
+  labels: [
+    'dependencies',
   ],
-  "packageRules": [
+  packageRules: [
     {
-      "matchPackagePatterns": [
-        "*"
+      automerge: true,
+      automergeType: 'pr',
+      platformAutomerge: true,
+      matchPackageNames: [
+        '*',
       ],
-      "automerge": true,
-      "automergeType": "pr",
-      "platformAutomerge": true
-    }
-  ]
+    },
+  ],
 }
