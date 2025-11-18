@@ -13,6 +13,9 @@ struct TransactionHistoryView: View {
 
     @Environment(IAPModel.self)
     private var model
+    @State private var isPresentedInspector = false
+    @State var currentColumns: [IAPCellDataSource.TransactionDecodedPayload] = IAPCellDataSource
+        .defaultTransactionInfo
 
     private var state: LoadingViewState<TransactionHistory> {
         model.fetchTransactionHistoryState
@@ -36,6 +39,10 @@ struct TransactionHistoryView: View {
                 }
                 .padding()
                 Image(systemName: "flowchart").font(.largeTitle).scenePadding()
+                Button("Edit") {
+                    isPresentedInspector.toggle()
+                }
+                .padding(.trailing)
             }
             .padding()
             Divider().padding(.horizontal)
@@ -51,7 +58,10 @@ struct TransactionHistoryView: View {
                         }
                     }
                 } else if let transaction = state.value {
-                    TransactionHistoryTableView(model: transaction)
+                    TransactionHistoryTableView(
+                        model: transaction,
+                        currentColumns: $currentColumns.filter(\.isOn)
+                    )
 
                     if let hasMore = transaction.hasMore, hasMore,
                         transaction.revision != nil
@@ -112,6 +122,9 @@ struct TransactionHistoryView: View {
                 }
             }
             .frame(maxHeight: .infinity)
+        }
+        .inspector(isPresented: $isPresentedInspector) {
+            TransactionHistoryInspectorView(currentColumns: $currentColumns)
         }
         .toolbar {
             ToolbarItem {
