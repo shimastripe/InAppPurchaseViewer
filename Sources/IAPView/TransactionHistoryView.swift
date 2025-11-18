@@ -155,6 +155,13 @@ struct TransactionHistoryView: View {
             }
             ToolbarItem {
                 Button {
+                    model.resetTransactionDates()
+                } label: {
+                    Image(systemName: "eraser").bold()
+                }
+            }
+            ToolbarItem {
+                Button {
                     Task {
                         model.isStaledParameters = false
                         await model.execute(action: .clearTransactionHistoryError)

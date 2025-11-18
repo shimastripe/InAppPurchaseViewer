@@ -152,6 +152,13 @@ struct NotificationHistoryView: View {
             }
             ToolbarItem {
                 Button {
+                    model.resetNotificationDates()
+                } label: {
+                    Image(systemName: "eraser").bold()
+                }
+            }
+            ToolbarItem {
+                Button {
                     Task {
                         model.isNotificationHistoryStaledParameters = false
                         await model.execute(action: .clearNotificationHistoryError)

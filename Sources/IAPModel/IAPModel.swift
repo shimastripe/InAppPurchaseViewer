@@ -45,16 +45,17 @@ public final class IAPModel {
     /// whether highlighted notification history retry button
     public var isNotificationHistoryStaledParameters = false
     public var notificationHistoryTransactionID = ""
-    public var notificationStartDate = Calendar.current.date(
-        byAdding: .weekOfMonth, value: -2, to: .now)!
+    public var notificationStartDate = Date.distantPast
     public var notificationEndDate = Date.now
 
     // MARK: - Transaction History parameters
-    public var transactionStartDate = Calendar.current.date(
-        byAdding: .year, value: -2, to: .now)!
+    public var transactionStartDate = Date.distantPast
     public var transactionEndDate = Date.now
 
-    public init() {}
+    public init() {
+        resetNotificationDates()
+        resetTransactionDates()
+    }
 
     public var isSetupLevel: Float {
         switch true {
@@ -65,6 +66,18 @@ public final class IAPModel {
     }
     public var isCredentialEditing: Bool {
         credentialState.value == nil
+    }
+
+    public func resetNotificationDates() {
+        notificationStartDate = Calendar.current.date(
+            byAdding: .weekOfMonth, value: -2, to: .now)!
+        notificationEndDate = Date.now
+    }
+
+    public func resetTransactionDates() {
+        transactionStartDate = Calendar.current.date(
+            byAdding: .year, value: -2, to: .now)!
+        transactionEndDate = Date.now
     }
 }
 
