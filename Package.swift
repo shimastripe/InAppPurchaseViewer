@@ -17,7 +17,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/shimastripe/app-store-server-library-swift",
-            revision: "12bf954e9772c0368e319821f913db932e8ac261"
+            revision: "741766999f37bf4e18da1b0300148dfe881071f6"
         ),
         .package(url: "https://github.com/kishikawakatsumi/KeychainAccess", exact: "4.2.2"),
         .package(url: "https://github.com/maiyama18/LicensesPlugin", exact: "0.2.0"),
