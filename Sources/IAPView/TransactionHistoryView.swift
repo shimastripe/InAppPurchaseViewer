@@ -128,7 +128,7 @@ struct TransactionHistoryView: View {
             }
             toolbarSpacer()
             ToolbarItem {
-                TextField("TransactionID...", text: $model.notificationHistoryTransactionID)
+                TextField("TransactionID...", text: $model.transactionID)
                     .frame(idealWidth: 136)
             }
             toolbarSpacer()
