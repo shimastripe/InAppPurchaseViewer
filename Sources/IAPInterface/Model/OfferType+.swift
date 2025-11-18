@@ -18,8 +18,8 @@ extension OfferType: @retroactive CustomStringConvertible {
             "introductoryOffer"
         case .promotionalOffer:
             "promotionalOffer"
-        case .subscriptionOfferCode:
-            "subscriptionOfferCode"
+        case .offerCode:
+            "offerCode"
         case .winBackOffer:
             "winBackOffer"
         }
