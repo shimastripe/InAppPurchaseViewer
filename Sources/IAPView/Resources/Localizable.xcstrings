@@ -7,6 +7,9 @@
     "-----BEGIN PRIVATE KEY-----XXXXXX-----END PRIVATE KEY-----" : {
 
     },
+    "〜" : {
+
+    },
     "(%lld notifications x %lld columns)" : {
       "localizations" : {
         "en" : {
@@ -64,9 +67,6 @@
 
     },
     "200" : {
-
-    },
-    "2000000123456789" : {
 
     },
     "Account" : {
@@ -135,16 +135,10 @@
     "eligibleWinBackOfferIds" : {
 
     },
-    "EndDate" : {
-
-    },
     "Enter TransactionID ⤴" : {
 
     },
     "environment" : {
-
-    },
-    "Environment" : {
 
     },
     "expirationIntent" : {
@@ -334,9 +328,6 @@
     "Space icons created by Freepik - Flaticon" : {
 
     },
-    "StartDate" : {
-
-    },
     "status" : {
 
     },
@@ -373,7 +364,7 @@
     "transactionID" : {
 
     },
-    "TransactionID" : {
+    "TransactionID..." : {
 
     },
     "transactionReason" : {

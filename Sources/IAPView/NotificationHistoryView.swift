@@ -112,46 +112,39 @@ struct NotificationHistoryView: View {
         }
         .toolbar {
             ToolbarItem {
-                HStack(alignment: .firstTextBaseline, spacing: 8) {
-                    Text("Environment")
-                    Picker("", selection: $model.environment) {
-                        ForEach(ServerEnvironment.allCases) {
-                            Text($0.description).tag($0)
-                        }
+                Picker("", selection: $model.environment) {
+                    ForEach(ServerEnvironment.allCases) {
+                        Label("\($0.description)", systemImage: $0.symbol)
+                            .labelStyle(
+                                .titleAndIcon
+                            )
+                            .tint($0.symbolColor)
+                            .tag($0)
                     }
                 }
             }
+            toolbarSpacer()
             ToolbarItem {
-                // Hack to align height with other Items
-                ZStack(alignment: .centerFirstTextBaseline) {
-                    HStack(alignment: .firstTextBaseline, spacing: 8) {
-                        Text("TransactionID").layoutPriority(1)
-                        TextField("2000000123456789", text: $model.notificationHistoryTransactionID)
-                            .frame(idealWidth: 136)
-                    }
-                    // shadow item
-                    DatePicker(
-                        "", selection: .constant(.distantPast),
-                        displayedComponents: [.date, .hourAndMinute]
-                    ).opacity(0)
-                }
+                TextField("TransactionID...", text: $model.notificationHistoryTransactionID)
+                    .frame(idealWidth: 136)
             }
+            toolbarSpacer()
             ToolbarItem {
                 HStack(alignment: .firstTextBaseline, spacing: 8) {
-                    Text("StartDate")
-                    DatePicker(
-                        "", selection: $model.notificationStartDate,
-                        displayedComponents: [.date, .hourAndMinute])
+                    TextField("", value: $model.notificationStartDate, format: .dateTime)
+                    Text("〜")
+                    TextField("", value: $model.notificationEndDate, format: .dateTime)
                 }
             }
+            toolbarSpacer()
             ToolbarItem {
-                HStack(alignment: .firstTextBaseline, spacing: 8) {
-                    Text("EndDate")
-                    DatePicker(
-                        "", selection: $model.notificationEndDate,
-                        displayedComponents: [.date, .hourAndMinute])
+                Button {
+                    model.resetNotificationDates()
+                } label: {
+                    Image(systemName: "eraser").bold()
                 }
             }
+            toolbarSpacer()
             ToolbarItem {
                 Button {
                     Task {
@@ -163,7 +156,7 @@ struct NotificationHistoryView: View {
                         .bold()
                         .foregroundStyle(
                             model.isNotificationHistoryStaledParameters
-                                ? .orange : .gray.opacity(0.7))
+                                ? .orange : .primary)
                 }
                 .help("Retry")
             }
