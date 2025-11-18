@@ -3,6 +3,14 @@
     <channel>
         <title>InAppPurchaseViewer</title>
         <item>
+            <title>1.8.1</title>
+            <pubDate>Wed, 19 Nov 2025 03:50:14 +0900</pubDate>
+            <sparkle:version>37</sparkle:version>
+            <sparkle:shortVersionString>1.8.1</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/shimastripe/InAppPurchaseViewer/releases/download/1.8.1/InAppPurchaseViewer_1.8.1.dmg" length="15389477" type="application/octet-stream" sparkle:edSignature="wvm6DciHNQ2bR0xby4JZbm/lY1lVtqNLURJrtnarHf+YvDXvEfuX3bYEKJpITtkG4Lm0VgtgRrED8rsFa1ekAg=="/>
+        </item>
+        <item>
             <title>1.8.0</title>
             <pubDate>Wed, 19 Nov 2025 01:45:53 +0900</pubDate>
             <sparkle:version>36</sparkle:version>
@@ -17,14 +25,6 @@
             <sparkle:shortVersionString>1.7.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
             <enclosure url="https://github.com/shimastripe/InAppPurchaseViewer/releases/download/1.7.0/InAppPurchaseViewer_1.7.0.dmg" length="15384913" type="application/octet-stream" sparkle:edSignature="7oKQf819ZZNaXmxY1+mpe/hQZJyHSqIWkXCxwFjSQRBVZYMQTmDAeVs+dH2Lemb+Wf8a2YvTxKRnItyjTkVaBA=="/>
-        </item>
-        <item>
-            <title>1.6.0</title>
-            <pubDate>Sat, 08 Mar 2025 16:15:05 +0900</pubDate>
-            <sparkle:version>34</sparkle:version>
-            <sparkle:shortVersionString>1.6.0</sparkle:shortVersionString>
-            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/shimastripe/InAppPurchaseViewer/releases/download/1.6.0/InAppPurchaseViewer_1.6.0.dmg" length="14038445" type="application/octet-stream" sparkle:edSignature="YMzEfIFC8eYcgjNS7DxaGf9OwhP0KFDBxdEyDDwbsy8UcOkCL6++IcnU2x8Ag5QG+NXFMii85nIrW6UMvy8rDQ=="/>
         </item>
     </channel>
 </rss>
