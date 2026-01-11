@@ -10,7 +10,7 @@ import SwiftUI
 
 struct TransactionHistoryTableView: View {
 
-    private let columnCounts = 26
+    private let columnCounts = 28
 
     @ScaledMetric private var iconSize: CGFloat = 20
 
@@ -138,6 +138,18 @@ struct TransactionHistoryTableView: View {
         .width(ideal: 120)
     }
 
+    @TableColumnBuilder<JWSTransactionDecodedPayload, Never>
+    var transactionColumns3: some TableColumnContent<JWSTransactionDecodedPayload, Never> {
+        TableColumn("appTransactionId") {
+            CellText($0.appTransactionId)
+        }
+        .width(ideal: 120)
+        TableColumn("offerPeriod") {
+            CellText($0.offerPeriod)
+        }
+        .width(ideal: 120)
+    }
+
     var body: some View {
         Text("(\(model.items.count) transactions x \(columnCounts) columns)").frame(
             maxWidth: .infinity, alignment: .leading
@@ -147,6 +159,7 @@ struct TransactionHistoryTableView: View {
             mainColumns
             transactionColumns
             transactionColumns2
+            transactionColumns3
         } rows: {
             ForEach(model.items, content: TableRow.init)
         }
