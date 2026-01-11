@@ -120,6 +120,9 @@
     "Close" : {
 
     },
+    "Columns" : {
+
+    },
     "com.shimastripe.XXXXXX" : {
 
     },
@@ -187,6 +190,9 @@
     "gracePeriodExpiresDate" : {
 
     },
+    "Hide All" : {
+
+    },
     "In-app purchase history" : {
 
     },
@@ -245,9 +251,6 @@
     "offerType" : {
 
     },
-    "Only Failures" : {
-
-    },
     "originalPurchaseDate" : {
 
     },
@@ -294,6 +297,12 @@
     "renewalPrice" : {
 
     },
+    "Request only the notifications that haven't reached your server successfully. The response also includes notifications that the App Store server is currently retrying to send to your server." : {
+
+    },
+    "Reset Order" : {
+
+    },
     "Retrieves 200 items for a given period of time" : {
 
     },
@@ -328,6 +337,9 @@
     "Setup..." : {
 
     },
+    "Show All" : {
+
+    },
     "signedDate" : {
 
     },
@@ -353,6 +365,9 @@
 
     },
     "subType" : {
+
+    },
+    "Toggle column settings" : {
 
     },
     "tokenCreationDate" : {
