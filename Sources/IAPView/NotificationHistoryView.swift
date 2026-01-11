@@ -21,6 +21,43 @@ struct NotificationHistoryView: View {
     var body: some View {
         @Bindable var model = model
 
+        mainContent(model: model)
+            .toolbar { toolbarContent(bindableModel: $model) }
+            .onChange(of: model.environment) { _, _ in
+                Task {
+                    await model.execute(action: .clearNotificationHistoryError)
+                }
+            }
+            .onChange(of: model.notificationFilterOption) { oldValue, newValue in
+                guard oldValue != newValue else { return }
+                Task {
+                    await model.execute(action: .clearNotificationHistoryError)
+                }
+            }
+            .onChange(of: model.onlyFailuresFilter) { oldValue, newValue in
+                guard oldValue != newValue else { return }
+                Task {
+                    await model.execute(action: .clearNotificationHistoryError)
+                }
+            }
+            .onChange(of: [
+                model.notificationHistoryTransactionID, model.notificationStartDate.formatted(),
+                model.notificationEndDate.formatted(),
+            ]) { (oldValue, newValue) in
+                guard oldValue != newValue else { return }
+                model.isNotificationHistoryStaledParameters = true
+            }
+            .onSubmit {
+                Task {
+                    model.isNotificationHistoryStaledParameters = false
+                    await model.execute(action: .clearNotificationHistoryError)
+                }
+            }
+            .textSelection(.enabled)
+    }
+
+    @ViewBuilder
+    private func mainContent(model: IAPModel) -> some View {
         VStack {
             HStack {
                 VStack(spacing: 12) {
@@ -110,75 +147,119 @@ struct NotificationHistoryView: View {
             }
             .frame(maxHeight: .infinity)
         }
-        .toolbar {
-            ToolbarItem {
-                Picker("", selection: $model.environment) {
-                    ForEach(ServerEnvironment.allCases) {
-                        Label("\($0.description)", systemImage: $0.symbol)
-                            .labelStyle(
-                                .titleAndIcon
-                            )
-                            .tint($0.symbolColor)
-                            .tag($0)
+    }
+
+    @ToolbarContentBuilder
+    private func toolbarContent(bindableModel: Bindable<IAPModel>) -> some ToolbarContent {
+        toolbarLeadingContent(bindableModel: bindableModel)
+        toolbarFilterContent(bindableModel: bindableModel)
+        toolbarTrailingContent(bindableModel: bindableModel)
+    }
+
+    @ToolbarContentBuilder
+    private func toolbarLeadingContent(bindableModel: Bindable<IAPModel>) -> some ToolbarContent {
+        ToolbarItem {
+            Picker("", selection: bindableModel.environment) {
+                ForEach(ServerEnvironment.allCases) {
+                    Label("\($0.description)", systemImage: $0.symbol)
+                        .labelStyle(.titleAndIcon)
+                        .tint($0.symbolColor)
+                        .tag($0)
+                }
+            }
+        }
+        toolbarSpacer()
+        ToolbarItem {
+            TextField("TransactionID...", text: bindableModel.notificationHistoryTransactionID)
+                .frame(idealWidth: 136)
+        }
+        toolbarSpacer()
+        ToolbarItem {
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                TextField("", value: bindableModel.notificationStartDate, format: .dateTime)
+                Text("〜")
+                TextField("", value: bindableModel.notificationEndDate, format: .dateTime)
+            }
+        }
+        toolbarSpacer()
+    }
+
+    @ToolbarContentBuilder
+    private func toolbarFilterContent(bindableModel: Bindable<IAPModel>) -> some ToolbarContent {
+        ToolbarItem {
+            Menu {
+                Button {
+                    bindableModel.wrappedValue.notificationFilterOption = nil
+                } label: {
+                    if bindableModel.wrappedValue.notificationFilterOption == nil {
+                        Label("All Types", systemImage: "checkmark")
+                    } else {
+                        Text("All Types")
                     }
                 }
-            }
-            toolbarSpacer()
-            ToolbarItem {
-                TextField("TransactionID...", text: $model.notificationHistoryTransactionID)
-                    .frame(idealWidth: 136)
-            }
-            toolbarSpacer()
-            ToolbarItem {
-                HStack(alignment: .firstTextBaseline, spacing: 8) {
-                    TextField("", value: $model.notificationStartDate, format: .dateTime)
-                    Text("〜")
-                    TextField("", value: $model.notificationEndDate, format: .dateTime)
-                }
-            }
-            toolbarSpacer()
-            ToolbarItem {
-                Button {
-                    model.resetNotificationDates()
-                } label: {
-                    Image(systemName: "eraser").bold()
-                }
-            }
-            toolbarSpacer()
-            ToolbarItem {
-                Button {
-                    Task {
-                        model.isNotificationHistoryStaledParameters = false
-                        await model.execute(action: .clearNotificationHistoryError)
+                Divider()
+                ForEach(NotificationFilterOption.allOptions) { option in
+                    Button {
+                        bindableModel.wrappedValue.notificationFilterOption = option
+                    } label: {
+                        if bindableModel.wrappedValue.notificationFilterOption == option {
+                            Label(option.displayName, systemImage: "checkmark")
+                        } else {
+                            Text(option.displayName)
+                        }
                     }
-                } label: {
-                    Image(systemName: "arrow.counterclockwise")
-                        .bold()
-                        .foregroundStyle(
-                            model.isNotificationHistoryStaledParameters
-                                ? .orange : .primary)
                 }
-                .help("Retry")
+            } label: {
+                Image(systemName: "line.3.horizontal.decrease.circle")
+                    .symbolVariant(
+                        bindableModel.wrappedValue.notificationFilterOption == nil ? .none : .fill)
+            }
+            .disabled(!bindableModel.wrappedValue.notificationHistoryTransactionID.isEmpty)
+        }
+        toolbarSpacer()
+        ToolbarItem {
+            Button {
+                if bindableModel.wrappedValue.onlyFailuresFilter == true {
+                    bindableModel.wrappedValue.onlyFailuresFilter = nil
+                } else {
+                    bindableModel.wrappedValue.onlyFailuresFilter = true
+                }
+            } label: {
+                Image(systemName: "exclamationmark.triangle")
+                    .symbolVariant(
+                        bindableModel.wrappedValue.onlyFailuresFilter == true ? .fill : .none)
+            }
+            .help(
+                "Request only the notifications that haven't reached your server successfully. The response also includes notifications that the App Store server is currently retrying to send to your server."
+            )
+        }
+        toolbarSpacer()
+    }
+
+    @ToolbarContentBuilder
+    private func toolbarTrailingContent(bindableModel: Bindable<IAPModel>) -> some ToolbarContent {
+        ToolbarItem {
+            Button {
+                bindableModel.wrappedValue.resetNotificationDates()
+            } label: {
+                Image(systemName: "eraser").bold()
             }
         }
-        .onChange(of: model.environment) { _, _ in
-            Task {
-                await model.execute(action: .clearNotificationHistoryError)
+        toolbarSpacer()
+        ToolbarItem {
+            Button {
+                Task {
+                    bindableModel.wrappedValue.isNotificationHistoryStaledParameters = false
+                    await bindableModel.wrappedValue.execute(action: .clearNotificationHistoryError)
+                }
+            } label: {
+                Image(systemName: "arrow.counterclockwise")
+                    .bold()
+                    .foregroundStyle(
+                        bindableModel.wrappedValue.isNotificationHistoryStaledParameters
+                            ? .orange : .primary)
             }
+            .help("Retry")
         }
-        .onChange(of: [
-            model.notificationHistoryTransactionID, model.notificationStartDate.formatted(),
-            model.notificationEndDate.formatted(),
-        ]) { (oldValue, newValue) in
-            guard oldValue != newValue else { return }
-            model.isNotificationHistoryStaledParameters = true
-        }
-        .onSubmit {
-            Task {
-                model.isNotificationHistoryStaledParameters = false
-                await model.execute(action: .clearNotificationHistoryError)
-            }
-        }
-        .textSelection(.enabled)
     }
 }

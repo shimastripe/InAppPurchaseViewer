@@ -53,6 +53,13 @@ let package = Package(
                 .product(name: "AppStoreServerLibrary", package: "app-store-server-library-swift"),
             ]
         ),
+        .testTarget(
+            name: "IAPInterfaceTests",
+            dependencies: [
+                "IAPInterface",
+                .product(name: "AppStoreServerLibrary", package: "app-store-server-library-swift"),
+            ]
+        ),
         .target(
             name: "IAPModel",
             dependencies: [

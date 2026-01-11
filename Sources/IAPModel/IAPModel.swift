@@ -47,6 +47,8 @@ public final class IAPModel {
     public var notificationHistoryTransactionID = ""
     public var notificationStartDate = Date.distantPast
     public var notificationEndDate = Date.now
+    public var notificationFilterOption: NotificationFilterOption? = nil
+    public var onlyFailuresFilter: Bool? = nil
 
     // MARK: - Transaction History parameters
     public var transactionStartDate = Date.distantPast
@@ -206,11 +208,16 @@ extension IAPModel {
             do {
                 fetchNotificationHistoryState.startLoading()
 
+                // transactionId and notificationType are mutually exclusive in the API
                 let id = transactionID.isEmpty ? nil : transactionID
+                let filterOption = id == nil ? notificationFilterOption : nil
+                let failuresFilter = id == nil ? onlyFailuresFilter : nil
 
                 let request = NotificationHistoryRequest(
-                    startDate: startDate, endDate: endDate, notificationType: nil,
-                    notificationSubtype: nil, transactionId: id, onlyFailures: nil)
+                    startDate: startDate, endDate: endDate,
+                    notificationType: filterOption?.notificationType,
+                    notificationSubtype: filterOption?.subtype,
+                    transactionId: id, onlyFailures: failuresFilter)
                 let model = try await appStoreServerClient.fetchNotificationHistory(
                     request: request, paginationToken: nil,
                     credential: credential,
@@ -233,11 +240,16 @@ extension IAPModel {
             do {
                 fetchNotificationHistoryState.startAppendLoading()
 
+                // transactionId and notificationType are mutually exclusive in the API
                 let id = transactionID.isEmpty ? nil : transactionID
+                let filterOption = id == nil ? notificationFilterOption : nil
+                let failuresFilter = id == nil ? onlyFailuresFilter : nil
 
                 let request = NotificationHistoryRequest(
-                    startDate: startDate, endDate: endDate, notificationType: nil,
-                    notificationSubtype: nil, transactionId: id, onlyFailures: nil)
+                    startDate: startDate, endDate: endDate,
+                    notificationType: filterOption?.notificationType,
+                    notificationSubtype: filterOption?.subtype,
+                    transactionId: id, onlyFailures: failuresFilter)
                 let model = try await appStoreServerClient.fetchNotificationHistory(
                     request: request, paginationToken: notificationHistory.paginationToken,
                     credential: credential, rootCertificate: rootCertificate,
@@ -273,11 +285,16 @@ extension IAPModel {
                         break
                     }
 
+                    // transactionId and notificationType are mutually exclusive in the API
                     let id = transactionID.isEmpty ? nil : transactionID
+                    let filterOption = id == nil ? notificationFilterOption : nil
+                    let failuresFilter = id == nil ? onlyFailuresFilter : nil
 
                     let request = NotificationHistoryRequest(
-                        startDate: startDate, endDate: endDate, notificationType: nil,
-                        notificationSubtype: nil, transactionId: id, onlyFailures: nil)
+                        startDate: startDate, endDate: endDate,
+                        notificationType: filterOption?.notificationType,
+                        notificationSubtype: filterOption?.subtype,
+                        transactionId: id, onlyFailures: failuresFilter)
                     let model = try await appStoreServerClient.fetchNotificationHistory(
                         request: request, paginationToken: paginationToken,
                         credential: credential,

@@ -78,6 +78,9 @@
     "Add renewal information columns" : {
 
     },
+    "All Types" : {
+
+    },
     "App Apple ID" : {
 
     },
@@ -240,6 +243,9 @@
 
     },
     "offerType" : {
+
+    },
+    "Only Failures" : {
 
     },
     "originalPurchaseDate" : {
