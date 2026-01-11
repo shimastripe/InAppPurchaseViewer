@@ -51,7 +51,6 @@ struct TransactionColumnInspectorView: View {
             }
         }
         .listStyle(.sidebar)
-        .navigationTitle("Columns")
     }
 
     private func showAllColumns() {

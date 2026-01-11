@@ -5,7 +5,16 @@
 //  Created by Claude on 2025/01/11.
 //
 
+import IAPInterface
 import SwiftUI
+
+/// Column width categories for transaction table
+enum ColumnWidth: CGFloat {
+    case small = 60  // Short values: price, currency, quantity, storefront
+    case medium = 120  // Dates, most text fields
+    case large = 140  // IDs, bundleId, productId
+    case extraLarge = 180  // Long enum values: type, transactionReason
+}
 
 /// Unique identifiers for all transaction table columns.
 /// Used with TableColumnCustomization for persistence and visibility control.
@@ -79,6 +88,86 @@ enum TransactionColumnID: String, CaseIterable, Identifiable, Codable {
     var documentationURL: URL {
         let baseURL = "https://developer.apple.com/documentation/appstoreserverapi/"
         return URL(string: baseURL + displayName.lowercased())!
+    }
+
+    /// Column width category
+    var width: ColumnWidth {
+        switch self {
+        case .price, .currency, .quantity, .storefront:
+            .small
+        case .environment, .storefrontId:
+            .medium
+        case .purchaseDate, .originalPurchaseDate, .expiresDate, .revocationDate, .signedDate,
+            .offerIdentifier, .offerType, .offerDiscountType, .offerPeriod,
+            .appAccountToken, .revocationReason, .isUpgraded, .appTransactionId:
+            .medium
+        case .originalTransactionID, .transactionID, .bundleId, .productId, .webOrderLineItemId:
+            .large
+        case .transactionReason, .subscriptionGroupIdentifier, .inAppOwnershipType, .type:
+            .extraLarge
+        }
+    }
+
+    /// Extract display value from payload
+    func value(from payload: JWSTransactionDecodedPayload) -> String? {
+        switch self {
+        case .purchaseDate:
+            payload.purchaseDate?.formatted()
+        case .transactionReason:
+            payload.transactionReason?.rawValue
+        case .price:
+            payload.price?.description
+        case .currency:
+            payload.currency
+        case .originalTransactionID:
+            payload.originalTransactionId
+        case .transactionID:
+            payload.transactionId
+        case .appTransactionId:
+            payload.appTransactionId
+        case .originalPurchaseDate:
+            payload.originalPurchaseDate?.formatted()
+        case .expiresDate:
+            payload.expiresDate?.formatted()
+        case .offerIdentifier:
+            payload.offerIdentifier
+        case .offerType:
+            payload.offerType?.description
+        case .offerDiscountType:
+            payload.offerDiscountType?.rawValue
+        case .offerPeriod:
+            payload.offerPeriod
+        case .appAccountToken:
+            payload.appAccountToken?.uuidString
+        case .bundleId:
+            payload.bundleId
+        case .productId:
+            payload.productId
+        case .subscriptionGroupIdentifier:
+            payload.subscriptionGroupIdentifier
+        case .quantity:
+            payload.quantity?.description
+        case .type:
+            payload.type?.rawValue
+        case .inAppOwnershipType:
+            payload.inAppOwnershipType?.rawValue
+        case .environment:
+            payload.environment?.rawValue
+        case .storefront:
+            payload.storefront
+        case .storefrontId:
+            payload.storefrontId
+        case .webOrderLineItemId:
+            payload.webOrderLineItemId
+        case .revocationReason:
+            payload.revocationReason?.description
+        case .revocationDate:
+            payload.revocationDate?.formatted()
+        case .isUpgraded:
+            payload.isUpgraded?.description
+        case .signedDate:
+            payload.signedDate?.formatted()
+        }
     }
 }
 
