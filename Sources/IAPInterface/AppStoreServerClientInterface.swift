@@ -30,7 +30,7 @@ public struct AppStoreServerClient: Sendable {
     public var fetchNotificationHistory:
         @Sendable
         (
-            _ startDate: Date, _ endDate: Date, _ transactionID: String?,
+            _ request: NotificationHistoryRequest,
             _ paginationToken: String?,
             _ credential: IAPEnvironment, _ rootCertificate: Data, _ environment: ServerEnvironment
         )
@@ -66,7 +66,7 @@ extension AppStoreServerClient: TestDependencyKey {
                 }
 
         return .init(
-            fetchNotificationHistory: { _, _, _, _, _, _, _ in
+            fetchNotificationHistory: { _, _, _, _, _ in
                 NotificationHistoryModel(
                     paginationToken: "paginationToken", hasMore: true,
                     items: [

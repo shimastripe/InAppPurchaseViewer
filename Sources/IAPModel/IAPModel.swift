@@ -208,8 +208,11 @@ extension IAPModel {
 
                 let id = transactionID.isEmpty ? nil : transactionID
 
+                let request = NotificationHistoryRequest(
+                    startDate: startDate, endDate: endDate, notificationType: nil,
+                    notificationSubtype: nil, transactionId: id, onlyFailures: nil)
                 let model = try await appStoreServerClient.fetchNotificationHistory(
-                    startDate: startDate, endDate: endDate, transactionID: id, paginationToken: nil,
+                    request: request, paginationToken: nil,
                     credential: credential,
                     rootCertificate: rootCertificate,
                     environment: environment)
@@ -232,10 +235,12 @@ extension IAPModel {
 
                 let id = transactionID.isEmpty ? nil : transactionID
 
+                let request = NotificationHistoryRequest(
+                    startDate: startDate, endDate: endDate, notificationType: nil,
+                    notificationSubtype: nil, transactionId: id, onlyFailures: nil)
                 let model = try await appStoreServerClient.fetchNotificationHistory(
-                    startDate: startDate, endDate: endDate, transactionID: id,
-                    paginationToken: notificationHistory.paginationToken, credential: credential,
-                    rootCertificate: rootCertificate,
+                    request: request, paginationToken: notificationHistory.paginationToken,
+                    credential: credential, rootCertificate: rootCertificate,
                     environment: environment)
                 let appendModel = NotificationHistoryModel(
                     paginationToken: model.paginationToken, hasMore: model.hasMore,
@@ -270,9 +275,12 @@ extension IAPModel {
 
                     let id = transactionID.isEmpty ? nil : transactionID
 
+                    let request = NotificationHistoryRequest(
+                        startDate: startDate, endDate: endDate, notificationType: nil,
+                        notificationSubtype: nil, transactionId: id, onlyFailures: nil)
                     let model = try await appStoreServerClient.fetchNotificationHistory(
-                        startDate: startDate, endDate: endDate, transactionID: id,
-                        paginationToken: paginationToken, credential: credential,
+                        request: request, paginationToken: paginationToken,
+                        credential: credential,
                         rootCertificate: rootCertificate,
                         environment: environment)
 
