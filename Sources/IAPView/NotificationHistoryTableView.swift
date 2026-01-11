@@ -16,13 +16,13 @@ struct NotificationHistoryTableView: View {
     private var columnCounts: Int {
         switch (isMoreTransactionInfo, isDisplayedRenewalInfo) {
         case (true, true):
-            43
+            56
         case (true, false):
-            24
+            35
         case (false, true):
-            29
+            34
         case (false, false):
-            10
+            13
         }
     }
 

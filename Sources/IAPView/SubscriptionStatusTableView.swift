@@ -16,11 +16,11 @@ struct SubscriptionStatusTableView: View {
     private var columnCounts: Int {
         switch (isMoreTransactionInfo, isDisplayedRenewalInfo) {
         case (true, true):
-            43
+            50
         case (true, false):
             29
         case (false, true):
-            23
+            30
         case (false, false):
             9
         }

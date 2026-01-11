@@ -47,6 +47,8 @@ public final class IAPModel {
     public var notificationHistoryTransactionID = ""
     public var notificationStartDate = Date.distantPast
     public var notificationEndDate = Date.now
+    public var notificationFilterOption: NotificationFilterOption? = nil
+    public var onlyFailuresFilter: Bool? = nil
 
     // MARK: - Transaction History parameters
     public var transactionStartDate = Date.distantPast
@@ -206,10 +208,18 @@ extension IAPModel {
             do {
                 fetchNotificationHistoryState.startLoading()
 
+                // transactionId and notificationType are mutually exclusive in the API
                 let id = transactionID.isEmpty ? nil : transactionID
+                let filterOption = id == nil ? notificationFilterOption : nil
+                let failuresFilter = id == nil ? onlyFailuresFilter : nil
 
+                let request = NotificationHistoryRequest(
+                    startDate: startDate, endDate: endDate,
+                    notificationType: filterOption?.notificationType,
+                    notificationSubtype: filterOption?.subtype,
+                    transactionId: id, onlyFailures: failuresFilter)
                 let model = try await appStoreServerClient.fetchNotificationHistory(
-                    startDate: startDate, endDate: endDate, transactionID: id, paginationToken: nil,
+                    request: request, paginationToken: nil,
                     credential: credential,
                     rootCertificate: rootCertificate,
                     environment: environment)
@@ -230,12 +240,19 @@ extension IAPModel {
             do {
                 fetchNotificationHistoryState.startAppendLoading()
 
+                // transactionId and notificationType are mutually exclusive in the API
                 let id = transactionID.isEmpty ? nil : transactionID
+                let filterOption = id == nil ? notificationFilterOption : nil
+                let failuresFilter = id == nil ? onlyFailuresFilter : nil
 
+                let request = NotificationHistoryRequest(
+                    startDate: startDate, endDate: endDate,
+                    notificationType: filterOption?.notificationType,
+                    notificationSubtype: filterOption?.subtype,
+                    transactionId: id, onlyFailures: failuresFilter)
                 let model = try await appStoreServerClient.fetchNotificationHistory(
-                    startDate: startDate, endDate: endDate, transactionID: id,
-                    paginationToken: notificationHistory.paginationToken, credential: credential,
-                    rootCertificate: rootCertificate,
+                    request: request, paginationToken: notificationHistory.paginationToken,
+                    credential: credential, rootCertificate: rootCertificate,
                     environment: environment)
                 let appendModel = NotificationHistoryModel(
                     paginationToken: model.paginationToken, hasMore: model.hasMore,
@@ -268,11 +285,19 @@ extension IAPModel {
                         break
                     }
 
+                    // transactionId and notificationType are mutually exclusive in the API
                     let id = transactionID.isEmpty ? nil : transactionID
+                    let filterOption = id == nil ? notificationFilterOption : nil
+                    let failuresFilter = id == nil ? onlyFailuresFilter : nil
 
+                    let request = NotificationHistoryRequest(
+                        startDate: startDate, endDate: endDate,
+                        notificationType: filterOption?.notificationType,
+                        notificationSubtype: filterOption?.subtype,
+                        transactionId: id, onlyFailures: failuresFilter)
                     let model = try await appStoreServerClient.fetchNotificationHistory(
-                        startDate: startDate, endDate: endDate, transactionID: id,
-                        paginationToken: paginationToken, credential: credential,
+                        request: request, paginationToken: paginationToken,
+                        credential: credential,
                         rootCertificate: rootCertificate,
                         environment: environment)
 

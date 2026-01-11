@@ -14,7 +14,7 @@ extension AppStoreServerClient: DependencyKey {
     public static let liveValue: AppStoreServerClient = {
         .init(
             fetchNotificationHistory: {
-                startDate, endDate, transactionID, paginationToken, credential, rootCertificate,
+                request, paginationToken, credential, rootCertificate,
                 environment in
 
                 let client = try AppStoreServerAPIClient(
@@ -32,8 +32,7 @@ extension AppStoreServerClient: DependencyKey {
 
                 let response = await client.getNotificationHistory(
                     paginationToken: paginationToken,
-                    notificationHistoryRequest: .init(
-                        startDate: startDate, endDate: endDate, transactionId: transactionID))
+                    notificationHistoryRequest: request)
 
                 switch response {
                 case .success(let response):
