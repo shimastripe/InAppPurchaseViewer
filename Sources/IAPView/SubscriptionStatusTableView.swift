@@ -16,9 +16,9 @@ struct SubscriptionStatusTableView: View {
     private var columnCounts: Int {
         switch (isMoreTransactionInfo, isDisplayedRenewalInfo) {
         case (true, true):
-            41
+            43
         case (true, false):
-            27
+            29
         case (false, true):
             23
         case (false, false):
@@ -157,6 +157,18 @@ struct SubscriptionStatusTableView: View {
     }
 
     @TableColumnBuilder<LastTransaction, Never>
+    var transactionColumns3: some TableColumnContent<LastTransaction, Never> {
+        TableColumn("appTransactionId") {
+            CellText($0.transaction?.appTransactionId)
+        }
+        .width(ideal: 120)
+        TableColumn("offerPeriod") {
+            CellText($0.transaction?.offerPeriod)
+        }
+        .width(ideal: 120)
+    }
+
+    @TableColumnBuilder<LastTransaction, Never>
     var renewalInfoColumns: some TableColumnContent<LastTransaction, Never> {
         TableColumn("expirationIntent") {
             CellText($0.renewalInfo?.expirationIntent?.description)
@@ -279,6 +291,7 @@ struct SubscriptionStatusTableView: View {
                 mainColumns
                 transactionColumns
                 transactionColumns2
+                transactionColumns3
                 renewalInfoColumns
                 renewalInfoColumns2
                 renewalInfoColumns3
@@ -291,6 +304,7 @@ struct SubscriptionStatusTableView: View {
                 mainColumns
                 transactionColumns
                 transactionColumns2
+                transactionColumns3
             } rows: {
                 ForEach(items, content: TableRow.init)
             }
