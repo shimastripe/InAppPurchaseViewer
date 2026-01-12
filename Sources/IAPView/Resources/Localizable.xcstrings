@@ -40,6 +40,9 @@
         }
       }
     },
+    "(1 transaction x %lld columns)" : {
+
+    },
     "%@" : {
 
     },
@@ -172,6 +175,9 @@
     "Get All Subscription Statuses" : {
 
     },
+    "Get information about a single transaction for your app. [Link](https://developer.apple.com/documentation/appstoreserverapi/get_transaction_info)" : {
+
+    },
     "Get Notification History" : {
 
     },
@@ -179,6 +185,9 @@
 
     },
     "Get Transaction History" : {
+
+    },
+    "Get Transaction Info" : {
 
     },
     "gracePeriodExpiresDate" : {

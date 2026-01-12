@@ -210,6 +210,40 @@ extension AppStoreServerClient: DependencyKey {
                         errorMessage: errorMessage,
                         causedBy: causedBy)
                 }
+            },
+            fetchTransactionInfo: {
+                transactionID, credential, rootCertificate,
+                environment in
+
+                let client = try AppStoreServerAPIClient(
+                    signingKey: credential.encodedKey, keyId: credential.keyID,
+                    issuerId: credential.issuerID, bundleId: credential.bundleID,
+                    environment: environment.toModel)
+
+                let signedDataVerifier = try SignedDataVerifier(
+                    rootCertificates: [rootCertificate],
+                    bundleId: credential.bundleID,
+                    appAppleId: Int64(credential.appAppleID),
+                    environment: environment.toModel,
+                    enableOnlineChecks: false
+                )
+
+                let response = await client.getTransactionInfo(transactionId: transactionID)
+
+                switch response {
+                case .success(let response):
+                    guard let signedTransactionInfo = response.signedTransactionInfo else {
+                        throw AppStoreServerClientError.unknownAPIError(
+                            message: "No signed transaction info")
+                    }
+                    return try await signedDataVerifier.verifyAndDecodeTransaction(
+                        signedTransactionInfo)
+                case .failure(let statusCode, let rawApiError, _, let errorMessage, let causedBy):
+                    throw AppStoreServerClientError.requestError(
+                        statusCode: statusCode, rawApiError: rawApiError,
+                        errorMessage: errorMessage,
+                        causedBy: causedBy)
+                }
             })
     }()
 }
