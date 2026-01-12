@@ -16,6 +16,8 @@ struct NotificationHistoryTableView: View {
 
     let columnOrder: NotificationColumnOrder
 
+    @ScaledMetric private var iconSize: CGFloat = 20
+
     private var visibleColumns: [NotificationColumnID] {
         columnOrder.columns.filter {
             columnCustomization[visibility: $0.rawValue] != .hidden
@@ -40,7 +42,7 @@ struct NotificationHistoryTableView: View {
         Table(of: NotificationHistoryItem.self, columnCustomization: $columnCustomization) {
             TableColumnForEach(columnOrder.columns) { columnID in
                 TableColumn(columnID.columnHeader) { item in
-                    CellText(columnID.value(from: item))
+                    cellContent(for: columnID, item: item)
                 }
                 .width(min: columnID.width.rawValue, ideal: columnID.width.rawValue)
                 .customizationID(columnID.rawValue)
@@ -50,5 +52,22 @@ struct NotificationHistoryTableView: View {
         }
         .monospacedDigit()
         .id(tableIdentifier)
+    }
+
+    @ViewBuilder
+    private func cellContent(for columnID: NotificationColumnID, item: NotificationHistoryItem)
+        -> some View
+    {
+        if let iconInfo = columnID.iconInfo(from: item) {
+            Label {
+                CellText(columnID.value(from: item))
+            } icon: {
+                Image(systemName: iconInfo.systemName)
+                    .foregroundStyle(iconInfo.color)
+                    .frame(width: iconSize)
+            }
+        } else {
+            CellText(columnID.value(from: item))
+        }
     }
 }

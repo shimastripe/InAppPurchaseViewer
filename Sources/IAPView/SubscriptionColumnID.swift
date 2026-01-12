@@ -201,6 +201,23 @@ enum SubscriptionColumnID: String, CaseIterable, Identifiable, Codable {
         case renewalInfo = "Renewal Info"
     }
 
+    /// Icon info for columns that display icons
+    struct IconInfo {
+        let systemName: String
+        let color: Color
+    }
+
+    /// Get icon info for this column from the item (only for columns with icons)
+    func iconInfo(from item: LastTransaction) -> IconInfo? {
+        switch self {
+        case .status:
+            guard let status = item.status else { return nil }
+            return IconInfo(systemName: status.eventIcon, color: status.eventColor)
+        default:
+            return nil
+        }
+    }
+
     /// Extract display value from LastTransaction
     func value(from item: LastTransaction) -> String? {
         switch self {

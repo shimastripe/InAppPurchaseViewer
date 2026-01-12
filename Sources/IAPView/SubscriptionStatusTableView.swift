@@ -16,6 +16,8 @@ struct SubscriptionStatusTableView: View {
 
     let columnOrder: SubscriptionColumnOrder
 
+    @ScaledMetric private var iconSize: CGFloat = 20
+
     private var visibleColumns: [SubscriptionColumnID] {
         columnOrder.columns.filter {
             columnCustomization[visibility: $0.rawValue] != .hidden
@@ -42,7 +44,7 @@ struct SubscriptionStatusTableView: View {
         Table(of: LastTransaction.self, columnCustomization: $columnCustomization) {
             TableColumnForEach(columnOrder.columns) { columnID in
                 TableColumn(columnID.columnHeader) { item in
-                    CellText(columnID.value(from: item))
+                    cellContent(for: columnID, item: item)
                 }
                 .width(min: columnID.width.rawValue, ideal: columnID.width.rawValue)
                 .customizationID(columnID.rawValue)
@@ -52,5 +54,21 @@ struct SubscriptionStatusTableView: View {
         }
         .monospacedDigit()
         .id(tableIdentifier)
+    }
+
+    @ViewBuilder
+    private func cellContent(for columnID: SubscriptionColumnID, item: LastTransaction) -> some View
+    {
+        if let iconInfo = columnID.iconInfo(from: item) {
+            Label {
+                CellText(columnID.value(from: item))
+            } icon: {
+                Image(systemName: iconInfo.systemName)
+                    .foregroundStyle(iconInfo.color)
+                    .frame(width: iconSize)
+            }
+        } else {
+            CellText(columnID.value(from: item))
+        }
     }
 }

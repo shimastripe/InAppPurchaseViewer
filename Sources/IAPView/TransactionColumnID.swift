@@ -108,6 +108,23 @@ enum TransactionColumnID: String, CaseIterable, Identifiable, Codable {
         }
     }
 
+    /// Icon info for columns that display icons
+    struct IconInfo {
+        let systemName: String
+        let color: Color
+    }
+
+    /// Get icon info for this column from the payload (only for columns with icons)
+    func iconInfo(from payload: JWSTransactionDecodedPayload) -> IconInfo? {
+        switch self {
+        case .transactionReason:
+            guard let reason = payload.transactionReason else { return nil }
+            return IconInfo(systemName: reason.eventIcon, color: reason.eventColor)
+        default:
+            return nil
+        }
+    }
+
     /// Extract display value from payload
     func value(from payload: JWSTransactionDecodedPayload) -> String? {
         switch self {

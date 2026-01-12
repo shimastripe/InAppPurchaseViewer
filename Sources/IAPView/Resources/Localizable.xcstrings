@@ -72,12 +72,6 @@
     "Account" : {
 
     },
-    "Add full transaction columns" : {
-
-    },
-    "Add renewal information columns" : {
-
-    },
     "All Types" : {
 
     },
@@ -181,7 +175,7 @@
     "Get Notification History" : {
 
     },
-    "Get the statuses for all of a customer’s auto-renewable subscriptions in your app. [Link](https://developer.apple.com/documentation/appstoreserverapi/get_all_subscription_statuses)" : {
+    "Get the statuses for all of a customer's auto-renewable subscriptions in your app. [Link](https://developer.apple.com/documentation/appstoreserverapi/get_all_subscription_statuses)" : {
 
     },
     "Get Transaction History" : {
@@ -257,9 +251,6 @@
     "originalTransactionId" : {
 
     },
-    "originalTransactionID" : {
-
-    },
     "price" : {
 
     },
@@ -289,9 +280,6 @@
       }
     },
     "renewalDate" : {
-
-    },
-    "renewalInfo signedDate" : {
 
     },
     "renewalPrice" : {
@@ -364,9 +352,6 @@
     "SubscriptionKey.p8" : {
 
     },
-    "subType" : {
-
-    },
     "Toggle column settings" : {
 
     },
@@ -380,9 +365,6 @@
 
     },
     "transaction signedDate" : {
-
-    },
-    "transactionID" : {
 
     },
     "TransactionID..." : {

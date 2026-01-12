@@ -223,6 +223,22 @@ enum NotificationColumnID: String, CaseIterable, Identifiable, Codable {
         case renewalInfo = "Renewal Info"
     }
 
+    /// Icon info for columns that display icons
+    struct IconInfo {
+        let systemName: String
+        let color: Color
+    }
+
+    /// Get icon info for this column from the item (only for columns with icons)
+    func iconInfo(from item: NotificationHistoryItem) -> IconInfo? {
+        switch self {
+        case .notificationType:
+            return IconInfo(systemName: item.eventIcon, color: item.eventColor)
+        default:
+            return nil
+        }
+    }
+
     /// Extract display value from NotificationHistoryItem
     func value(from item: NotificationHistoryItem) -> String? {
         switch self {
