@@ -72,12 +72,6 @@
     "Account" : {
 
     },
-    "Add full transaction columns" : {
-
-    },
-    "Add renewal information columns" : {
-
-    },
     "All Types" : {
 
     },
@@ -118,6 +112,9 @@
 
     },
     "Close" : {
+
+    },
+    "Columns" : {
 
     },
     "com.shimastripe.XXXXXX" : {
@@ -178,13 +175,16 @@
     "Get Notification History" : {
 
     },
-    "Get the statuses for all of a customer’s auto-renewable subscriptions in your app. [Link](https://developer.apple.com/documentation/appstoreserverapi/get_all_subscription_statuses)" : {
+    "Get the statuses for all of a customer's auto-renewable subscriptions in your app. [Link](https://developer.apple.com/documentation/appstoreserverapi/get_all_subscription_statuses)" : {
 
     },
     "Get Transaction History" : {
 
     },
     "gracePeriodExpiresDate" : {
+
+    },
+    "Hide All" : {
 
     },
     "In-app purchase history" : {
@@ -245,16 +245,10 @@
     "offerType" : {
 
     },
-    "Only Failures" : {
-
-    },
     "originalPurchaseDate" : {
 
     },
     "originalTransactionId" : {
-
-    },
-    "originalTransactionID" : {
 
     },
     "price" : {
@@ -288,10 +282,13 @@
     "renewalDate" : {
 
     },
-    "renewalInfo signedDate" : {
+    "renewalPrice" : {
 
     },
-    "renewalPrice" : {
+    "Request only the notifications that haven't reached your server successfully. The response also includes notifications that the App Store server is currently retrying to send to your server." : {
+
+    },
+    "Reset Order" : {
 
     },
     "Retrieves 200 items for a given period of time" : {
@@ -328,6 +325,9 @@
     "Setup..." : {
 
     },
+    "Show All" : {
+
+    },
     "signedDate" : {
 
     },
@@ -352,7 +352,7 @@
     "SubscriptionKey.p8" : {
 
     },
-    "subType" : {
+    "Toggle column settings" : {
 
     },
     "tokenCreationDate" : {
@@ -365,9 +365,6 @@
 
     },
     "transaction signedDate" : {
-
-    },
-    "transactionID" : {
 
     },
     "TransactionID..." : {

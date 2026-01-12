@@ -39,7 +39,7 @@ public final class IAPModel {
     /// whether highlighted retry button
     public var isStaledParameters = false
     public var transactionID = ""
-    public var environment: ServerEnvironment = .sandbox
+    public var environment: ServerEnvironment = .production
 
     // MARK: - Notification History parameters
     /// whether highlighted notification history retry button
@@ -72,7 +72,7 @@ public final class IAPModel {
 
     public func resetNotificationDates() {
         notificationStartDate = Calendar.current.date(
-            byAdding: .weekOfMonth, value: -2, to: .now)!
+            byAdding: .day, value: -1, to: .now)!
         notificationEndDate = Date.now
     }
 

@@ -14,6 +14,14 @@ struct TransactionHistoryView: View {
     @Environment(IAPModel.self)
     private var model
 
+    @SceneStorage("TransactionHistoryColumnCustomization")
+    private var columnCustomization: TableColumnCustomization<JWSTransactionDecodedPayload>
+
+    @SceneStorage("TransactionHistoryColumnOrder")
+    private var columnOrder: TransactionColumnOrder = .init()
+
+    @State private var isInspectorPresented = false
+
     private var state: LoadingViewState<TransactionHistory> {
         model.fetchTransactionHistoryState
     }
@@ -21,6 +29,40 @@ struct TransactionHistoryView: View {
     var body: some View {
         @Bindable var model = model
 
+        mainContent(model: model)
+            .toolbar { toolbarContent(bindableModel: $model) }
+            .inspector(isPresented: $isInspectorPresented) {
+                TransactionColumnInspectorView(
+                    columnCustomization: $columnCustomization,
+                    columnOrder: $columnOrder
+                )
+                .inspectorColumnWidth(min: 200, ideal: 280, max: 400)
+            }
+            .onChange(of: model.environment) { _, _ in
+                Task {
+                    await model.execute(action: .clearTransactionHistoryError)
+                }
+            }
+            .onChange(of: model.transactionID) { (oldValue, newValue) in
+                guard oldValue != newValue, !oldValue.isEmpty else { return }
+                model.isStaledParameters = true
+            }
+            .onChange(of: [model.transactionStartDate, model.transactionEndDate]) {
+                (oldValue, newValue) in
+                guard oldValue != newValue else { return }
+                model.isStaledParameters = true
+            }
+            .onSubmit {
+                Task {
+                    model.isStaledParameters = false
+                    await model.execute(action: .clearTransactionHistoryError)
+                }
+            }
+            .textSelection(.enabled)
+    }
+
+    @ViewBuilder
+    private func mainContent(model: IAPModel) -> some View {
         VStack {
             HStack {
                 VStack(spacing: 12) {
@@ -51,7 +93,11 @@ struct TransactionHistoryView: View {
                         }
                     }
                 } else if let transaction = state.value {
-                    TransactionHistoryTableView(model: transaction)
+                    TransactionHistoryTableView(
+                        model: transaction,
+                        columnCustomization: $columnCustomization,
+                        columnOrder: columnOrder
+                    )
 
                     if let hasMore = transaction.hasMore, hasMore,
                         transaction.revision != nil
@@ -113,76 +159,77 @@ struct TransactionHistoryView: View {
             }
             .frame(maxHeight: .infinity)
         }
-        .toolbar {
-            ToolbarItem {
-                Picker("", selection: $model.environment) {
-                    ForEach(ServerEnvironment.allCases) {
-                        Label("\($0.description)", systemImage: $0.symbol)
-                            .labelStyle(
-                                .titleAndIcon
-                            )
-                            .tint($0.symbolColor)
-                            .tag($0)
-                    }
+    }
+
+    @ToolbarContentBuilder
+    private func toolbarContent(bindableModel: Bindable<IAPModel>) -> some ToolbarContent {
+        toolbarLeadingContent(bindableModel: bindableModel)
+        toolbarTrailingContent(bindableModel: bindableModel)
+    }
+
+    @ToolbarContentBuilder
+    private func toolbarLeadingContent(bindableModel: Bindable<IAPModel>) -> some ToolbarContent {
+        ToolbarItem {
+            Picker("", selection: bindableModel.environment) {
+                ForEach(ServerEnvironment.allCases) {
+                    Label("\($0.description)", systemImage: $0.symbol)
+                        .labelStyle(
+                            .titleAndIcon
+                        )
+                        .tint($0.symbolColor)
+                        .tag($0)
                 }
             }
-            toolbarSpacer()
-            ToolbarItem {
-                TextField("TransactionID...", text: $model.transactionID)
-                    .frame(idealWidth: 136)
+        }
+        toolbarSpacer()
+        ToolbarItem {
+            TextField("TransactionID...", text: bindableModel.transactionID)
+                .frame(idealWidth: 136)
+        }
+        toolbarSpacer()
+        ToolbarItem {
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                TextField("", value: bindableModel.transactionStartDate, format: .dateTime)
+                Text("〜")
+                TextField("", value: bindableModel.transactionEndDate, format: .dateTime)
             }
-            toolbarSpacer()
-            ToolbarItem {
-                HStack(alignment: .firstTextBaseline, spacing: 8) {
-                    TextField("", value: $model.transactionStartDate, format: .dateTime)
-                    Text("〜")
-                    TextField("", value: $model.transactionEndDate, format: .dateTime)
+        }
+        toolbarSpacer()
+    }
+
+    @ToolbarContentBuilder
+    private func toolbarTrailingContent(bindableModel: Bindable<IAPModel>) -> some ToolbarContent {
+        ToolbarItem {
+            Button {
+                bindableModel.wrappedValue.resetTransactionDates()
+            } label: {
+                Image(systemName: "eraser").bold()
+            }
+        }
+        toolbarSpacer()
+        ToolbarItem {
+            Button {
+                Task {
+                    bindableModel.wrappedValue.isStaledParameters = false
+                    await bindableModel.wrappedValue.execute(action: .clearTransactionHistoryError)
                 }
+            } label: {
+                Image(systemName: "arrow.counterclockwise")
+                    .bold()
+                    .foregroundStyle(
+                        bindableModel.wrappedValue.isStaledParameters ? .orange : .primary)
             }
-            toolbarSpacer()
-            ToolbarItem {
-                Button {
-                    model.resetTransactionDates()
-                } label: {
-                    Image(systemName: "eraser").bold()
-                }
+            .help("Retry")
+        }
+        toolbarSpacer()
+        ToolbarItem(placement: .primaryAction) {
+            Button {
+                isInspectorPresented.toggle()
+            } label: {
+                Label("Columns", systemImage: "sidebar.right")
             }
-            toolbarSpacer()
-            ToolbarItem {
-                Button {
-                    Task {
-                        model.isStaledParameters = false
-                        await model.execute(action: .clearTransactionHistoryError)
-                    }
-                } label: {
-                    Image(systemName: "arrow.counterclockwise")
-                        .bold()
-                        .foregroundStyle(model.isStaledParameters ? .orange : .primary)
-                }
-                .help("Retry")
-            }
+            .help("Toggle column settings")
         }
-        .onChange(of: model.environment) { _, _ in
-            Task {
-                await model.execute(action: .clearTransactionHistoryError)
-            }
-        }
-        .onChange(of: model.transactionID) { (oldValue, newValue) in
-            guard oldValue != newValue, !oldValue.isEmpty else { return }
-            model.isStaledParameters = true
-        }
-        .onChange(of: [model.transactionStartDate, model.transactionEndDate]) {
-            (oldValue, newValue) in
-            guard oldValue != newValue else { return }
-            model.isStaledParameters = true
-        }
-        .onSubmit {
-            Task {
-                model.isStaledParameters = false
-                await model.execute(action: .clearTransactionHistoryError)
-            }
-        }
-        .textSelection(.enabled)
     }
 }
 

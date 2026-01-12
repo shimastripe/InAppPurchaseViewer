@@ -14,6 +14,14 @@ struct NotificationHistoryView: View {
     @Environment(IAPModel.self)
     private var model
 
+    @SceneStorage("NotificationHistoryColumnCustomization")
+    private var columnCustomization: TableColumnCustomization<NotificationHistoryItem>
+
+    @SceneStorage("NotificationHistoryColumnOrder")
+    private var columnOrder: NotificationColumnOrder = .init()
+
+    @State private var isInspectorPresented = false
+
     private var state: LoadingViewState<NotificationHistoryModel> {
         model.fetchNotificationHistoryState
     }
@@ -23,6 +31,13 @@ struct NotificationHistoryView: View {
 
         mainContent(model: model)
             .toolbar { toolbarContent(bindableModel: $model) }
+            .inspector(isPresented: $isInspectorPresented) {
+                NotificationColumnInspectorView(
+                    columnCustomization: $columnCustomization,
+                    columnOrder: $columnOrder
+                )
+                .inspectorColumnWidth(min: 200, ideal: 280, max: 400)
+            }
             .onChange(of: model.environment) { _, _ in
                 Task {
                     await model.execute(action: .clearNotificationHistoryError)
@@ -88,7 +103,11 @@ struct NotificationHistoryView: View {
                         }
                     }
                 } else if let transaction = state.value {
-                    NotificationHistoryTableView(model: transaction)
+                    NotificationHistoryTableView(
+                        model: transaction,
+                        columnCustomization: $columnCustomization,
+                        columnOrder: columnOrder
+                    )
 
                     if let hasMore = transaction.hasMore, hasMore,
                         transaction.paginationToken != nil
@@ -260,6 +279,15 @@ struct NotificationHistoryView: View {
                             ? .orange : .primary)
             }
             .help("Retry")
+        }
+        toolbarSpacer()
+        ToolbarItem(placement: .primaryAction) {
+            Button {
+                isInspectorPresented.toggle()
+            } label: {
+                Label("Columns", systemImage: "sidebar.right")
+            }
+            .help("Toggle column settings")
         }
     }
 }

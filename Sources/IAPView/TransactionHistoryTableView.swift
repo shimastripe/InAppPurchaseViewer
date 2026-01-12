@@ -10,159 +10,65 @@ import SwiftUI
 
 struct TransactionHistoryTableView: View {
 
-    private let columnCounts = 28
+    let model: TransactionHistory
+
+    @Binding var columnCustomization: TableColumnCustomization<JWSTransactionDecodedPayload>
+
+    let columnOrder: TransactionColumnOrder
 
     @ScaledMetric private var iconSize: CGFloat = 20
 
-    let model: TransactionHistory
-
-    @TableColumnBuilder<JWSTransactionDecodedPayload, Never>
-    var mainColumns: some TableColumnContent<JWSTransactionDecodedPayload, Never> {
-        TableColumn("purchaseDate") {
-            CellText($0.purchaseDate?.formatted())
+    private var visibleColumns: [TransactionColumnID] {
+        columnOrder.columns.filter {
+            columnCustomization[visibility: $0.rawValue] != .hidden
         }
-        .width(ideal: 120)
-        TableColumn("transactionReason") { item in
-            Label {
-                CellText(item.transactionReason?.rawValue)
-            } icon: {
-                let eventIcon = item.transactionReason?.eventIcon ?? "questionmark"
-                let eventColor = item.transactionReason?.eventColor ?? .black
-                Image(systemName: eventIcon).foregroundStyle(eventColor).frame(width: iconSize)
-            }
-        }
-        .width(ideal: 160)
-        TableColumn("price") {
-            CellText($0.price?.description)
-        }
-        .width(ideal: 60)
-        TableColumn("currency") {
-            CellText($0.currency)
-        }
-        .width(ideal: 60)
-        TableColumn("originalTransactionID") {
-            CellText($0.originalTransactionId)
-        }
-        .width(ideal: 140)
-        TableColumn("transactionID") {
-            CellText($0.transactionId)
-        }
-        .width(ideal: 140)
-        TableColumn("originalPurchaseDate") {
-            CellText($0.originalPurchaseDate?.formatted())
-        }
-        .width(ideal: 120)
-        TableColumn("expiresDate") {
-            CellText($0.expiresDate?.formatted())
-        }
-        .width(ideal: 120)
     }
 
-    @TableColumnBuilder<JWSTransactionDecodedPayload, Never>
-    var transactionColumns: some TableColumnContent<JWSTransactionDecodedPayload, Never> {
-        TableColumn("offerIdentifier") {
-            CellText($0.offerIdentifier)
-        }
-        .width(ideal: 120)
-        TableColumn("offerType") {
-            CellText($0.offerType?.description)
-        }
-        .width(ideal: 120)
-        TableColumn("offerDiscountType") {
-            CellText($0.offerDiscountType?.rawValue)
-        }
-        .width(ideal: 120)
-        TableColumn("appAccountToken") {
-            CellText($0.appAccountToken?.uuidString)
-        }
-        .width(ideal: 120)
-        TableColumn("bundleId") {
-            CellText($0.bundleId)
-        }
-        .width(ideal: 140)
-        TableColumn("productId") {
-            CellText($0.productId)
-        }
-        .width(ideal: 140)
-        TableColumn("subscriptionGroupIdentifier") {
-            CellText($0.subscriptionGroupIdentifier)
-        }
-        .width(ideal: 160)
-        TableColumn("quantity") {
-            CellText($0.quantity?.description)
-        }
-        .width(ideal: 60)
+    private var visibleColumnCount: Int {
+        visibleColumns.count
     }
 
-    @TableColumnBuilder<JWSTransactionDecodedPayload, Never>
-    var transactionColumns2: some TableColumnContent<JWSTransactionDecodedPayload, Never> {
-        TableColumn("type") {
-            CellText($0.type?.rawValue)
-        }
-        .width(ideal: 180)
-        TableColumn("inAppOwnershipType") {
-            CellText($0.inAppOwnershipType?.rawValue)
-        }
-        .width(ideal: 160)
-        TableColumn("environment") {
-            CellText($0.environment?.rawValue)
-        }
-        .width(ideal: 80)
-        TableColumn("storefront") {
-            CellText($0.storefront)
-        }
-        .width(ideal: 60)
-        TableColumn("storefrontId") {
-            CellText($0.storefrontId)
-        }
-        .width(ideal: 80)
-        TableColumn("webOrderLineItemId") {
-            CellText($0.webOrderLineItemId)
-        }
-        .width(ideal: 140)
-        TableColumn("revocationReason") {
-            CellText($0.revocationReason?.description)
-        }
-        .width(ideal: 120)
-        TableColumn("revocationDate") {
-            CellText($0.revocationDate?.formatted())
-        }
-        .width(ideal: 120)
-        TableColumn("isUpgraded") {
-            CellText($0.isUpgraded?.description)
-        }
-        .width(ideal: 120)
-        TableColumn("transaction signedDate") {
-            CellText($0.signedDate?.formatted())
-        }
-        .width(ideal: 120)
-    }
-
-    @TableColumnBuilder<JWSTransactionDecodedPayload, Never>
-    var transactionColumns3: some TableColumnContent<JWSTransactionDecodedPayload, Never> {
-        TableColumn("appTransactionId") {
-            CellText($0.appTransactionId)
-        }
-        .width(ideal: 120)
-        TableColumn("offerPeriod") {
-            CellText($0.offerPeriod)
-        }
-        .width(ideal: 120)
+    /// Stable ID for forcing Table rebuild when column visibility changes
+    /// Uses sorted column IDs to be order-independent (preserves reorder animation)
+    private var tableIdentifier: String {
+        visibleColumns.map(\.rawValue).sorted().joined(separator: ",")
     }
 
     var body: some View {
-        Text("(\(model.items.count) transactions x \(columnCounts) columns)").frame(
-            maxWidth: .infinity, alignment: .leading
-        ).padding(.horizontal)
+        Text("(\(model.items.count) transactions x \(visibleColumnCount) columns)")
+            .frame(
+                maxWidth: .infinity, alignment: .leading
+            ).padding(.horizontal)
 
-        Table(of: JWSTransactionDecodedPayload.self) {
-            mainColumns
-            transactionColumns
-            transactionColumns2
-            transactionColumns3
+        Table(of: JWSTransactionDecodedPayload.self, columnCustomization: $columnCustomization) {
+            TableColumnForEach(columnOrder.columns) { columnID in
+                TableColumn(columnID.displayName) { payload in
+                    cellContent(for: columnID, payload: payload)
+                }
+                .width(min: columnID.width.rawValue, ideal: columnID.width.rawValue)
+                .customizationID(columnID.rawValue)
+            }
         } rows: {
             ForEach(model.items, content: TableRow.init)
         }
         .monospacedDigit()
+        .id(tableIdentifier)
+    }
+
+    @ViewBuilder
+    private func cellContent(
+        for columnID: TransactionColumnID, payload: JWSTransactionDecodedPayload
+    ) -> some View {
+        if let iconInfo = columnID.iconInfo(from: payload) {
+            Label {
+                CellText(columnID.value(from: payload))
+            } icon: {
+                Image(systemName: iconInfo.systemName)
+                    .foregroundStyle(iconInfo.color)
+                    .frame(width: iconSize)
+            }
+        } else {
+            CellText(columnID.value(from: payload))
+        }
     }
 }
