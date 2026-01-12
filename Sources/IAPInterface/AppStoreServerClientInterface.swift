@@ -50,6 +50,13 @@ public struct AppStoreServerClient: Sendable {
             _ transactionID: String, _ credential: IAPEnvironment, _ rootCertificate: Data,
             _ environment: ServerEnvironment
         ) async throws -> SubscriptionStatus
+
+    public var fetchTransactionInfo:
+        @Sendable
+        (
+            _ transactionID: String, _ credential: IAPEnvironment, _ rootCertificate: Data,
+            _ environment: ServerEnvironment
+        ) async throws -> JWSTransactionDecodedPayload
 }
 
 // MARK: Implementation
@@ -298,6 +305,16 @@ extension AppStoreServerClient: TestDependencyKey {
                                     renewalInfo: nil)
                             ]),
                     ])
+            },
+            fetchTransactionInfo: { _, _, _, _ in
+                .init(
+                    originalTransactionId: "1000000000000000",
+                    transactionId: "1000000000000005",
+                    purchaseDate: makeDate(2024, 12, 1, 9, 0),
+                    originalPurchaseDate: makeDate(2024, 4, 1, 9, 0),
+                    expiresDate: makeDate(2025, 1, 1, 9, 0),
+                    environment: .sandbox, transactionReason: .renewal, currency: "JPY",
+                    price: 500000)
             })
     }()
 }

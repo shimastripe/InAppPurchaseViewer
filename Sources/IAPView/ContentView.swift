@@ -14,6 +14,7 @@ public struct ContentView: View {
     enum Destination: Hashable {
         case notificationHistory
         case transactionHistory
+        case transactionInfo
         case subscriptionStatus
 
         var title: String {
@@ -22,6 +23,8 @@ public struct ContentView: View {
                 "Get Notification History"
             case .transactionHistory:
                 "Get Transaction History"
+            case .transactionInfo:
+                "Get Transaction Info"
             case .subscriptionStatus:
                 "Get All Subscription Statuses"
             }
@@ -64,6 +67,9 @@ public struct ContentView: View {
                         Text(Destination.transactionHistory.title)
                             .tag(Destination.transactionHistory)
                             .lineLimit(2)
+                        Text(Destination.transactionInfo.title)
+                            .tag(Destination.transactionInfo)
+                            .lineLimit(2)
                     }
                     Section("Subscription status") {
                         Text(Destination.subscriptionStatus.title)
@@ -80,6 +86,8 @@ public struct ContentView: View {
                     NotificationHistoryView()
                 case .transactionHistory:
                     TransactionHistoryView()
+                case .transactionInfo:
+                    TransactionInfoView()
                 case .subscriptionStatus:
                     SubscriptionStatusView()
                 }

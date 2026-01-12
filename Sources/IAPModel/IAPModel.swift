@@ -35,11 +35,18 @@ public final class IAPModel {
     public private(set) var fetchAllSubscriptionStatusesState:
         LoadingViewState<SubscriptionStatus> = .waiting
 
+    public private(set) var fetchTransactionInfoState:
+        LoadingViewState<JWSTransactionDecodedPayload> = .waiting
+
     // MARK: - Shared State parameters
     /// whether highlighted retry button
     public var isStaledParameters = false
     public var transactionID = ""
     public var environment: ServerEnvironment = .production
+
+    // MARK: - Transaction Info parameters
+    public var isTransactionInfoStaledParameters = false
+    public var transactionInfoTransactionID = ""
 
     // MARK: - Notification History parameters
     /// whether highlighted notification history retry button
@@ -112,6 +119,9 @@ extension IAPModel {
 
         case fetchAllSubscriptionStatuses(transactionID: String)
         case clearAllSubscriptionStatusesError
+
+        case fetchTransactionInfo(transactionID: String)
+        case clearTransactionInfoError
     }
 
     @MainActor
@@ -425,6 +435,26 @@ extension IAPModel {
 
         case .clearAllSubscriptionStatusesError:
             fetchAllSubscriptionStatusesState.clear()
+
+        case .fetchTransactionInfo(let transactionID):
+            guard !fetchTransactionInfoState.isLoading,
+                let credential = credentialState.value,
+                let rootCertificate = rootCertificateState.value
+            else { return }
+            do {
+                fetchTransactionInfoState.startLoading()
+
+                let model = try await appStoreServerClient.fetchTransactionInfo(
+                    transactionID: transactionID, credential: credential,
+                    rootCertificate: rootCertificate, environment: environment)
+                fetchTransactionInfoState.finishLoading(model)
+            } catch {
+                fetchTransactionInfoState.failLoading(
+                    with: IAPError.unknownError(message: error.localizedDescription))
+            }
+
+        case .clearTransactionInfoError:
+            fetchTransactionInfoState.clear()
         }
     }
 }
