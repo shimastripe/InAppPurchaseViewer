@@ -1,10 +1,32 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:best-practices"
   ],
   "timezone": "Asia/Tokyo",
   "labels": [
     "dependencies"
+  ],
+  "customDatasources": {
+    "xcodeReleases": {
+      "defaultRegistryUrlTemplate": "https://xcodereleases.com/data.json",
+      "format": "json",
+      "transformTemplates": [
+        "{\"releases\": $distinct($[version.release.release = true].version.number).{\"version\": $}, \"homepage\": \"https://xcodereleases.com\", \"sourceUrl\": \"https://github.com/xcodereleases/data\"}"
+      ]
+    }
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": ["(^|/)\\.github/workflows/.+\\.ya?ml$"],
+      "matchStrings": [
+        "DEVELOPER_DIR:\\s*\"?\\/Applications\\/Xcode_(?<currentValue>\\d+\\.\\d+(?:\\.\\d+)?)\\.app\\/Contents\\/Developer\"?"
+      ],
+      "depNameTemplate": "xcode",
+      "datasourceTemplate": "custom.xcodeReleases",
+      "versioningTemplate": "semver-coerced"
+    }
   ],
   "packageRules": [
     {
@@ -14,6 +36,10 @@
       "automerge": true,
       "automergeType": "pr",
       "platformAutomerge": true
+    },
+    {
+      "matchDepNames": ["xcode"],
+      "commitMessageSuffix": "(Xcode {{newMajor}}.{{newMinor}})"
     }
   ]
 }
