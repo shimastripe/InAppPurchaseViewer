@@ -19,7 +19,7 @@
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": ["(^|/)\\.github/workflows/.+\\.ya?ml$"],
+      "managerFilePatterns": ["/(^|/)\\.github/workflows/.+\\.ya?ml$/"],
       "matchStrings": [
         "DEVELOPER_DIR:\\s*\"?\\/Applications\\/Xcode_(?<currentValue>\\d+\\.\\d+(?:\\.\\d+)?)\\.app\\/Contents\\/Developer\"?"
       ],
