@@ -26,6 +26,19 @@
       "depNameTemplate": "xcode",
       "datasourceTemplate": "custom.xcodeReleases",
       "versioningTemplate": "semver-coerced"
+    },
+    // Package.swift (git protocolは未対応であるため正規表現で解決)
+    // url: "git@github.com:<repo>(.git), exact: "1.0.0"
+    {
+      "customType": "regex",
+      "fileMatch": [
+        "^Package.swift$"
+      ],
+      "matchStrings": [
+        'url: "git@github\\.com:(?<depName>.*?)(\\.git)?", exact: "(?<currentValue>.*)"'
+      ],
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v?(?<version>.*)$"
     }
   ],
   "packageRules": [
