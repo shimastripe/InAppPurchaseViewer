@@ -30,6 +30,15 @@
   ],
   "packageRules": [
     {
+      "matchUpdateTypes": [
+        "major",
+        "minor",
+        "patch"
+      ],
+      "minimumReleaseAge": "14 days",
+      "internalChecksFilter": "flexible"
+    },
+    {
       "matchPackageNames": [
         "*"
       ],
