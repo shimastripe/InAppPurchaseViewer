@@ -26,6 +26,16 @@
       "depNameTemplate": "xcode",
       "datasourceTemplate": "custom.xcodeReleases",
       "versioningTemplate": "semver-coerced"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/(^|/)README\\.md$/"],
+      "matchStrings": [
+        "- Xcode (?<currentValue>\\d+\\.\\d+(?:\\.\\d+)?)"
+      ],
+      "depNameTemplate": "xcode",
+      "datasourceTemplate": "custom.xcodeReleases",
+      "versioningTemplate": "semver-coerced"
     }
   ],
   "packageRules": [
