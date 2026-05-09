@@ -40,7 +40,9 @@ struct TransactionInfoView: View {
             }
             .onChange(of: model.environment) { _, _ in
                 Task {
-                    await model.execute(action: .clearTransactionInfoError)
+                    await model.execute(
+                        action: .reloadTransactionInfo(
+                            transactionID: model.transactionInfoTransactionID))
                 }
             }
             .onChange(of: model.transactionInfoTransactionID) { (oldValue, newValue) in
@@ -50,7 +52,9 @@ struct TransactionInfoView: View {
             .onSubmit {
                 Task {
                     model.isTransactionInfoStaledParameters = false
-                    await model.execute(action: .clearTransactionInfoError)
+                    await model.execute(
+                        action: .reloadTransactionInfo(
+                            transactionID: model.transactionInfoTransactionID))
                 }
             }
             .textSelection(.enabled)
@@ -83,7 +87,9 @@ struct TransactionInfoView: View {
                         Text("\(error.localizedDescription)")
                         Button("Retry") {
                             Task {
-                                await model.execute(action: .clearTransactionInfoError)
+                                await model.execute(
+                                    action: .reloadTransactionInfo(
+                                        transactionID: model.transactionInfoTransactionID))
                             }
                         }
                     }
@@ -133,7 +139,10 @@ struct TransactionInfoView: View {
             Button {
                 Task {
                     bindableModel.wrappedValue.isTransactionInfoStaledParameters = false
-                    await bindableModel.wrappedValue.execute(action: .clearTransactionInfoError)
+                    await bindableModel.wrappedValue.execute(
+                        action: .reloadTransactionInfo(
+                            transactionID: bindableModel.wrappedValue
+                                .transactionInfoTransactionID))
                 }
             } label: {
                 Image(systemName: "arrow.counterclockwise")

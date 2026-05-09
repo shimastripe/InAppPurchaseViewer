@@ -28,8 +28,7 @@ public struct AppStoreServerClient: Sendable {
     }
 
     public var fetchNotificationHistory:
-        @Sendable
-        (
+        @Sendable (
             _ request: NotificationHistoryRequest,
             _ paginationToken: String?,
             _ credential: IAPEnvironment, _ rootCertificate: Data, _ environment: ServerEnvironment
@@ -37,23 +36,20 @@ public struct AppStoreServerClient: Sendable {
             async throws -> NotificationHistoryModel
 
     public var fetchTransactionHistory:
-        @Sendable
-        (
+        @Sendable (
             _ startDate: Date, _ endDate: Date, _ transactionID: String,
             _ revision: String?, _ credential: IAPEnvironment, _ rootCertificate: Data,
             _ environment: ServerEnvironment
         ) async throws -> TransactionHistory
 
     public var fetchAllSubscriptionStatuses:
-        @Sendable
-        (
+        @Sendable (
             _ transactionID: String, _ credential: IAPEnvironment, _ rootCertificate: Data,
             _ environment: ServerEnvironment
         ) async throws -> SubscriptionStatus
 
     public var fetchTransactionInfo:
-        @Sendable
-        (
+        @Sendable (
             _ transactionID: String, _ credential: IAPEnvironment, _ rootCertificate: Data,
             _ environment: ServerEnvironment
         ) async throws -> JWSTransactionDecodedPayload

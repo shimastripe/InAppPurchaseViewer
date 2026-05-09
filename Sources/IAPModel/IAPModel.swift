@@ -18,6 +18,30 @@ public final class IAPModel {
     @ObservationIgnored
     @Dependency(\.calendar) var calendar
 
+    @ObservationIgnored
+    private var fetchNotificationHistoryTask: Task<Void, Never>?
+
+    @ObservationIgnored
+    private var fetchNotificationHistoryGeneration = 0
+
+    @ObservationIgnored
+    private var fetchTransactionHistoryTask: Task<Void, Never>?
+
+    @ObservationIgnored
+    private var fetchTransactionHistoryGeneration = 0
+
+    @ObservationIgnored
+    private var fetchAllSubscriptionStatusesTask: Task<Void, Never>?
+
+    @ObservationIgnored
+    private var fetchAllSubscriptionStatusesGeneration = 0
+
+    @ObservationIgnored
+    private var fetchTransactionInfoTask: Task<Void, Never>?
+
+    @ObservationIgnored
+    private var fetchTransactionInfoGeneration = 0
+
     // MARK: - State model
 
     public private(set) var rootCertificateState: LoadingViewState<Data> = .waiting
@@ -106,21 +130,25 @@ extension IAPModel {
         case removeAll
 
         case fetchNotificationHistory(startDate: Date, endDate: Date, transactionID: String)
+        case reloadNotificationHistory(startDate: Date, endDate: Date, transactionID: String)
         case appendFetchNotificationHistory(startDate: Date, endDate: Date, transactionID: String)
         case bulkAppendFetchNotificationHistory(
             startDate: Date, endDate: Date, transactionID: String)
         case clearNotificationHistoryError
 
         case fetchTransactionHistory(startDate: Date, endDate: Date, transactionID: String)
+        case reloadTransactionHistory(startDate: Date, endDate: Date, transactionID: String)
         case appendFetchTransactionHistory(startDate: Date, endDate: Date, transactionID: String)
         case bulkAppendFetchTransactionHistory(
             startDate: Date, endDate: Date, transactionID: String)
         case clearTransactionHistoryError
 
         case fetchAllSubscriptionStatuses(transactionID: String)
+        case reloadAllSubscriptionStatuses(transactionID: String)
         case clearAllSubscriptionStatusesError
 
         case fetchTransactionInfo(transactionID: String)
+        case reloadTransactionInfo(transactionID: String)
         case clearTransactionInfoError
     }
 
@@ -135,7 +163,7 @@ extension IAPModel {
 
         switch action {
         case .getRootCertificate:
-            guard !rootCertificateState.isLoading else { return }
+            guard !rootCertificateState.isLoadingOrAppending else { return }
             rootCertificateState.startLoading()
             do {
                 if let data = try await rootCertificateClient.get() {
@@ -148,7 +176,7 @@ extension IAPModel {
                     with: IAPError.unknownError(message: error.localizedDescription))
             }
         case .fetchRootCertificate:
-            guard !rootCertificateState.isLoading else { return }
+            guard !rootCertificateState.isLoadingOrAppending else { return }
             rootCertificateState.startLoading()
             do {
                 let data = try await rootCertificateClient.fetch()
@@ -160,7 +188,7 @@ extension IAPModel {
             }
 
         case .getCredential:
-            guard !credentialState.isLoading else { return }
+            guard !credentialState.isLoadingOrAppending else { return }
             credentialState.startLoading()
             do {
                 try await Task.sleep(for: .seconds(0.2))  // avoid blink for UX
@@ -176,7 +204,7 @@ extension IAPModel {
 
         case .saveCredential(
             let bundleID, let issuerID, let keyID, let appAppleID, let privateKeyFileURL):
-            guard !credentialState.isLoading else { return }
+            guard !credentialState.isLoadingOrAppending else { return }
             credentialState.startLoading()
             do {
                 try await credentialClient.set(
@@ -192,7 +220,7 @@ extension IAPModel {
                     with: .unknownError(message: error.localizedDescription))
             }
         case .removeAll:
-            guard !removeState.isLoading else { return }
+            guard !removeState.isLoadingOrAppending else { return }
             do {
                 removeState.startLoading()
 
@@ -209,84 +237,244 @@ extension IAPModel {
             }
 
         case .fetchNotificationHistory(let startDate, let endDate, let transactionID):
-            guard !fetchNotificationHistoryState.isLoading,
-                let startDate = truncateSeconds(of: startDate),
-                let endDate = roundUpSeconds(of: endDate),
-                let credential = credentialState.value,
-                let rootCertificate = rootCertificateState.value
-            else { return }
-            do {
-                fetchNotificationHistoryState.startLoading()
+            await fetchNotificationHistory(
+                startDate: startDate,
+                endDate: endDate,
+                transactionID: transactionID,
+                replacesInFlightRequest: false,
+                appStoreServerClient: appStoreServerClient
+            )
 
-                // transactionId and notificationType are mutually exclusive in the API
-                let id = transactionID.isEmpty ? nil : transactionID
-                let filterOption = id == nil ? notificationFilterOption : nil
-                let failuresFilter = id == nil ? onlyFailuresFilter : nil
-
-                let request = NotificationHistoryRequest(
-                    startDate: startDate, endDate: endDate,
-                    notificationType: filterOption?.notificationType,
-                    notificationSubtype: filterOption?.subtype,
-                    transactionId: id, onlyFailures: failuresFilter)
-                let model = try await appStoreServerClient.fetchNotificationHistory(
-                    request: request, paginationToken: nil,
-                    credential: credential,
-                    rootCertificate: rootCertificate,
-                    environment: environment)
-                fetchNotificationHistoryState.finishLoading(model)
-            } catch {
-                fetchNotificationHistoryState.failLoading(
-                    with: IAPError.unknownError(message: error.localizedDescription))
-            }
+        case .reloadNotificationHistory(let startDate, let endDate, let transactionID):
+            await fetchNotificationHistory(
+                startDate: startDate,
+                endDate: endDate,
+                transactionID: transactionID,
+                replacesInFlightRequest: true,
+                appStoreServerClient: appStoreServerClient
+            )
 
         case .appendFetchNotificationHistory(let startDate, let endDate, let transactionID):
-            guard !fetchNotificationHistoryState.isAppendLoading,
-                let startDate = truncateSeconds(of: startDate),
-                let endDate = roundUpSeconds(of: endDate),
-                let credential = credentialState.value,
-                let rootCertificate = rootCertificateState.value,
-                let notificationHistory = fetchNotificationHistoryState.value
-            else { return }
-            do {
-                fetchNotificationHistoryState.startAppendLoading()
-
-                // transactionId and notificationType are mutually exclusive in the API
-                let id = transactionID.isEmpty ? nil : transactionID
-                let filterOption = id == nil ? notificationFilterOption : nil
-                let failuresFilter = id == nil ? onlyFailuresFilter : nil
-
-                let request = NotificationHistoryRequest(
-                    startDate: startDate, endDate: endDate,
-                    notificationType: filterOption?.notificationType,
-                    notificationSubtype: filterOption?.subtype,
-                    transactionId: id, onlyFailures: failuresFilter)
-                let model = try await appStoreServerClient.fetchNotificationHistory(
-                    request: request, paginationToken: notificationHistory.paginationToken,
-                    credential: credential, rootCertificate: rootCertificate,
-                    environment: environment)
-                let appendModel = NotificationHistoryModel(
-                    paginationToken: model.paginationToken, hasMore: model.hasMore,
-                    items: notificationHistory.items + model.items)
-                fetchNotificationHistoryState.finishAppendLoading(appendModel)
-            } catch {
-                fetchNotificationHistoryState.failAppendLoading(
-                    with: IAPError.unknownError(message: error.localizedDescription))
-            }
+            await appendFetchNotificationHistory(
+                startDate: startDate,
+                endDate: endDate,
+                transactionID: transactionID,
+                loopCounts: 1,
+                appStoreServerClient: appStoreServerClient
+            )
 
         case .bulkAppendFetchNotificationHistory(let startDate, let endDate, let transactionID):
-            guard !fetchNotificationHistoryState.isAppendLoading,
-                let startDate = truncateSeconds(of: startDate),
-                let endDate = roundUpSeconds(of: endDate),
-                let credential = credentialState.value,
-                let rootCertificate = rootCertificateState.value,
-                let notificationHistory = fetchNotificationHistoryState.value
-            else { return }
+            await appendFetchNotificationHistory(
+                startDate: startDate,
+                endDate: endDate,
+                transactionID: transactionID,
+                loopCounts: 10,
+                appStoreServerClient: appStoreServerClient
+            )
+
+        case .clearNotificationHistoryError:
+            fetchNotificationHistoryState.clearFailure()
+
+        case .fetchTransactionHistory(let startDate, let endDate, let transactionID):
+            await fetchTransactionHistory(
+                startDate: startDate,
+                endDate: endDate,
+                transactionID: transactionID,
+                replacesInFlightRequest: false,
+                appStoreServerClient: appStoreServerClient
+            )
+
+        case .reloadTransactionHistory(let startDate, let endDate, let transactionID):
+            await fetchTransactionHistory(
+                startDate: startDate,
+                endDate: endDate,
+                transactionID: transactionID,
+                replacesInFlightRequest: true,
+                appStoreServerClient: appStoreServerClient
+            )
+
+        case .appendFetchTransactionHistory(let startDate, let endDate, let transactionID):
+            await appendFetchTransactionHistory(
+                startDate: startDate,
+                endDate: endDate,
+                transactionID: transactionID,
+                loopCounts: 1,
+                appStoreServerClient: appStoreServerClient
+            )
+
+        case .bulkAppendFetchTransactionHistory(let startDate, let endDate, let transactionID):
+            await appendFetchTransactionHistory(
+                startDate: startDate,
+                endDate: endDate,
+                transactionID: transactionID,
+                loopCounts: 10,
+                appStoreServerClient: appStoreServerClient
+            )
+
+        case .clearTransactionHistoryError:
+            fetchTransactionHistoryState.clearFailure()
+
+        case .fetchAllSubscriptionStatuses(let transactionID):
+            await fetchAllSubscriptionStatuses(
+                transactionID: transactionID,
+                replacesInFlightRequest: false,
+                appStoreServerClient: appStoreServerClient
+            )
+
+        case .reloadAllSubscriptionStatuses(let transactionID):
+            await fetchAllSubscriptionStatuses(
+                transactionID: transactionID,
+                replacesInFlightRequest: true,
+                appStoreServerClient: appStoreServerClient
+            )
+
+        case .clearAllSubscriptionStatusesError:
+            fetchAllSubscriptionStatusesState.clearFailure()
+
+        case .fetchTransactionInfo(let transactionID):
+            await fetchTransactionInfo(
+                transactionID: transactionID,
+                replacesInFlightRequest: false,
+                appStoreServerClient: appStoreServerClient
+            )
+
+        case .reloadTransactionInfo(let transactionID):
+            await fetchTransactionInfo(
+                transactionID: transactionID,
+                replacesInFlightRequest: true,
+                appStoreServerClient: appStoreServerClient
+            )
+
+        case .clearTransactionInfoError:
+            fetchTransactionInfoState.clearFailure()
+        }
+    }
+}
+
+// MARK: - Loading Tasks
+
+extension IAPModel {
+
+    @MainActor
+    private func fetchNotificationHistory(
+        startDate: Date,
+        endDate: Date,
+        transactionID: String,
+        replacesInFlightRequest: Bool,
+        appStoreServerClient: AppStoreServerClient
+    ) async {
+        guard replacesInFlightRequest || !fetchNotificationHistoryState.isLoadingOrAppending else {
+            return
+        }
+
+        fetchNotificationHistoryGeneration += 1
+        let generation = fetchNotificationHistoryGeneration
+
+        fetchNotificationHistoryTask?.cancel()
+
+        guard
+            let startDate = truncateSeconds(of: startDate),
+            let endDate = roundUpSeconds(of: endDate),
+            let credential = credentialState.value,
+            let rootCertificate = rootCertificateState.value
+        else {
+            if replacesInFlightRequest {
+                fetchNotificationHistoryState.clear()
+            }
+            fetchNotificationHistoryTask = nil
+            return
+        }
+
+        fetchNotificationHistoryState.restartLoading()
+
+        // transactionId and notificationType are mutually exclusive in the API
+        let id = transactionID.isEmpty ? nil : transactionID
+        let filterOption = id == nil ? notificationFilterOption : nil
+        let failuresFilter = id == nil ? onlyFailuresFilter : nil
+        let request = NotificationHistoryRequest(
+            startDate: startDate,
+            endDate: endDate,
+            notificationType: filterOption?.notificationType,
+            notificationSubtype: filterOption?.subtype,
+            transactionId: id,
+            onlyFailures: failuresFilter
+        )
+        let environment = environment
+
+        let task = Task {
+            @MainActor [appStoreServerClient, request, credential, rootCertificate, environment] in
             do {
-                fetchNotificationHistoryState.startAppendLoading()
+                let model = try await appStoreServerClient.fetchNotificationHistory(
+                    request: request,
+                    paginationToken: nil,
+                    credential: credential,
+                    rootCertificate: rootCertificate,
+                    environment: environment
+                )
+                try Task.checkCancellation()
 
+                guard generation == fetchNotificationHistoryGeneration else { return }
+                fetchNotificationHistoryState.finishLoading(model)
+                fetchNotificationHistoryTask = nil
+            } catch is CancellationError {
+                guard generation == fetchNotificationHistoryGeneration else { return }
+                fetchNotificationHistoryState.clear()
+                fetchNotificationHistoryTask = nil
+            } catch {
+                guard generation == fetchNotificationHistoryGeneration else { return }
+                fetchNotificationHistoryState.failLoading(
+                    with: IAPError.unknownError(message: error.localizedDescription))
+                fetchNotificationHistoryTask = nil
+            }
+        }
+
+        fetchNotificationHistoryTask = task
+        await task.value
+    }
+
+    @MainActor
+    private func appendFetchNotificationHistory(
+        startDate: Date,
+        endDate: Date,
+        transactionID: String,
+        loopCounts: Int,
+        appStoreServerClient: AppStoreServerClient
+    ) async {
+        guard !fetchNotificationHistoryState.isLoadingOrAppending,
+            let startDate = truncateSeconds(of: startDate),
+            let endDate = roundUpSeconds(of: endDate),
+            let credential = credentialState.value,
+            let rootCertificate = rootCertificateState.value,
+            let notificationHistory = fetchNotificationHistoryState.value
+        else { return }
+
+        fetchNotificationHistoryGeneration += 1
+        let generation = fetchNotificationHistoryGeneration
+
+        fetchNotificationHistoryTask?.cancel()
+        fetchNotificationHistoryState.startAppendLoading()
+
+        // transactionId and notificationType are mutually exclusive in the API
+        let id = transactionID.isEmpty ? nil : transactionID
+        let filterOption = id == nil ? notificationFilterOption : nil
+        let failuresFilter = id == nil ? onlyFailuresFilter : nil
+        let request = NotificationHistoryRequest(
+            startDate: startDate,
+            endDate: endDate,
+            notificationType: filterOption?.notificationType,
+            notificationSubtype: filterOption?.subtype,
+            transactionId: id,
+            onlyFailures: failuresFilter
+        )
+        let environment = environment
+
+        let task = Task {
+            @MainActor [
+                appStoreServerClient, request, credential, rootCertificate, environment,
+                notificationHistory
+            ] in
+            do {
                 var merged = notificationHistory
-
-                let loopCounts = 10
 
                 for _ in 0 ..< loopCounts {
                     guard let hasMore = merged.hasMore, hasMore,
@@ -295,98 +483,141 @@ extension IAPModel {
                         break
                     }
 
-                    // transactionId and notificationType are mutually exclusive in the API
-                    let id = transactionID.isEmpty ? nil : transactionID
-                    let filterOption = id == nil ? notificationFilterOption : nil
-                    let failuresFilter = id == nil ? onlyFailuresFilter : nil
-
-                    let request = NotificationHistoryRequest(
-                        startDate: startDate, endDate: endDate,
-                        notificationType: filterOption?.notificationType,
-                        notificationSubtype: filterOption?.subtype,
-                        transactionId: id, onlyFailures: failuresFilter)
                     let model = try await appStoreServerClient.fetchNotificationHistory(
-                        request: request, paginationToken: paginationToken,
+                        request: request,
+                        paginationToken: paginationToken,
                         credential: credential,
                         rootCertificate: rootCertificate,
-                        environment: environment)
+                        environment: environment
+                    )
+                    try Task.checkCancellation()
 
                     merged = NotificationHistoryModel(
-                        paginationToken: model.paginationToken, hasMore: model.hasMore,
-                        items: merged.items + model.items)
+                        paginationToken: model.paginationToken,
+                        hasMore: model.hasMore,
+                        items: merged.items + model.items
+                    )
                 }
 
+                guard generation == fetchNotificationHistoryGeneration else { return }
                 fetchNotificationHistoryState.finishAppendLoading(merged)
+                fetchNotificationHistoryTask = nil
+            } catch is CancellationError {
+                guard generation == fetchNotificationHistoryGeneration else { return }
+                fetchNotificationHistoryState.finishAppendLoading(notificationHistory)
+                fetchNotificationHistoryTask = nil
             } catch {
+                guard generation == fetchNotificationHistoryGeneration else { return }
                 fetchNotificationHistoryState.failAppendLoading(
                     with: IAPError.unknownError(message: error.localizedDescription))
+                fetchNotificationHistoryTask = nil
             }
+        }
 
-        case .clearNotificationHistoryError:
-            fetchNotificationHistoryState.clear()
+        fetchNotificationHistoryTask = task
+        await task.value
+    }
 
-        case .fetchTransactionHistory(let startDate, let endDate, let transactionID):
-            guard !fetchTransactionHistoryState.isLoading,
-                let startDate = truncateSeconds(of: startDate),
-                let endDate = roundUpSeconds(of: endDate),
-                let credential = credentialState.value,
-                let rootCertificate = rootCertificateState.value
-            else { return }
+    @MainActor
+    private func fetchTransactionHistory(
+        startDate: Date,
+        endDate: Date,
+        transactionID: String,
+        replacesInFlightRequest: Bool,
+        appStoreServerClient: AppStoreServerClient
+    ) async {
+        guard replacesInFlightRequest || !fetchTransactionHistoryState.isLoadingOrAppending else {
+            return
+        }
+
+        fetchTransactionHistoryGeneration += 1
+        let generation = fetchTransactionHistoryGeneration
+
+        fetchTransactionHistoryTask?.cancel()
+
+        guard !transactionID.isEmpty,
+            let startDate = truncateSeconds(of: startDate),
+            let endDate = roundUpSeconds(of: endDate),
+            let credential = credentialState.value,
+            let rootCertificate = rootCertificateState.value
+        else {
+            if replacesInFlightRequest {
+                fetchTransactionHistoryState.clear()
+            }
+            fetchTransactionHistoryTask = nil
+            return
+        }
+
+        fetchTransactionHistoryState.restartLoading()
+
+        let environment = environment
+        let task = Task {
+            @MainActor [
+                appStoreServerClient, startDate, endDate, transactionID, credential,
+                rootCertificate, environment
+            ] in
             do {
-                fetchTransactionHistoryState.startLoading()
-
                 let model = try await appStoreServerClient.fetchTransactionHistory(
-                    startDate: startDate, endDate: endDate, transactionID: transactionID,
+                    startDate: startDate,
+                    endDate: endDate,
+                    transactionID: transactionID,
                     revision: nil,
                     credential: credential,
                     rootCertificate: rootCertificate,
-                    environment: environment)
+                    environment: environment
+                )
+                try Task.checkCancellation()
+
+                guard generation == fetchTransactionHistoryGeneration else { return }
                 fetchTransactionHistoryState.finishLoading(model)
+                fetchTransactionHistoryTask = nil
+            } catch is CancellationError {
+                guard generation == fetchTransactionHistoryGeneration else { return }
+                fetchTransactionHistoryState.clear()
+                fetchTransactionHistoryTask = nil
             } catch {
+                guard generation == fetchTransactionHistoryGeneration else { return }
                 fetchTransactionHistoryState.failLoading(
                     with: IAPError.unknownError(message: error.localizedDescription))
+                fetchTransactionHistoryTask = nil
             }
+        }
 
-        case .appendFetchTransactionHistory(let startDate, let endDate, let transactionID):
-            guard !fetchTransactionHistoryState.isAppendLoading,
-                let startDate = truncateSeconds(of: startDate),
-                let endDate = roundUpSeconds(of: endDate),
-                let credential = credentialState.value,
-                let rootCertificate = rootCertificateState.value,
-                let transactionHistory = fetchTransactionHistoryState.value
-            else { return }
+        fetchTransactionHistoryTask = task
+        await task.value
+    }
+
+    @MainActor
+    private func appendFetchTransactionHistory(
+        startDate: Date,
+        endDate: Date,
+        transactionID: String,
+        loopCounts: Int,
+        appStoreServerClient: AppStoreServerClient
+    ) async {
+        guard !fetchTransactionHistoryState.isLoadingOrAppending,
+            !transactionID.isEmpty,
+            let startDate = truncateSeconds(of: startDate),
+            let endDate = roundUpSeconds(of: endDate),
+            let credential = credentialState.value,
+            let rootCertificate = rootCertificateState.value,
+            let transactionHistory = fetchTransactionHistoryState.value
+        else { return }
+
+        fetchTransactionHistoryGeneration += 1
+        let generation = fetchTransactionHistoryGeneration
+
+        fetchTransactionHistoryTask?.cancel()
+        fetchTransactionHistoryState.startAppendLoading()
+
+        let environment = environment
+        let task = Task {
+            @MainActor [
+                appStoreServerClient, startDate, endDate, transactionID, credential,
+                rootCertificate, environment, transactionHistory
+            ] in
             do {
-                fetchTransactionHistoryState.startAppendLoading()
-
-                let model = try await appStoreServerClient.fetchTransactionHistory(
-                    startDate: startDate, endDate: endDate, transactionID: transactionID,
-                    revision: transactionHistory.revision, credential: credential,
-                    rootCertificate: rootCertificate,
-                    environment: environment)
-                let appendModel = TransactionHistory(
-                    revision: model.revision, hasMore: model.hasMore, bundleId: model.bundleId,
-                    appAppleId: model.appAppleId, environment: model.environment,
-                    items: transactionHistory.items + model.items)
-                fetchTransactionHistoryState.finishAppendLoading(appendModel)
-            } catch {
-                fetchTransactionHistoryState.failAppendLoading(
-                    with: IAPError.unknownError(message: error.localizedDescription))
-            }
-
-        case .bulkAppendFetchTransactionHistory(let startDate, let endDate, let transactionID):
-            guard !fetchTransactionHistoryState.isAppendLoading,
-                let startDate = truncateSeconds(of: startDate),
-                let endDate = roundUpSeconds(of: endDate),
-                let credential = credentialState.value,
-                let rootCertificate = rootCertificateState.value,
-                let transactionHistory = fetchTransactionHistoryState.value
-            else { return }
-            do {
-                fetchTransactionHistoryState.startAppendLoading()
-
                 var merged = transactionHistory
-
-                let loopCounts = 10
 
                 for _ in 0 ..< loopCounts {
                     guard let hasMore = merged.hasMore, hasMore,
@@ -396,66 +627,164 @@ extension IAPModel {
                     }
 
                     let model = try await appStoreServerClient.fetchTransactionHistory(
-                        startDate: startDate, endDate: endDate, transactionID: transactionID,
-                        revision: revision, credential: credential,
+                        startDate: startDate,
+                        endDate: endDate,
+                        transactionID: transactionID,
+                        revision: revision,
+                        credential: credential,
                         rootCertificate: rootCertificate,
-                        environment: environment)
+                        environment: environment
+                    )
+                    try Task.checkCancellation()
 
                     merged = .init(
-                        revision: model.revision, hasMore: model.hasMore, bundleId: model.bundleId,
-                        appAppleId: model.appAppleId, environment: model.environment,
-                        items: merged.items + model.items)
+                        revision: model.revision,
+                        hasMore: model.hasMore,
+                        bundleId: model.bundleId,
+                        appAppleId: model.appAppleId,
+                        environment: model.environment,
+                        items: merged.items + model.items
+                    )
                 }
 
+                guard generation == fetchTransactionHistoryGeneration else { return }
                 fetchTransactionHistoryState.finishAppendLoading(merged)
+                fetchTransactionHistoryTask = nil
+            } catch is CancellationError {
+                guard generation == fetchTransactionHistoryGeneration else { return }
+                fetchTransactionHistoryState.finishAppendLoading(transactionHistory)
+                fetchTransactionHistoryTask = nil
             } catch {
+                guard generation == fetchTransactionHistoryGeneration else { return }
                 fetchTransactionHistoryState.failAppendLoading(
                     with: IAPError.unknownError(message: error.localizedDescription))
+                fetchTransactionHistoryTask = nil
             }
+        }
 
-        case .clearTransactionHistoryError:
-            fetchTransactionHistoryState.clear()
+        fetchTransactionHistoryTask = task
+        await task.value
+    }
 
-        case .fetchAllSubscriptionStatuses(let transactionID):
-            guard !fetchAllSubscriptionStatusesState.isAppendLoading,
-                let credential = credentialState.value,
-                let rootCertificate = rootCertificateState.value
-            else { return }
+    @MainActor
+    private func fetchAllSubscriptionStatuses(
+        transactionID: String,
+        replacesInFlightRequest: Bool,
+        appStoreServerClient: AppStoreServerClient
+    ) async {
+        guard replacesInFlightRequest || !fetchAllSubscriptionStatusesState.isLoadingOrAppending
+        else { return }
+
+        fetchAllSubscriptionStatusesGeneration += 1
+        let generation = fetchAllSubscriptionStatusesGeneration
+
+        fetchAllSubscriptionStatusesTask?.cancel()
+
+        guard !transactionID.isEmpty,
+            let credential = credentialState.value,
+            let rootCertificate = rootCertificateState.value
+        else {
+            if replacesInFlightRequest {
+                fetchAllSubscriptionStatusesState.clear()
+            }
+            fetchAllSubscriptionStatusesTask = nil
+            return
+        }
+
+        fetchAllSubscriptionStatusesState.restartLoading()
+
+        let environment = environment
+        let task = Task {
+            @MainActor [
+                appStoreServerClient, transactionID, credential, rootCertificate, environment
+            ] in
             do {
-                fetchAllSubscriptionStatusesState.startLoading()
-
                 let model = try await appStoreServerClient.fetchAllSubscriptionStatuses(
-                    transactionID: transactionID, credential: credential,
-                    rootCertificate: rootCertificate, environment: environment)
+                    transactionID: transactionID,
+                    credential: credential,
+                    rootCertificate: rootCertificate,
+                    environment: environment
+                )
+                try Task.checkCancellation()
+
+                guard generation == fetchAllSubscriptionStatusesGeneration else { return }
                 fetchAllSubscriptionStatusesState.finishLoading(model)
+                fetchAllSubscriptionStatusesTask = nil
+            } catch is CancellationError {
+                guard generation == fetchAllSubscriptionStatusesGeneration else { return }
+                fetchAllSubscriptionStatusesState.clear()
+                fetchAllSubscriptionStatusesTask = nil
             } catch {
+                guard generation == fetchAllSubscriptionStatusesGeneration else { return }
                 fetchAllSubscriptionStatusesState.failLoading(
                     with: IAPError.unknownError(message: error.localizedDescription))
+                fetchAllSubscriptionStatusesTask = nil
             }
+        }
 
-        case .clearAllSubscriptionStatusesError:
-            fetchAllSubscriptionStatusesState.clear()
+        fetchAllSubscriptionStatusesTask = task
+        await task.value
+    }
 
-        case .fetchTransactionInfo(let transactionID):
-            guard !fetchTransactionInfoState.isLoading,
-                let credential = credentialState.value,
-                let rootCertificate = rootCertificateState.value
-            else { return }
+    @MainActor
+    private func fetchTransactionInfo(
+        transactionID: String,
+        replacesInFlightRequest: Bool,
+        appStoreServerClient: AppStoreServerClient
+    ) async {
+        guard replacesInFlightRequest || !fetchTransactionInfoState.isLoadingOrAppending else {
+            return
+        }
+
+        fetchTransactionInfoGeneration += 1
+        let generation = fetchTransactionInfoGeneration
+
+        fetchTransactionInfoTask?.cancel()
+
+        guard !transactionID.isEmpty,
+            let credential = credentialState.value,
+            let rootCertificate = rootCertificateState.value
+        else {
+            if replacesInFlightRequest {
+                fetchTransactionInfoState.clear()
+            }
+            fetchTransactionInfoTask = nil
+            return
+        }
+
+        fetchTransactionInfoState.restartLoading()
+
+        let environment = environment
+        let task = Task {
+            @MainActor [
+                appStoreServerClient, transactionID, credential, rootCertificate, environment
+            ] in
             do {
-                fetchTransactionInfoState.startLoading()
-
                 let model = try await appStoreServerClient.fetchTransactionInfo(
-                    transactionID: transactionID, credential: credential,
-                    rootCertificate: rootCertificate, environment: environment)
+                    transactionID: transactionID,
+                    credential: credential,
+                    rootCertificate: rootCertificate,
+                    environment: environment
+                )
+                try Task.checkCancellation()
+
+                guard generation == fetchTransactionInfoGeneration else { return }
                 fetchTransactionInfoState.finishLoading(model)
+                fetchTransactionInfoTask = nil
+            } catch is CancellationError {
+                guard generation == fetchTransactionInfoGeneration else { return }
+                fetchTransactionInfoState.clear()
+                fetchTransactionInfoTask = nil
             } catch {
+                guard generation == fetchTransactionInfoGeneration else { return }
                 fetchTransactionInfoState.failLoading(
                     with: IAPError.unknownError(message: error.localizedDescription))
+                fetchTransactionInfoTask = nil
             }
-
-        case .clearTransactionInfoError:
-            fetchTransactionInfoState.clear()
         }
+
+        fetchTransactionInfoTask = task
+        await task.value
     }
 }
 
