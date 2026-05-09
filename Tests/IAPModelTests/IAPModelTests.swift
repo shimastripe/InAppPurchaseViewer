@@ -6,22 +6,25 @@
 //
 
 import Dependencies
+import Foundation
 import IAPInterface
-import XCTest
+import Testing
 
 @testable import IAPModel
 
-final class IAPModelTests: XCTestCase {
+struct IAPModelTests {
 
+    @Test
     func testLoadingViewStateIsLoadingOrAppending() {
-        XCTAssertFalse(LoadingViewState<Int>.waiting.isLoadingOrAppending)
-        XCTAssertTrue(LoadingViewState<Int>.loading.isLoadingOrAppending)
-        XCTAssertTrue(LoadingViewState<Int>.appendLoading(1).isLoadingOrAppending)
-        XCTAssertFalse(LoadingViewState<Int>.success(1).isLoadingOrAppending)
-        XCTAssertFalse(
-            LoadingViewState<Int>.failed(.unknownError(message: nil)).isLoadingOrAppending)
+        #expect(!LoadingViewState<Int>.waiting.isLoadingOrAppending)
+        #expect(LoadingViewState<Int>.loading.isLoadingOrAppending)
+        #expect(LoadingViewState<Int>.appendLoading(1).isLoadingOrAppending)
+        #expect(!LoadingViewState<Int>.success(1).isLoadingOrAppending)
+        #expect(
+            !LoadingViewState<Int>.failed(.unknownError(message: nil)).isLoadingOrAppending)
     }
 
+    @Test
     @MainActor
     func testReloadNotificationHistoryPrioritizesLatestRequest() async {
         let credential = IAPEnvironment(
@@ -88,7 +91,7 @@ final class IAPModelTests: XCTestCase {
             }
 
             await fetchCoordinator.waitForFirstStarted()
-            XCTAssertTrue(model.fetchNotificationHistoryState.isLoadingOrAppending)
+            #expect(model.fetchNotificationHistoryState.isLoadingOrAppending)
 
             let secondFetchTask = Task {
                 await model.execute(
@@ -104,14 +107,14 @@ final class IAPModelTests: XCTestCase {
             await fetchCoordinator.finishSecond()
             await secondFetchTask.value
 
-            XCTAssertEqual(model.fetchNotificationHistoryState.value, secondResponse)
+            #expect(model.fetchNotificationHistoryState.value == secondResponse)
 
             await fetchCoordinator.finishFirst()
             await firstFetchTask.value
 
-            XCTAssertEqual(model.fetchNotificationHistoryState.value, secondResponse)
+            #expect(model.fetchNotificationHistoryState.value == secondResponse)
             let numberOfCalls = await fetchCoordinator.numberOfCalls()
-            XCTAssertEqual(numberOfCalls, 2)
+            #expect(numberOfCalls == 2)
         }
     }
 }
