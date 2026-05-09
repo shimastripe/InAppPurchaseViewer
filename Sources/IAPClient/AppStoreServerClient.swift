@@ -105,7 +105,7 @@ extension AppStoreServerClient: DependencyKey {
                 )
 
                 let response = await client.getTransactionHistory(
-                    transactionId: transactionID, revision: revision,
+                    anyTransactionId: transactionID, revision: revision,
                     transactionHistoryRequest: .init(startDate: startDate, endDate: endDate),
                     version: .v2
                 )
@@ -161,7 +161,7 @@ extension AppStoreServerClient: DependencyKey {
                 )
 
                 let response = await client.getAllSubscriptionStatuses(
-                    transactionId: transactionID, status: nil)
+                    anyTransactionId: transactionID, status: nil)
 
                 switch response {
                 case .success(let response):
