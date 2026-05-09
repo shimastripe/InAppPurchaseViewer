@@ -42,7 +42,7 @@ struct TransactionHistoryTableView: View {
 
         Table(of: JWSTransactionDecodedPayload.self, columnCustomization: $columnCustomization) {
             TableColumnForEach(columnOrder.columns) { columnID in
-                TableColumn(columnID.displayName) { payload in
+                TableColumn(columnID.columnHeader) { payload in
                     cellContent(for: columnID, payload: payload)
                 }
                 .width(min: columnID.width.rawValue, ideal: columnID.width.rawValue)

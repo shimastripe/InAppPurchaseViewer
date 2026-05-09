@@ -50,6 +50,8 @@ public struct NotificationHistoryItem: Identifiable, Codable, Hashable, Sendable
     public let consumptionRequestReason: ConsumptionRequestReason?
     // MARK: - ExternalPurchaseToken
     public let externalPurchaseToken: ExternalPurchaseToken?
+    // MARK: - AppData
+    public let appData: AppData?
 
     public init?(
         _ payload: ResponseBodyV2DecodedPayload,
@@ -65,5 +67,6 @@ public struct NotificationHistoryItem: Identifiable, Codable, Hashable, Sendable
         self.renewalInfo = renewalInfo
         self.consumptionRequestReason = payload.data?.consumptionRequestReason
         self.externalPurchaseToken = payload.externalPurchaseToken
+        self.appData = payload.appData
     }
 }

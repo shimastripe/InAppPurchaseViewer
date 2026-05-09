@@ -31,6 +31,7 @@ extension NotificationTypeV2: @retroactive CaseIterable {
             .refundReversed,
             .externalPurchaseToken,
             .oneTimeCharge,
+            .rescindConsent,
         ]
     }
 }

@@ -38,13 +38,20 @@ enum SubscriptionColumnID: String, CaseIterable, Identifiable, Codable {
     case storefrontId
     case webOrderLineItemId
     case revocationReason
+    case revocationType
+    case revocationPercentage
     case revocationDate
     case isUpgraded
     case transactionSignedDate
     case appTransactionId
     case offerPeriod
+    case billingPlanType
+    case commitmentBillingPeriodNumber
+    case commitmentTotalBillingPeriods
+    case commitmentExpiresDate
+    case commitmentPrice
 
-    // Renewal Info columns (21)
+    // Renewal Info columns (30)
     case expirationIntent
     case renewalOriginalTransactionId
     case autoRenewProductId
@@ -66,6 +73,15 @@ enum SubscriptionColumnID: String, CaseIterable, Identifiable, Codable {
     case renewalAppTransactionId
     case renewalOfferPeriod
     case renewalAppAccountToken
+    case renewalBillingPlanType
+    case renewalCommitmentAutoRenewProductId
+    case renewalCommitmentAutoRenewStatus
+    case renewalCommitmentRenewalBillingPlanType
+    case renewalCommitmentRenewalDate
+    case renewalCommitmentRenewalPrice
+    case advancedCommercePriceIncreaseInfoDependentSKU
+    case advancedCommercePriceIncreaseInfoStatus
+    case advancedCommercePriceIncreaseInfoPrice
 
     var id: String { rawValue }
 
@@ -98,11 +114,18 @@ enum SubscriptionColumnID: String, CaseIterable, Identifiable, Codable {
         case .storefrontId: "storefrontId"
         case .webOrderLineItemId: "webOrderLineItemId"
         case .revocationReason: "revocationReason"
+        case .revocationType: "revocationType"
+        case .revocationPercentage: "revocationPercentage"
         case .revocationDate: "revocationDate"
         case .isUpgraded: "isUpgraded"
         case .transactionSignedDate: "signedDate"
         case .appTransactionId: "appTransactionId"
         case .offerPeriod: "offerPeriod"
+        case .billingPlanType: "billingPlanType"
+        case .commitmentBillingPeriodNumber: "billingPeriodNumber"
+        case .commitmentTotalBillingPeriods: "totalBillingPeriods"
+        case .commitmentExpiresDate: "commitmentExpiresDate"
+        case .commitmentPrice: "commitmentPrice"
         // Renewal Info
         case .expirationIntent: "expirationIntent"
         case .renewalOriginalTransactionId: "originalTransactionId"
@@ -125,6 +148,16 @@ enum SubscriptionColumnID: String, CaseIterable, Identifiable, Codable {
         case .renewalAppTransactionId: "appTransactionId"
         case .renewalOfferPeriod: "offerPeriod"
         case .renewalAppAccountToken: "appAccountToken"
+        case .renewalBillingPlanType: "renewalBillingPlanType"
+        case .renewalCommitmentAutoRenewProductId: "commitmentAutoRenewProductId"
+        case .renewalCommitmentAutoRenewStatus: "commitmentAutoRenewStatus"
+        case .renewalCommitmentRenewalBillingPlanType: "commitmentRenewalBillingPlanType"
+        case .renewalCommitmentRenewalDate: "commitmentRenewalDate"
+        case .renewalCommitmentRenewalPrice: "commitmentRenewalPrice"
+        case .advancedCommercePriceIncreaseInfoDependentSKU:
+            "advancedCommercePriceIncreaseInfoDependentSKU"
+        case .advancedCommercePriceIncreaseInfoStatus: "advancedCommercePriceIncreaseInfoStatus"
+        case .advancedCommercePriceIncreaseInfoPrice: "advancedCommercePriceIncreaseInfoPrice"
         }
     }
 
@@ -132,6 +165,10 @@ enum SubscriptionColumnID: String, CaseIterable, Identifiable, Codable {
     var columnHeader: String {
         switch self {
         case .transactionSignedDate: "transaction signedDate"
+        case .commitmentBillingPeriodNumber: "commitmentInfo.billingPeriodNumber"
+        case .commitmentTotalBillingPeriods: "commitmentInfo.totalBillingPeriods"
+        case .commitmentExpiresDate: "commitmentInfo.commitmentExpiresDate"
+        case .commitmentPrice: "commitmentInfo.commitmentPrice"
         case .renewalOriginalTransactionId: "renewal originalTransactionId"
         case .renewalProductId: "renewal productId"
         case .renewalOfferType: "renewal offerType"
@@ -143,6 +180,22 @@ enum SubscriptionColumnID: String, CaseIterable, Identifiable, Codable {
         case .renewalAppTransactionId: "renewal appTransactionId"
         case .renewalOfferPeriod: "renewal offerPeriod"
         case .renewalAppAccountToken: "renewal appAccountToken"
+        case .renewalCommitmentAutoRenewProductId:
+            "renewal commitmentInfo.commitmentAutoRenewProductId"
+        case .renewalCommitmentAutoRenewStatus:
+            "renewal commitmentInfo.commitmentAutoRenewStatus"
+        case .renewalCommitmentRenewalBillingPlanType:
+            "renewal commitmentInfo.commitmentRenewalBillingPlanType"
+        case .renewalCommitmentRenewalDate:
+            "renewal commitmentInfo.commitmentRenewalDate"
+        case .renewalCommitmentRenewalPrice:
+            "renewal commitmentInfo.commitmentRenewalPrice"
+        case .advancedCommercePriceIncreaseInfoDependentSKU:
+            "advancedCommercePriceIncreaseInfo.dependentSKU"
+        case .advancedCommercePriceIncreaseInfoStatus:
+            "advancedCommercePriceIncreaseInfo.status"
+        case .advancedCommercePriceIncreaseInfoPrice:
+            "advancedCommercePriceIncreaseInfo.price"
         default: displayName
         }
     }
@@ -156,15 +209,20 @@ enum SubscriptionColumnID: String, CaseIterable, Identifiable, Codable {
     /// Column width category
     var width: ColumnWidth {
         switch self {
-        case .price, .currency, .quantity, .storefront, .renewalCurrency:
+        case .price, .currency, .quantity, .storefront, .renewalCurrency,
+            .commitmentBillingPeriodNumber, .commitmentTotalBillingPeriods,
+            .revocationPercentage:
             .small
-        case .environment, .storefrontId, .renewalEnvironment:
+        case .environment, .storefrontId, .renewalEnvironment, .billingPlanType,
+            .revocationType, .renewalBillingPlanType, .renewalCommitmentAutoRenewStatus,
+            .renewalCommitmentRenewalBillingPlanType:
             .medium
         case .subscriptionGroupIdentifier, .status, .type, .inAppOwnershipType,
-            .recentSubscriptionStartDate:
+            .recentSubscriptionStartDate, .advancedCommercePriceIncreaseInfoDependentSKU:
             .extraLarge
         case .originalTransactionID, .transactionID, .bundleId, .productId,
-            .webOrderLineItemId, .renewalOriginalTransactionId, .renewalProductId:
+            .webOrderLineItemId, .renewalOriginalTransactionId, .renewalProductId,
+            .renewalCommitmentAutoRenewProductId:
             .large
         default:
             .medium
@@ -181,8 +239,10 @@ enum SubscriptionColumnID: String, CaseIterable, Identifiable, Codable {
         case .transactionReason, .offerIdentifier, .offerType, .offerDiscountType,
             .appAccountToken, .bundleId, .productId, .quantity, .type,
             .inAppOwnershipType, .environment, .storefront, .storefrontId,
-            .webOrderLineItemId, .revocationReason, .revocationDate, .isUpgraded,
-            .transactionSignedDate, .appTransactionId, .offerPeriod:
+            .webOrderLineItemId, .revocationReason, .revocationType,
+            .revocationPercentage, .revocationDate, .isUpgraded, .transactionSignedDate,
+            .appTransactionId, .offerPeriod, .billingPlanType, .commitmentBillingPeriodNumber,
+            .commitmentTotalBillingPeriods, .commitmentExpiresDate, .commitmentPrice:
             .transaction
         case .expirationIntent, .renewalOriginalTransactionId, .autoRenewProductId,
             .renewalProductId, .autoRenewStatus, .isInBillingRetryPeriod,
@@ -190,7 +250,12 @@ enum SubscriptionColumnID: String, CaseIterable, Identifiable, Codable {
             .renewalOfferIdentifier, .renewalSignedDate, .renewalEnvironment,
             .recentSubscriptionStartDate, .renewalDate, .renewalPrice,
             .renewalCurrency, .renewalOfferDiscountType, .eligibleWinBackOfferIds,
-            .renewalAppTransactionId, .renewalOfferPeriod, .renewalAppAccountToken:
+            .renewalAppTransactionId, .renewalOfferPeriod, .renewalAppAccountToken,
+            .renewalBillingPlanType, .renewalCommitmentAutoRenewProductId,
+            .renewalCommitmentAutoRenewStatus, .renewalCommitmentRenewalBillingPlanType,
+            .renewalCommitmentRenewalDate, .renewalCommitmentRenewalPrice,
+            .advancedCommercePriceIncreaseInfoDependentSKU,
+            .advancedCommercePriceIncreaseInfoStatus, .advancedCommercePriceIncreaseInfoPrice:
             .renewalInfo
         }
     }
@@ -271,6 +336,10 @@ enum SubscriptionColumnID: String, CaseIterable, Identifiable, Codable {
             item.transaction?.webOrderLineItemId
         case .revocationReason:
             item.transaction?.revocationReason?.description
+        case .revocationType:
+            item.transaction?.revocationType?.rawValue
+        case .revocationPercentage:
+            item.transaction?.revocationPercentage?.description
         case .revocationDate:
             item.transaction?.revocationDate?.formatted()
         case .isUpgraded:
@@ -281,6 +350,16 @@ enum SubscriptionColumnID: String, CaseIterable, Identifiable, Codable {
             item.transaction?.appTransactionId
         case .offerPeriod:
             item.transaction?.offerPeriod
+        case .billingPlanType:
+            item.transaction?.billingPlanType?.rawValue
+        case .commitmentBillingPeriodNumber:
+            item.transaction?.commitmentBillingPeriodNumberDescription
+        case .commitmentTotalBillingPeriods:
+            item.transaction?.commitmentTotalBillingPeriodsDescription
+        case .commitmentExpiresDate:
+            item.transaction?.commitmentExpiresDateDescription
+        case .commitmentPrice:
+            item.transaction?.commitmentPriceDescription
         // Renewal Info
         case .expirationIntent:
             item.renewalInfo?.expirationIntent?.description
@@ -324,6 +403,24 @@ enum SubscriptionColumnID: String, CaseIterable, Identifiable, Codable {
             item.renewalInfo?.offerPeriod
         case .renewalAppAccountToken:
             item.renewalInfo?.appAccountToken?.uuidString
+        case .renewalBillingPlanType:
+            item.renewalInfo?.renewalBillingPlanType?.rawValue
+        case .renewalCommitmentAutoRenewProductId:
+            item.renewalInfo?.commitmentInfo?.commitmentAutoRenewProductId
+        case .renewalCommitmentAutoRenewStatus:
+            item.renewalInfo?.commitmentAutoRenewStatusDescription
+        case .renewalCommitmentRenewalBillingPlanType:
+            item.renewalInfo?.commitmentInfo?.commitmentRenewalBillingPlanType?.rawValue
+        case .renewalCommitmentRenewalDate:
+            item.renewalInfo?.commitmentRenewalDateDescription
+        case .renewalCommitmentRenewalPrice:
+            item.renewalInfo?.commitmentRenewalPriceDescription
+        case .advancedCommercePriceIncreaseInfoDependentSKU:
+            item.renewalInfo?.advancedCommercePriceIncreaseInfoDependentSKUDescription
+        case .advancedCommercePriceIncreaseInfoStatus:
+            item.renewalInfo?.advancedCommercePriceIncreaseInfoStatusDescription
+        case .advancedCommercePriceIncreaseInfoPrice:
+            item.renewalInfo?.advancedCommercePriceIncreaseInfoPriceDescription
         }
     }
 }
