@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/app-store-server-library-swift",
       "state" : {
-        "revision" : "179b802f36219b5fab11a4457fe22e347da34dbe",
-        "version" : "5.0.0"
+        "revision" : "ac7d41d3ef564265d6e8028357a7f4e5812f54da",
+        "version" : "6.0.0"
       }
     },
     {
