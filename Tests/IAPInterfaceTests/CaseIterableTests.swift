@@ -43,12 +43,13 @@ struct CaseIterableTests {
     /// UPDATE THIS TEST when AppStoreServerLibrary adds new NotificationTypeV2 cases.
     @Test
     func notificationTypeV2ExpectedCount() {
-        // As of app-store-server-library-swift 4.0.0 (API v1.18)
+        // As of app-store-server-library-swift 6.0.0
         // Expected cases: subscribed, didChangeRenewalPref, didChangeRenewalStatus,
         // offerRedeemed, didRenew, expired, didFailToRenew, gracePeriodExpired,
         // priceIncrease, refund, refundDeclined, consumptionRequest, renewalExtended,
-        // revoke, test, renewalExtension, refundReversed, externalPurchaseToken, oneTimeCharge
-        let expectedCount = 19
+        // revoke, test, renewalExtension, refundReversed, externalPurchaseToken, oneTimeCharge,
+        // rescindConsent
+        let expectedCount = 20
         #expect(
             NotificationTypeV2.allCases.count == expectedCount,
             """
@@ -127,7 +128,7 @@ struct CaseIterableTests {
     func notificationFilterOptionExpectedCount() {
         // Based on https://developer.apple.com/documentation/appstoreservernotifications/notificationtype
         // Only includes explicitly documented combinations
-        let expectedCount = 36
+        let expectedCount = 37
         #expect(
             NotificationFilterOption.allOptions.count == expectedCount,
             """

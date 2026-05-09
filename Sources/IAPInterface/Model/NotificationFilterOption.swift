@@ -93,6 +93,9 @@ extension NotificationFilterOption {
         // REFUND_REVERSED - no subtype
         .init(.refundReversed),
 
+        // RESCIND_CONSENT - no subtype
+        .init(.rescindConsent),
+
         // RENEWAL_EXTENDED - no subtype, SUMMARY, FAILURE
         .init(.renewalExtended),
         .init(.renewalExtended, subtype: .summary),

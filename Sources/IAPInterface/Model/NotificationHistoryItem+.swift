@@ -46,6 +46,8 @@ extension NotificationHistoryItem {
             return "creditcard.fill"
         case (.oneTimeCharge, _):
             return "cart.circle.fill"
+        case (.rescindConsent, _):
+            return "person.crop.circle.badge.xmark"
         case (.test, _):
             return "hammer"
         default:
@@ -74,6 +76,8 @@ extension NotificationHistoryItem {
             return .mint
         case (.externalPurchaseToken, .unreported):
             return .indigo
+        case (.rescindConsent, _):
+            return .orange
         case (.test, _):
             return .cyan
         default:

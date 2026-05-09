@@ -102,7 +102,7 @@ private struct ColumnToggleRow: View {
 
     @ViewBuilder
     private var linkLabel: some View {
-        let link = Link(columnID.displayName, destination: columnID.documentationURL)
+        let link = Link(columnID.columnHeader, destination: columnID.documentationURL)
             .foregroundStyle(isVisible ? Color.accentColor : Color.secondary)
             .underline(isVisible)
             .help(columnID.documentationURL.absoluteString)

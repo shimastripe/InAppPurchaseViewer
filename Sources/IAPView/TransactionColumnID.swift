@@ -32,6 +32,11 @@ enum TransactionColumnID: String, CaseIterable, Identifiable, Codable {
     case offerType
     case offerDiscountType
     case offerPeriod
+    case billingPlanType
+    case commitmentBillingPeriodNumber
+    case commitmentTotalBillingPeriods
+    case commitmentExpiresDate
+    case commitmentPrice
     case appAccountToken
     case bundleId
     case productId
@@ -44,6 +49,8 @@ enum TransactionColumnID: String, CaseIterable, Identifiable, Codable {
     case storefrontId
     case webOrderLineItemId
     case revocationReason
+    case revocationType
+    case revocationPercentage
     case revocationDate
     case isUpgraded
     case signedDate
@@ -66,6 +73,11 @@ enum TransactionColumnID: String, CaseIterable, Identifiable, Codable {
         case .offerType: "offerType"
         case .offerDiscountType: "offerDiscountType"
         case .offerPeriod: "offerPeriod"
+        case .billingPlanType: "billingPlanType"
+        case .commitmentBillingPeriodNumber: "billingPeriodNumber"
+        case .commitmentTotalBillingPeriods: "totalBillingPeriods"
+        case .commitmentExpiresDate: "commitmentExpiresDate"
+        case .commitmentPrice: "commitmentPrice"
         case .appAccountToken: "appAccountToken"
         case .bundleId: "bundleId"
         case .productId: "productId"
@@ -78,9 +90,22 @@ enum TransactionColumnID: String, CaseIterable, Identifiable, Codable {
         case .storefrontId: "storefrontId"
         case .webOrderLineItemId: "webOrderLineItemId"
         case .revocationReason: "revocationReason"
+        case .revocationType: "revocationType"
+        case .revocationPercentage: "revocationPercentage"
         case .revocationDate: "revocationDate"
         case .isUpgraded: "isUpgraded"
         case .signedDate: "signedDate"
+        }
+    }
+
+    /// Column header text (with prefix for nested commitment info fields)
+    var columnHeader: String {
+        switch self {
+        case .commitmentBillingPeriodNumber: "commitmentInfo.billingPeriodNumber"
+        case .commitmentTotalBillingPeriods: "commitmentInfo.totalBillingPeriods"
+        case .commitmentExpiresDate: "commitmentInfo.commitmentExpiresDate"
+        case .commitmentPrice: "commitmentInfo.commitmentPrice"
+        default: displayName
         }
     }
 
@@ -93,13 +118,15 @@ enum TransactionColumnID: String, CaseIterable, Identifiable, Codable {
     /// Column width category
     var width: ColumnWidth {
         switch self {
-        case .price, .currency, .quantity, .storefront:
+        case .price, .currency, .quantity, .storefront, .commitmentBillingPeriodNumber,
+            .commitmentTotalBillingPeriods, .revocationPercentage:
             .small
-        case .environment, .storefrontId:
+        case .environment, .storefrontId, .billingPlanType, .revocationType:
             .medium
         case .purchaseDate, .originalPurchaseDate, .expiresDate, .revocationDate, .signedDate,
             .offerIdentifier, .offerType, .offerDiscountType, .offerPeriod,
-            .appAccountToken, .revocationReason, .isUpgraded, .appTransactionId:
+            .appAccountToken, .revocationReason, .isUpgraded, .appTransactionId,
+            .commitmentExpiresDate, .commitmentPrice:
             .medium
         case .originalTransactionID, .transactionID, .bundleId, .productId, .webOrderLineItemId:
             .large
@@ -154,6 +181,16 @@ enum TransactionColumnID: String, CaseIterable, Identifiable, Codable {
             payload.offerDiscountType?.rawValue
         case .offerPeriod:
             payload.offerPeriod
+        case .billingPlanType:
+            payload.billingPlanType?.rawValue
+        case .commitmentBillingPeriodNumber:
+            payload.commitmentBillingPeriodNumberDescription
+        case .commitmentTotalBillingPeriods:
+            payload.commitmentTotalBillingPeriodsDescription
+        case .commitmentExpiresDate:
+            payload.commitmentExpiresDateDescription
+        case .commitmentPrice:
+            payload.commitmentPriceDescription
         case .appAccountToken:
             payload.appAccountToken?.uuidString
         case .bundleId:
@@ -178,6 +215,10 @@ enum TransactionColumnID: String, CaseIterable, Identifiable, Codable {
             payload.webOrderLineItemId
         case .revocationReason:
             payload.revocationReason?.description
+        case .revocationType:
+            payload.revocationType?.rawValue
+        case .revocationPercentage:
+            payload.revocationPercentage?.description
         case .revocationDate:
             payload.revocationDate?.formatted()
         case .isUpgraded:
