@@ -40,19 +40,31 @@ struct NotificationHistoryView: View {
             }
             .onChange(of: model.environment) { _, _ in
                 Task {
-                    await model.execute(action: .clearNotificationHistoryError)
+                    await model.execute(
+                        action: .reloadNotificationHistory(
+                            startDate: model.notificationStartDate,
+                            endDate: model.notificationEndDate,
+                            transactionID: model.notificationHistoryTransactionID))
                 }
             }
             .onChange(of: model.notificationFilterOption) { oldValue, newValue in
                 guard oldValue != newValue else { return }
                 Task {
-                    await model.execute(action: .clearNotificationHistoryError)
+                    await model.execute(
+                        action: .reloadNotificationHistory(
+                            startDate: model.notificationStartDate,
+                            endDate: model.notificationEndDate,
+                            transactionID: model.notificationHistoryTransactionID))
                 }
             }
             .onChange(of: model.onlyFailuresFilter) { oldValue, newValue in
                 guard oldValue != newValue else { return }
                 Task {
-                    await model.execute(action: .clearNotificationHistoryError)
+                    await model.execute(
+                        action: .reloadNotificationHistory(
+                            startDate: model.notificationStartDate,
+                            endDate: model.notificationEndDate,
+                            transactionID: model.notificationHistoryTransactionID))
                 }
             }
             .onChange(of: [
@@ -65,7 +77,11 @@ struct NotificationHistoryView: View {
             .onSubmit {
                 Task {
                     model.isNotificationHistoryStaledParameters = false
-                    await model.execute(action: .clearNotificationHistoryError)
+                    await model.execute(
+                        action: .reloadNotificationHistory(
+                            startDate: model.notificationStartDate,
+                            endDate: model.notificationEndDate,
+                            transactionID: model.notificationHistoryTransactionID))
                 }
             }
             .textSelection(.enabled)
@@ -98,7 +114,11 @@ struct NotificationHistoryView: View {
                         Text("\(error.localizedDescription)")
                         Button("Retry") {
                             Task {
-                                await model.execute(action: .clearNotificationHistoryError)
+                                await model.execute(
+                                    action: .reloadNotificationHistory(
+                                        startDate: model.notificationStartDate,
+                                        endDate: model.notificationEndDate,
+                                        transactionID: model.notificationHistoryTransactionID))
                             }
                         }
                     }
@@ -269,7 +289,12 @@ struct NotificationHistoryView: View {
             Button {
                 Task {
                     bindableModel.wrappedValue.isNotificationHistoryStaledParameters = false
-                    await bindableModel.wrappedValue.execute(action: .clearNotificationHistoryError)
+                    await bindableModel.wrappedValue.execute(
+                        action: .reloadNotificationHistory(
+                            startDate: bindableModel.wrappedValue.notificationStartDate,
+                            endDate: bindableModel.wrappedValue.notificationEndDate,
+                            transactionID: bindableModel.wrappedValue
+                                .notificationHistoryTransactionID))
                 }
             } label: {
                 Image(systemName: "arrow.counterclockwise")

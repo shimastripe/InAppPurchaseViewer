@@ -37,6 +37,15 @@ public enum LoadingViewState<Element: Equatable>: Equatable {
         return true
     }
 
+    public var isLoadingOrAppending: Bool {
+        switch self {
+        case .loading, .appendLoading:
+            true
+        case .waiting, .success, .failed:
+            false
+        }
+    }
+
     public var presentsError: IAPError? {
         get {
             guard case .failed(let error) = self else { return nil }
@@ -53,6 +62,10 @@ public enum LoadingViewState<Element: Equatable>: Equatable {
             assertionFailure()
             return
         }
+    }
+
+    public mutating func restartLoading() {
+        self = .loading
     }
 
     public mutating func finishLoading(_ element: Element) {
@@ -72,6 +85,11 @@ public enum LoadingViewState<Element: Equatable>: Equatable {
     }
 
     public mutating func clear() {
+        self = .waiting
+    }
+
+    public mutating func clearFailure() {
+        guard case .failed = self else { return }
         self = .waiting
     }
 

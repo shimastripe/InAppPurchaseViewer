@@ -22,8 +22,7 @@ public struct CredentialClient: Sendable {
 
     public var get: @Sendable () async throws -> Model?
     public var set:
-        @Sendable
-        (
+        @Sendable (
             _ bundleID: String, _ issuerID: String, _ keyID: String, _ appAppleID: Int,
             _ privateKeyFileURL: URL
         )

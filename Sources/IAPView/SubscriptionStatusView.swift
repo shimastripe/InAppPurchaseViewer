@@ -40,7 +40,8 @@ struct SubscriptionStatusView: View {
             }
             .onChange(of: model.environment) { _, _ in
                 Task {
-                    await model.execute(action: .clearAllSubscriptionStatusesError)
+                    await model.execute(
+                        action: .reloadAllSubscriptionStatuses(transactionID: model.transactionID))
                 }
             }
             .onChange(of: model.transactionID) { (oldValue, newValue) in
@@ -50,7 +51,8 @@ struct SubscriptionStatusView: View {
             .onSubmit {
                 Task {
                     model.isStaledParameters = false
-                    await model.execute(action: .clearAllSubscriptionStatusesError)
+                    await model.execute(
+                        action: .reloadAllSubscriptionStatuses(transactionID: model.transactionID))
                 }
             }
             .textSelection(.enabled)
@@ -83,7 +85,9 @@ struct SubscriptionStatusView: View {
                         Text("\(error.localizedDescription)")
                         Button("Retry") {
                             Task {
-                                await model.execute(action: .clearAllSubscriptionStatusesError)
+                                await model.execute(
+                                    action: .reloadAllSubscriptionStatuses(
+                                        transactionID: model.transactionID))
                             }
                         }
                     }
@@ -135,7 +139,8 @@ struct SubscriptionStatusView: View {
                 Task {
                     bindableModel.wrappedValue.isStaledParameters = false
                     await bindableModel.wrappedValue.execute(
-                        action: .clearAllSubscriptionStatusesError)
+                        action: .reloadAllSubscriptionStatuses(
+                            transactionID: bindableModel.wrappedValue.transactionID))
                 }
             } label: {
                 Image(systemName: "arrow.counterclockwise")

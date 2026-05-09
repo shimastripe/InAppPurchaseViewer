@@ -40,7 +40,11 @@ struct TransactionHistoryView: View {
             }
             .onChange(of: model.environment) { _, _ in
                 Task {
-                    await model.execute(action: .clearTransactionHistoryError)
+                    await model.execute(
+                        action: .reloadTransactionHistory(
+                            startDate: model.transactionStartDate,
+                            endDate: model.transactionEndDate,
+                            transactionID: model.transactionID))
                 }
             }
             .onChange(of: model.transactionID) { (oldValue, newValue) in
@@ -55,7 +59,11 @@ struct TransactionHistoryView: View {
             .onSubmit {
                 Task {
                     model.isStaledParameters = false
-                    await model.execute(action: .clearTransactionHistoryError)
+                    await model.execute(
+                        action: .reloadTransactionHistory(
+                            startDate: model.transactionStartDate,
+                            endDate: model.transactionEndDate,
+                            transactionID: model.transactionID))
                 }
             }
             .textSelection(.enabled)
@@ -88,7 +96,11 @@ struct TransactionHistoryView: View {
                         Text("\(error.localizedDescription)")
                         Button("Retry") {
                             Task {
-                                await model.execute(action: .clearTransactionHistoryError)
+                                await model.execute(
+                                    action: .reloadTransactionHistory(
+                                        startDate: model.transactionStartDate,
+                                        endDate: model.transactionEndDate,
+                                        transactionID: model.transactionID))
                             }
                         }
                     }
@@ -211,7 +223,11 @@ struct TransactionHistoryView: View {
             Button {
                 Task {
                     bindableModel.wrappedValue.isStaledParameters = false
-                    await bindableModel.wrappedValue.execute(action: .clearTransactionHistoryError)
+                    await bindableModel.wrappedValue.execute(
+                        action: .reloadTransactionHistory(
+                            startDate: bindableModel.wrappedValue.transactionStartDate,
+                            endDate: bindableModel.wrappedValue.transactionEndDate,
+                            transactionID: bindableModel.wrappedValue.transactionID))
                 }
             } label: {
                 Image(systemName: "arrow.counterclockwise")
