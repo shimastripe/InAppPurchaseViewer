@@ -13,7 +13,7 @@ concurrency:
 jobs:
   analyze:
     name: Analyze
-    // ref: - https://github.com/github/codeql/issues/22742
+    # ref: - https://github.com/github/codeql/issues/22742
     runs-on: macos-26
     env:
       DEVELOPER_DIR: "/Applications/Xcode_26.6.app/Contents/Developer"
