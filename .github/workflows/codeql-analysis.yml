@@ -13,9 +13,10 @@ concurrency:
 jobs:
   analyze:
     name: Analyze
-    runs-on: xcode-27
+    # ref: - https://github.com/github/codeql/issues/22742
+    runs-on: macos-26
     env:
-      DEVELOPER_DIR: "/Applications/Xcode_27.0.app/Contents/Developer"
+      DEVELOPER_DIR: "/Applications/Xcode_26.6.app/Contents/Developer"
     timeout-minutes: 120
     permissions:
       security-events: write
